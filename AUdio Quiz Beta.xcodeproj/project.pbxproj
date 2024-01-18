@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0B890F552B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F542B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift */; };
 		0B890F572B596D61009C7FA6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F562B596D61009C7FA6 /* ContentView.swift */; };
-		0B890F592B596D61009C7FA6 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F582B596D61009C7FA6 /* Item.swift */; };
 		0B890F5B2B596D63009C7FA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B890F5A2B596D63009C7FA6 /* Assets.xcassets */; };
 		0B890F5E2B596D63009C7FA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B890F5D2B596D63009C7FA6 /* Preview Assets.xcassets */; };
 		0B890F682B596D64009C7FA6 /* AUdio_Quiz_BetaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F672B596D64009C7FA6 /* AUdio_Quiz_BetaTests.swift */; };
@@ -38,7 +37,6 @@
 		0B890F512B596D61009C7FA6 /* AUdio Quiz Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AUdio Quiz Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B890F542B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUdio_Quiz_BetaApp.swift; sourceTree = "<group>"; };
 		0B890F562B596D61009C7FA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		0B890F582B596D61009C7FA6 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		0B890F5A2B596D63009C7FA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B890F5D2B596D63009C7FA6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B890F632B596D64009C7FA6 /* AUdio Quiz BetaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AUdio Quiz BetaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +96,6 @@
 			children = (
 				0B890F542B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift */,
 				0B890F562B596D61009C7FA6 /* ContentView.swift */,
-				0B890F582B596D61009C7FA6 /* Item.swift */,
 				0B890F5A2B596D63009C7FA6 /* Assets.xcassets */,
 				0B890F5C2B596D63009C7FA6 /* Preview Content */,
 			);
@@ -261,7 +258,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B890F572B596D61009C7FA6 /* ContentView.swift in Sources */,
-				0B890F592B596D61009C7FA6 /* Item.swift in Sources */,
 				0B890F552B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
