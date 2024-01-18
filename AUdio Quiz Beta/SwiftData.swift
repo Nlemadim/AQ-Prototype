@@ -10,8 +10,9 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Question {
+class Question: Hashable {
     @Attribute(.unique) var questionContent: String
+    var questionNote: String
     var topic: String
     var options: [String]
     var correctOption: String
@@ -20,11 +21,12 @@ class Question {
     var isAnsweredCorrectly: Bool
     var numberOfPresentations: Int
     var questionAudio: String
-    var correctOptionOverviewAudio: String
+    var questionNoteAudio: String
     
-    init(topic: String, questionContent: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, moreAboutCorrectOption: String) {
-        self.topic = topic
+    init(questionContent: String, questionNote: String, topic: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, questionNoteAudio: String) {
         self.questionContent = questionContent
+        self.questionNote = questionNote
+        self.topic = topic
         self.options = options
         self.correctOption = correctOption
         self.selectedOption = selectedOption
@@ -32,7 +34,7 @@ class Question {
         self.isAnsweredCorrectly = isAnsweredCorrectly
         self.numberOfPresentations = numberOfPresentations
         self.questionAudio = questionAudio
-        self.correctOptionOverviewAudio = moreAboutCorrectOption
+        self.questionNoteAudio = questionNoteAudio
     }
 }
 
@@ -87,17 +89,30 @@ class AudioPlayerItem {
 class AudioQuiz: ObservableObject {
     @Attribute(.unique) var testName: String
     var image: String
-    var topic: String
+    var topics: [String]
     var questions: [Question]
     
-    init(testName: String, image: String, topic: String, questions: [Question], currentQuestions: [Question]) {
+    init(testName: String, image: String, topics: [String], questions: [Question], currentQuestions: [Question]) {
         self.testName = testName
         self.image = image
-        self.topic = topic
+        self.topics = topics
         self.questions = questions
         self.currentQuestions = currentQuestions
     }
     
     @Relationship
     var currentQuestions: [Question] = []
+}
+
+@Model
+class Performance: Identifiable, Hashable {
+    let id: UUID
+    var date: Date
+    var score: CGFloat
+    
+    init(id: UUID, date: Date, score: CGFloat) {
+        self.id = id
+        self.date = date
+        self.score = score
+    }
 }

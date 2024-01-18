@@ -17,7 +17,7 @@ class NetworkService {
     
     func fetchAudioData(content: String) async throws -> Data {
         // Construct the URL with query parameters for the API call
-        var components = URLComponents(string: "https://ljnsun.buildship.run/testAudioGeneration")
+        var components = URLComponents(string: Config.audioRequestURL)
         components?.queryItems = [
             URLQueryItem(name: "content", value: content)
         ]
@@ -51,6 +51,47 @@ class NetworkService {
         
         return decodedData
     }
+    
+    func fetchTopics(context: String) async throws -> [String] {
+         //Base URL
+        let baseUrl = "https://ljnsun.buildship.run/"
+
+        // Append query parameter
+        guard var urlComponents = URLComponents(string: baseUrl) else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+
+        urlComponents.queryItems = [URLQueryItem(name: "context", value: context)]
+
+        // Check if URL is valid
+        guard let url = urlComponents.url else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to construct URL"])
+        }
+
+        // Create a URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        // URLSession data task
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        // Log the raw server response
+        if let httpResponse = response as? HTTPURLResponse, let rawResponse = String(data: data, encoding: .utf8) {
+            print("Response HTTP Status code: \(httpResponse.statusCode)")
+            print("Raw server response: \(rawResponse)")
+        }
+
+        // Decode JSON
+        let jsonResponse = try JSONDecoder().decode([String: [String]].self, from: data)
+        guard let topics = jsonResponse["topics"] else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Key 'topics' not found in response"])
+        }
+
+        return topics
+    }
+    
+    //MARK: ENTRY POINT
+    func fetchSampleAudioQuiz()  async throws {}
     
     
 
