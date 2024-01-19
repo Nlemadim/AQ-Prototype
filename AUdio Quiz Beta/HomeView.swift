@@ -78,13 +78,13 @@ struct HomeView: View {
             }
             .tag(0)
             
-            View1()
+            TopicsListView()
             .tabItem {
                 TabIcons(title: "Topic Notes", icon: "list.bullet.rectangle")
             }
             .tag(1)
             
-            View2()
+            AiAssistant()
             .tabItem {
                 TabIcons(title: "Build Quiz", icon: "wand.and.stars.inverse")
             }
@@ -96,7 +96,7 @@ struct HomeView: View {
             }
             .tag(3)
             
-            View4()
+            View2()
             .tabItem {
                 TabIcons(title: "Profile", icon: "person.fill")
             }
@@ -149,58 +149,7 @@ struct HomeView: View {
 }
 
 
-struct FeaturedItem: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
-            Spacer()
-            Button {
-                
-            } label: {
-                Image(systemName: "play.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 26.0, height: 26.0)
-                    .cornerRadius(10)
-                    .padding(9)
-                    .foregroundStyle(.teal)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            }
-            
-            //.strokeStyle(cornerRadius: 16)
-            Text("Practice New York Bar Exam")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundStyle(.linearGradient(colors: [.primary, .primary.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
-            Text("5 Questions".uppercased())
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-            Text("Sample Audio Quiz")
-                .font(.footnote)
-                .multilineTextAlignment(.leading)
-                .lineLimit(2, reservesSpace: true)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.all, 20.0)
-        .padding(.vertical, 20)
-        .frame(height: 350.0)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 0, y: 10)
-        .padding(.horizontal, 20)
-        
-        .overlay(
-            //Image(systemName: "headphones")
-            Image("Legal")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .cornerRadius(10)
-                .frame(height: 130)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .offset(x: 32, y: -80)
-        )
-    }
-    
-}
+
 
 struct TabIcons: View {
     var title: String
@@ -236,13 +185,48 @@ struct View1: View {
 struct View2: View {
     var body: some View {
         ZStack {
-            Text("This is View 2")
+            
+            VStack {
+                HStack {
+                   Text("Account")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    Spacer()
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 26.0, height: 26.0)
+                            .cornerRadius(10)
+                            .padding(9)
+                            .foregroundStyle(.teal)
+                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    }
+                }
+                
+                ScrollView {
+                    VStack {
+                       
+                        Text("This is View 2")
+                            .frame(alignment: .center)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity).padding(.all, 20.0)
+            .frame(height: 600)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 0, y: 10)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 30)
+           
         }
         .preferredColorScheme(.dark)
         .navigationBarBackButtonHidden(true)
         .background(
             Image("Logo")
-                .offset(x:  220, y: -100)
+                .offset(x: -190, y: -220)
             
         )
     }
@@ -292,38 +276,3 @@ struct NavigationConfigurator: UIViewControllerRepresentable {
     }
 }
 
-import SwiftUI
-
-struct ContentView3: View {
-    @State private var selectedTab = 0
-    
-    var body: some View {
-        TabView(selection: $selectedTab) {
-            NavigationView {
-                Text("View1")
-                    .navigationBarTitle("View1", displayMode: .inline)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                print("Magnifying glass tapped!")
-                            }) {
-                                Image(systemName: "magnifyingglass")
-                            }
-                        }
-                    }
-            }
-            .tabItem {
-                Label("View1", systemImage: "1.square.fill")
-            }
-            .tag(0)
-            
-            // Repeat for View2, View3, View4, View5
-        }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}

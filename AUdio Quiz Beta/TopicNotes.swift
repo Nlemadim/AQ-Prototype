@@ -28,6 +28,7 @@ struct TopicNotes: View {
             }
             .onDelete(perform: deleteTopic)
         }
+        
     }
     
     init(searchString: String = "") {

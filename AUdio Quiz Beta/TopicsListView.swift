@@ -14,27 +14,31 @@ struct TopicsListView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            TopicNotes(searchString: searchText)
-                .navigationTitle("Topics").navigationBarTitleDisplayMode(.automatic)
-                .navigationDestination(for: Topic.self) { topic in
-                    TopicDetailsView()
-                }
-                .toolbar {
-                    Button {
-                        Task {
-                            //MARK: Method to Add TopicNotes to QuizPlayer Playlist
+            ZStack {
+                VStack {
+                    TopicNotes(searchString: searchText)
+                        .navigationTitle("Topics").navigationBarTitleDisplayMode(.automatic)
+                        .navigationDestination(for: Topic.self) { topic in
+                            TopicDetailsView()
                         }
-                    }label: {
-                        HStack(spacing: 5) {
-                            Text("Create Playlist")
-                                
-                            Image(systemName: "plus")
+                        .toolbar {
+                            Button {
+                                Task {
+                                    //MARK: Method to Add TopicNotes to QuizPlayer Playlist
+                                }
+                            }label: {
+                                HStack(spacing: 5) {
+                                    Text("Create Playlist")
+                                        
+                                    Image(systemName: "plus")
+                                }
+                                .foregroundStyle(.teal)
+                            }
+            
                         }
-                        .foregroundStyle(.teal)
-                    }
-    
+                        .searchable(text: $searchText)
                 }
-                .searchable(text: $searchText)
+            }
         }
     }
 }
