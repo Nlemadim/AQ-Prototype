@@ -74,19 +74,19 @@ struct HomeView: View {
             }
             
             .tabItem {
-                TabIcons(title: "Quiz Player", icon: "play.circle")
+                TabIcons(title: "Play", icon: "play.circle")
             }
             .tag(0)
             
             TopicsListView()
             .tabItem {
-                TabIcons(title: "Topic Notes", icon: "list.bullet.rectangle")
+                TabIcons(title: "Exams", icon: "magnifyingglass")
             }
             .tag(1)
             
-            AiAssistant()
+            TopicsListView()
             .tabItem {
-                TabIcons(title: "Build Quiz", icon: "wand.and.stars.inverse")
+                TabIcons(title: "Topics", icon: "list.bullet.rectangle")
             }
             .tag(2)
             
@@ -95,12 +95,6 @@ struct HomeView: View {
                 TabIcons(title: "History", icon: "scroll")
             }
             .tag(3)
-            
-            View2()
-            .tabItem {
-                TabIcons(title: "Profile", icon: "person.fill")
-            }
-            .tag(4)
             
         }
         .tint(.teal)

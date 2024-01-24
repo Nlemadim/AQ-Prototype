@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FullScreenQuizPlayer: View {
     @Binding var expandSheet: Bool
@@ -14,6 +15,22 @@ struct FullScreenQuizPlayer: View {
     @State private var offsetY: CGFloat = 0
     @State private var animateContent: Bool = false
     @State private var isNowPlaying: Bool = false
+    
+    var questions: [TestQuestionModel] = [TestQuestionModel(
+        id: UUID(),
+        questionContent: "Some random sample question",
+        questionNote: "Sample data audio question answer in Mp3 format",
+        topic: "Science",
+        options: ["A", "B", "C", "D"],
+        correctOption: "C",
+        selectedOption: "",
+        isAnswered: false,
+        isAnsweredCorrectly: false,
+        numberOfPresentations: 0,
+        questionAudio: "Sample data audio question in Mp3",
+        questionNoteAudio: "Sample data audio question answer in Mp3 format")]
+    
+    @StateObject private var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
     var body: some View {
         GeometryReader {
@@ -35,54 +52,62 @@ struct FullScreenQuizPlayer: View {
                     }
                     .matchedGeometryEffect(id: "ICONIMAGE", in: animation)
                 
-                VStack(spacing: 15) {
-                    /// Grab Indicator
-                    Capsule()
-                        .fill(.gray)
-                        .frame(width: 40, height: 5)
-                        .opacity(animateContent ? 1 : 0)
-                    /// Matching with Sliding Animation
-                        .offset(y: animateContent ? 0 : size.height)
-                    ///Player Content View (Hero View)
-                    GeometryReader {
-                        let size = $0.size
-                        if !showText {
+                if showText {
+                    VStack {
+                        //MARK: Quiz View
+                        CustomQuestionDisplayView(questions: quizPlayer.currentQuestions) {
+                            showText.toggle()
+                        }
+                    }
+                    
+                    //.frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    VStack(spacing: 15) {
+                        /// Grab Indicator
+                        Capsule()
+                            .fill(.gray)
+                            .frame(width: 40, height: 5)
+                            .opacity(animateContent ? 1 : 0)
+                        /// Matching with Sliding Animation
+                            .offset(y: animateContent ? 0 : size.height)
+                        
+                        
+                        //MARK: Player Content Image View (Hero View)
+                        GeometryReader {
+                            let size = $0.size
+                            
                             Image("IconImage")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: size.width, height: size.height)
                                 .clipShape(RoundedRectangle(cornerRadius: animateContent ? 15 : 5, style: .continuous))
-                            
-                        } else {
-                            ScrollView(showsIndicators: false) {
-                            
-                                Text("Some sample Text Some sample Text Some sample Text Some sample Text Some sample Text Some sample TextSome sample Text Some sample Text Some sample TextSome sample Text Some sample Text Some sample\n\nOption A: TextSome sample Text Some sample Text Some sample TextSome sample Text Some sample Text Some sample TextSome sample\n\nOption B Text Some sample Text Some sample\n\nOption C TextSome sample Text Some sample\n\nOption D Text Some sample Text")
-                                    .font(.callout)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.themePurple)
-                                    .minimumScaleFactor(0.5)
-                                    .multilineTextAlignment(.leading)
-                                    
-                            }
                         }
+                        .matchedGeometryEffect(id: "MAINICON", in: animation)
+                        /// For Square Content View
+                        .frame(height: size.width - 50)
+                        /// Dynamically changing Padding for smaller devices
+                        .padding(.vertical, size.height < 700 ? 10 : 30)
+                        .opacity(!showText ? 1 : 0)
+                        
+                        /// Player View
+                        PlayerView(size)
+                        /// Moving from the bottom of the screen
+                            .offset(y: animateContent ? 0 : size.height)
+                            .opacity(showText ? 0 : 1)
+                        
+                        
+                        
+                        
                     }
-                    .matchedGeometryEffect(id: "MAINICON", in: animation)
-                    /// For Square Content View
-                    .frame(height: size.width - 50)
-                    /// Dynamically changing Padding for smaller devices
-                    .padding(.vertical, size.height < 700 ? 10 : 30)
+                    .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
+                    .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
+                    .padding(.horizontal, 25)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .clipped()
                     
-                    /// Player View
-                    PlayerView(size)
-                    /// Moving from the bottom of the screen
-                        .offset(y: animateContent ? 0 : size.height)
+                    
                 }
-                .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
-                .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
-                .padding(.horizontal, 25)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .clipped()
-            
+                
             }
             .contentShape(Rectangle())
             .offset(y: offsetY)
@@ -143,6 +168,7 @@ struct FullScreenQuizPlayer: View {
                     
                     /// Quiz Details View
                     HStack(alignment: .center, spacing: 15) {
+                        
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Practice Quiz")
                                 .foregroundStyle(.black)
@@ -156,10 +182,11 @@ struct FullScreenQuizPlayer: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
+                        //Quiz Content Text View Toggle Button
                         Button {
                             showText.toggle()
                         } label: {
-                            Image(systemName: "quote.bubble")
+                            Image(systemName: "rectangle.and.hand.point.up.left")
                                 .foregroundStyle(.themePurple)
                                 .padding(12)
                                 .background {
@@ -169,6 +196,7 @@ struct FullScreenQuizPlayer: View {
                                 }
                         }
                         
+                        //Mute Button
                         Button {
                             isMuted.toggle()
                         } label: {
@@ -182,23 +210,24 @@ struct FullScreenQuizPlayer: View {
                                 }
                         }
                     }
-
+                    
                     /// Playback Controls
                     HStack(spacing: size.width * 0.18) {
                         Button {
                             
                         } label: {
                             
-                            Image(systemName: "repeat")
+                            Image(systemName: "arrow.circlepath")
                             /// Dynamic Sizing for Smaller to Larger iPhones
                                 .font(size.height < 300 ? .title3 : .title)
                                 .foregroundStyle(.themePurple)
                         }
                         
-                        /// Making Play/Pause Button Slightly Bigger
+                        
                         Button {
                             
                         } label: {
+                            /// Making Play/Pause Button Slightly Bigger
                             Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")
                             /// Dynamic Sizing for Smaller to Larger iPhones
                                 .font(size.height < 300 ? .largeTitle : .system(size: 50))
@@ -218,7 +247,7 @@ struct FullScreenQuizPlayer: View {
                     
                     /// Multichoice Option Buttons
                     HStack {
-    
+                        
                         Button {
                             
                         } label: {
@@ -235,7 +264,7 @@ struct FullScreenQuizPlayer: View {
                         .buttonBorderShape(.roundedRectangle)
                         .foregroundStyle(.themePurpleLight)
                         
-                       Spacer(minLength: 0)
+                        Spacer(minLength: 0)
                         
                         Button {
                             
@@ -298,3 +327,6 @@ struct FullScreenQuizPlayer: View {
     ContentView()
         .preferredColorScheme(.dark)
 }
+
+
+//CustomQuestionDisplayView(questions: questions, questionIndex: 0)

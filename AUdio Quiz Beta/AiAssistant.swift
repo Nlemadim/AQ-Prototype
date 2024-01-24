@@ -12,8 +12,6 @@ struct AiAssistant: View {
     @StateObject private var viewModel = AiAssistantViewModel()
     @State private var userRequest: String = ""
     @State private var isExpanded: Bool = false
-    @State private var isDocumentPickerPresented = false
-    @State private var isImagePickerPresented = false
     @State private var topInset: CGFloat = 0
     
     var body: some View {
@@ -74,18 +72,7 @@ struct AiAssistant: View {
         .onAppear {
             //UserDefaultsManager.resetAllValues()
         }
-        .sheet(isPresented: $isDocumentPickerPresented) {
-            // Document Picker View
-            DocumentPicker { url in
-                // Handle the selected document URL
-            }
-        }
-        .sheet(isPresented: $isImagePickerPresented) {
-            // Image Picker View
-            ImagePicker { image in
-                // Handle the selected image
-            }
-        }
+        
     }
     
     // MARK: - Subviews
@@ -116,12 +103,12 @@ struct AiAssistant: View {
     private var inputAndActionButtonView: some View {
         HStack {
             if isExpanded {
-                Button(action: { isDocumentPickerPresented = true }) {
+                Button(action: {}) {
                     Image(systemName: "folder")
                         .foregroundColor(.teal)
                         .frame(width: 20, height: 20)
                 }
-                Button(action: { isImagePickerPresented = true }) {
+                Button(action: {}) {
                     Image(systemName: "photo")
                         .foregroundColor(.teal)
                         .frame(width: 20, height: 20)

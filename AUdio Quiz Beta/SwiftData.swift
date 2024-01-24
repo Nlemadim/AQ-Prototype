@@ -11,6 +11,7 @@ import SwiftData
 
 @Model
 class Question: Hashable {
+    var id: UUID
     @Attribute(.unique) var questionContent: String
     var questionNote: String
     var topic: String
@@ -23,7 +24,8 @@ class Question: Hashable {
     var questionAudio: String
     var questionNoteAudio: String
     
-    init(questionContent: String, questionNote: String, topic: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, questionNoteAudio: String) {
+    init(id: UUID, questionContent: String, questionNote: String, topic: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, questionNoteAudio: String) {
+        self.id = id
         self.questionContent = questionContent
         self.questionNote = questionNote
         self.topic = topic

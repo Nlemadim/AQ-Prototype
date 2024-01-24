@@ -50,29 +50,29 @@ struct OptionsView: View {
         }
         
 
-//        Button(action: {
-//           
-//            
-//        } {
-//            Text(option)
-//                .foregroundStyle(.black.opacity(0.7))
-//                .padding(.horizontal, 15)
-//                .padding(.vertical, 20)
-//                .hAlign(.leading)
-//                .background {
-//                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-//                        .fill(tint.opacity(0.15))
-//                        .background {
-//                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-//                                .stroke(tint.opacity(tint == .black ? 0.15 : 1), lineWidth: 2)
-//                        }
-//                }
-//        }
-//        .sheet(isPresented: $showExplanationModal) {
-//            if let explanation = explanation {
-//                IncorrectAnswerModal(explanation: explanation)
-//            }
-//        }
+        Button(action: {
+           
+            
+        }) {
+            Text(option)
+                .foregroundStyle(.black.opacity(0.7))
+                .padding(.horizontal, 15)
+                .padding(.vertical, 20)
+                .hAlign(.leading)
+                .background {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .fill(tint.opacity(0.15))
+                        .background {
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(tint.opacity(tint == .black ? 0.15 : 1), lineWidth: 2)
+                        }
+                }
+        }
+        .sheet(isPresented: $showExplanationModal) {
+            if let explanation = explanation {
+                IncorrectAnswerModal(explanation: explanation)
+            }
+        }
     }
 }
 

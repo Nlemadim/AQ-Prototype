@@ -9,32 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct QuestionView: View {
-    @Binding var isQuizStarted: Bool
+    @State var isQuizStarted: Bool
     @State private var showScoreCard: Bool = false
-    @Query var questions: [Question]
+    @State var currentIndex: Int = 0
+    @State var questions: [TestQuestionModel]
+
+    @ObservedObject var quizplayer = QuizPlayer()
+    //@Query var questions: [Question] = []
     var onDismiss: () -> Void
     var examType: String = ""
     
     var body: some View {
         VStack(spacing: 15) {
-            Text(examType)
-                .font(.title2)
-                .foregroundColor(.black)
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            //QuestionDisplayView(questions: quizplayer.currentQuestions, currentIndex: 0, onOptionSelected: <#(String, Int) -> Void#>)
+//                .padding(.horizontal, -15)
+//                .padding(.vertical, 15)
             
-            QuestionDisplayView(questions: questions, currentIndex: 0)
-                .padding(.horizontal, -15)
-                .padding(.vertical, 15)
-            
-            NextQuestionButton(
-                currentIndex: 0,
-                totalQuestions: 0,
-                action: {}, endQuizAction: {
-                    
-                }
-                //endQuizAction: viewModel.endQuiz // Assuming you have implemented endQuiz method in your ViewModel
-            )
         }
         .padding(15)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -48,7 +38,7 @@ struct QuestionView: View {
     }
     
     @ViewBuilder
-    func QuestionDisplayView(questions: [Question], currentIndex: Int) -> some View {
+    func QuestionDisplayView(questions: [TestQuestionModel], currentIndex: Int, onOptionSelected: @escaping (String, Int) -> Void) -> some View {
         if questions.isEmpty {
             ContentUnavailableView(
                 "Questions Unavailable",
@@ -56,45 +46,39 @@ struct QuestionView: View {
                 description: Text("Please ensure you have selected a Test")
                     .foregroundStyle(.black)
             ).foregroundStyle(.black)
-            
         } else {
             if questions.indices.contains(currentIndex) {
                 let currentQuestion = questions[currentIndex]
                 let options = currentQuestion.options
-                
+
                 VStack(alignment: .leading, spacing: 15) {
                     Text("Question \(currentIndex + 1)/\(questions.count)")
                         .font(.callout)
                         .foregroundStyle(.black.opacity(currentQuestion.selectedOption == currentQuestion.correctOption ? 1 : 0.7))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                     Text(currentQuestion.questionContent)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundStyle(.black)
-                    
-//                    VStack(spacing: 12) {
-//                        ForEach(options, id: \.self) { index in
-//                            let option = options[index]
-//                            let isCorrect = option.value == currentQuestion.correctOption
-//                            
+
+                    VStack(spacing: 12) {
+//                        ForEach(options, id: \.self) { option in
+//                            let isCorrect = option == currentQuestion.correctOption
 //                            let optionColor = colorForOption(option: option, correctOption: currentQuestion.correctOption, userAnswer: currentQuestion.userAnswer)
-//                            
+//
 //                            OptionsView(option: option, tint: optionColor, isCorrect: isCorrect, explanation: "Explanation for \(option)", action: {
-//                                if currentQuestion.userAnswer.isEmpty {
-//                                    //viewModel.recordAnswer(questionId: currentQuestion.id, answer: option)
-//                                }
+//                                onOptionSelected(option, currentIndex)
 //                            })
 //                        }
-//                    }
-//                    .padding(.vertical, 10)
+                    }
+                    .padding(.vertical, 10)
                 }
                 .padding(15)
                 .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color("OrangeLight")))
                 .padding(.horizontal, 15)
             }
         }
-        
     }
     
     private func colorForOption(option: String, correctOption: String, userAnswer: String) -> Color {
@@ -108,38 +92,6 @@ struct QuestionView: View {
             return .black
         }
     }
-    
-    // Function to record an answer for a question
-    //MARK TODO: Add a Property to record Correct and Wrong answer records
-    
-//    func recordAnswer(for questionId: UUID, answer: String) {
-//        if let index = currentQuestions.firstIndex(where: { $0.id == questionId }) {
-//            currentQuestions[index].userAnswer = answer
-//        }
-//        
-//        //MARK: Recording and Updating Total Questions Answered
-//        UserDefaultsManager.incrementTotalQuestionsAnswered()
-//        UserDefaultsManager.updateNumberOfTopicsCovered()
-//    }
-    
-    func completeQuiz() {
-//        let score = calculateScore()
-//        let newSession = Performance(id: UUID(), date: Date(), score: CGFloat(score))
-//        
-//        
-//        databaseService.savePerformance(id: newSession.id, date: newSession.date, score: newSession.score)
-//        
-//        UserDefaultsManager.incrementNumberOfTestsTaken()
-//        UserDefaultsManager.updateHighScore(score)
-//        UserDefaultsManager.incrementNumberOfQuizSessions() // Incrementing the number of quiz
-    }
-
-    // Private methods
-//    private func calculateScore() -> Int {
-//        return currentQuestions.reduce(0) { score, question in
-//            score + (question.userAnswer == question.correctOption ? 1 : 0)
-//        }
-//    }
 }
 
 //struct ProgressBarView: View {
@@ -177,6 +129,6 @@ struct NextQuestionButton: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}

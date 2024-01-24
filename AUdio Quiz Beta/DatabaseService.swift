@@ -22,13 +22,13 @@ class DatabaseService {
     
     func mockApiCall() async {
         let questionContent = "Who is Liana? Option A: Keeks. Option B: Nkechinyere. Option C: My Daughter. Option D: The girl."
-        let options = ["Paris", "Chad", "Madrid", "Rome"]
+        _ = ["Paris", "Chad", "Madrid", "Rome"]
         
         do {
             let audioData = try await networkService.fetchAudioData(content: questionContent)
-            let fileURL = saveAudioDataToFile(audioData)
+            _ = saveAudioDataToFile(audioData)
             
-            let question = Question(questionContent: "", questionNote: "", topic: "", options: [], correctOption: "", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: "")
+            _ = Question(id: UUID(), questionContent: "", questionNote: "", topic: "", options: [], correctOption: "", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: "")
             //modelContext.insert(question)
         } catch {
             print("Error fetching audio data:", error)
