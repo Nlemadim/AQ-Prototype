@@ -49,24 +49,28 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     @Published var currentIndex: Int = 0
     
     @Published var examQuestions: [TestQuestionModel] = [
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 1: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
         
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 2: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
         
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 3: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
         
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format")]
+        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 4: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+        
+        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 5: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format")]
     
     
-    @State var currentQuestions: [TestQuestionModel] = [
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format")
-    ]
+//    @State var currentQuestions: [TestQuestionModel] = [
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 1 sample audi data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//        
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 2 sample audi data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//        
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 3 sample audi data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//        
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 4 sample audi data", questionNoteAudio: "Sample data audio question answer in Mp3 format")
+//    ]
+//    
+    @State private var speechSynthesizer = AVSpeechSynthesizer()
 
     var isQuizStarted: Bool = false
     var showScoreCard: Bool = false
@@ -74,7 +78,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
  
     
     private var playlist: [TestQuestionModel] = []
-    private var currentQuestionIndex = 0
+   
     
 
     
@@ -82,17 +86,17 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
         isQuizStarted = true
         progress = 0
         score = 0
-        currentQuestionIndex = 0
-        let question = examQuestions[currentQuestionIndex]
-        playAudio(audioFileName: question.questionAudio)
+        currentIndex = 0
+        let question = examQuestions[currentIndex]
+        //playAudio(audioFileName: question.questionAudio)
     }
     
     func playNextQuestion() {
-        if currentQuestionIndex < currentQuestions.count - 1 {
-            currentQuestionIndex += 1
-            let question = examQuestions[currentQuestionIndex]
-            playAudio(audioFileName: question.questionAudio)
-            progress = CGFloat(currentQuestionIndex) / CGFloat(currentQuestions.count)
+        if currentIndex < examQuestions.count - 1 {
+            currentIndex += 1
+            let question = examQuestions[currentIndex]
+            //playAudio(audioFileName: question.questionAudio)
+            progress = CGFloat(currentIndex) / CGFloat(examQuestions.count)
         } else {
             endQuiz()
         }
@@ -121,12 +125,12 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
 
     
     var currentQuestion: TestQuestionModel? {
-        guard currentQuestionIndex < currentQuestions.count else { return nil }
-        return currentQuestions[currentQuestionIndex]
+        guard currentIndex < examQuestions.count else { return nil }
+        return examQuestions[currentIndex]
     }
     
     var calculatedScore: CGFloat {
-        return score / CGFloat(currentQuestions.count) * 100
+        return score / CGFloat(examQuestions.count) * 100
     }
     
     func completeQuiz() {
@@ -140,8 +144,8 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     }
     
     func recordAnswer(for questionId: UUID, answer: String) {
-        if let index = currentQuestions.firstIndex(where: { $0.id == questionId }) {
-            currentQuestions[index].selectedOption = answer
+        if let index = examQuestions.firstIndex(where: { $0.id == questionId }) {
+            examQuestions[index].selectedOption = answer
         }
         
         //MARK: Recording and Updating Total Questions Answered
@@ -153,7 +157,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
         progress = 0
         // Consider whether you want to reset the score here
         
-        currentQuestionIndex = 0
+        currentIndex = 0
     }
     
     func endQuiz() {

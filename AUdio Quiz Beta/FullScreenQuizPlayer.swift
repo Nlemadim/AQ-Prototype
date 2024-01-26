@@ -10,25 +10,12 @@ import SwiftData
 
 struct FullScreenQuizPlayer: View {
     @Binding var expandSheet: Bool
+    
     @State var showText: Bool = false
     @State var isMuted: Bool = false
     @State private var offsetY: CGFloat = 0
     @State private var animateContent: Bool = false
     @State private var isNowPlaying: Bool = false
-    
-    var questions: [TestQuestionModel] = [TestQuestionModel(
-        id: UUID(),
-        questionContent: "Some random sample question",
-        questionNote: "Sample data audio question answer in Mp3 format",
-        topic: "Science",
-        options: ["A", "B", "C", "D"],
-        correctOption: "C",
-        selectedOption: "",
-        isAnswered: false,
-        isAnsweredCorrectly: false,
-        numberOfPresentations: 0,
-        questionAudio: "Sample data audio question in Mp3",
-        questionNoteAudio: "Sample data audio question answer in Mp3 format")]
     
     @StateObject private var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
@@ -55,7 +42,7 @@ struct FullScreenQuizPlayer: View {
                 if showText {
                     VStack {
                         //MARK: Quiz View
-                        CustomQuestionDisplayView(questions: quizPlayer.currentQuestions) {
+                        CustomQuestionDisplayView(quizPlayer: quizPlayer) {
                             showText.toggle()
                         }
                     }
@@ -95,19 +82,13 @@ struct FullScreenQuizPlayer: View {
                             .offset(y: animateContent ? 0 : size.height)
                             .opacity(showText ? 0 : 1)
                         
-                        
-                        
-                        
                     }
                     .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
                     .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
                     .padding(.horizontal, 25)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .clipped()
-                    
-                    
                 }
-                
             }
             .contentShape(Rectangle())
             .offset(y: offsetY)
@@ -134,11 +115,6 @@ struct FullScreenQuizPlayer: View {
                 animateContent = true
             }
         }
-    }
-    
-    @ViewBuilder
-    func ListenNow() -> some View {
-        
     }
     
     @ViewBuilder
@@ -212,109 +188,14 @@ struct FullScreenQuizPlayer: View {
                     }
                     
                     /// Playback Controls
-                    HStack(spacing: size.width * 0.18) {
-                        Button {
-                            
-                        } label: {
-                            
-                            Image(systemName: "arrow.circlepath")
-                            /// Dynamic Sizing for Smaller to Larger iPhones
-                                .font(size.height < 300 ? .title3 : .title)
-                                .foregroundStyle(.themePurple)
-                        }
-                        
-                        
-                        Button {
-                            
-                        } label: {
-                            /// Making Play/Pause Button Slightly Bigger
-                            Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")
-                            /// Dynamic Sizing for Smaller to Larger iPhones
-                                .font(size.height < 300 ? .largeTitle : .system(size: 50))
-                                .foregroundStyle(.themePurple)
-                        }
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "forward.fill")
-                            /// Dynamic Sizing for Smaller to Larger iPhones
-                                .font(size.height < 300 ? .title3 : .title)
-                                .foregroundStyle(.themePurple)
-                        }
-                    }
-                    .frame(maxHeight: .infinity)
-                    
-                    /// Multichoice Option Buttons
-                    HStack {
-                        
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 25.0)
-                                .fill(.themePurple)
-                                .frame(width: 60, height: 30)
-                                .overlay {
-                                    Text("A")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.white)
-                                }
-                            
-                        }
-                        .buttonBorderShape(.roundedRectangle)
-                        .foregroundStyle(.themePurpleLight)
-                        
-                        Spacer(minLength: 0)
-                        
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 25.0)
-                                .fill(.themePurple)
-                                .frame(width: 60, height: 30)
-                                .overlay {
-                                    Text("B")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.white)
-                                }
-                            
-                        }
-                        .buttonBorderShape(.roundedRectangle)
-                        .foregroundStyle(.themePurpleLight)
-                        
-                        Spacer(minLength: 0)
-                        
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 25.0)
-                                .fill(.themePurple)
-                                .frame(width: 60, height: 30)
-                                .overlay {
-                                    Text("C")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.white)
-                                }
-                        }
-                        
-                        Spacer(minLength: 0)
-                        
-                        Button {
-                            
-                        } label: {
-                            RoundedRectangle(cornerRadius: 25.0)
-                                .fill(.themePurple)
-                                .frame(width: 60, height: 30)
-                                .overlay {
-                                    Text("D")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(.white)
-                                }
-                            
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .frame(maxHeight: .infinity)
+                    FullScreenControlView(
+                        isNowPlaying: isNowPlaying,
+                        repeatAction: {},
+                        stopAction: {},
+                        micAction: {},
+                        playAction: {},
+                        nextAction: {},
+                        endAction: {})
                     
                     Spacer(minLength: 0)
                 }
