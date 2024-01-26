@@ -13,7 +13,7 @@ struct PlayerContentInfo: View {
     var animation: Namespace.ID
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 10) {
             ZStack {
                 if !expandSheet {
                     GeometryReader { geometry in
@@ -27,7 +27,19 @@ struct PlayerContentInfo: View {
             }
             .frame(width: 45, height: 45)
             
-            Spacer()
+            Text("New York Bar Exam")
+                .font(.callout)
+                //.fontWeight(.bold)
+                .lineLimit(2, reservesSpace: true)
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            
+//            Text("Sample Audio Quiz")
+//                .font(.footnote)
+//                .multilineTextAlignment(.leading)
+//                .lineLimit(2, reservesSpace: true)
+//                .frame(maxWidth: .infinity, alignment: .leading)
 
             MiniQuizControlView(
                 recordAction: { /* Implement record action */ },
@@ -35,11 +47,12 @@ struct PlayerContentInfo: View {
                 nextAction: { /* Implement next action */ },
                 repeatAction: { /* Implement repeat action */ }
             )
-            Spacer()
+            .offset(x: 25)
+            //Spacer()
         }
         .foregroundStyle(.teal)
         .padding(.horizontal)
-        .padding(.bottom, 8)
+        .padding(.bottom, 12)
         .frame(height: 70)
         .contentShape(Rectangle())
         .onTapGesture {
@@ -49,18 +62,6 @@ struct PlayerContentInfo: View {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 #Preview {
     FullScreenControlView(isNowPlaying: true, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})

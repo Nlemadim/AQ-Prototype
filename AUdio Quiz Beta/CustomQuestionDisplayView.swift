@@ -15,7 +15,7 @@ struct CustomQuestionDisplayView: View {
     @ObservedObject var quizPlayer = QuizPlayer()
     
     var speechManager = SpeechManager()
- 
+    
     var hideText: () -> Void
     
     var body: some View {
@@ -89,114 +89,43 @@ struct CustomQuestionDisplayView: View {
             
             FullScreenControlView(
                 isNowPlaying: isNowPlaying,
+                
                 repeatAction: {},
-                stopAction: {},
-                micAction: {},
-                playAction: {},
-                nextAction: {},
+                
+                stopAction: {quizPlayer.endQuiz()},
+                
+                micAction: {
+                    if !recording {
+                        quizPlayer.speechRecognizer.transcribe()
+                        questionModel.selectedOption = quizPlayer.speechRecognizer.transcript
+                        print(questionModel.selectedOption)
+                        
+                    } else {
+                        quizPlayer.speechRecognizer.stopTranscribing()
+                    }
+                    
+                    recording.toggle()
+                },
+                
+                playAction: { isNowPlaying.toggle(); quizPlayer.endQuiz() },
+                
+                nextAction: {
+                    guard quizPlayer.currentIndex < quizPlayer.examQuestions.count - 1 else { return }
+                    
+                    quizPlayer.playNextQuestion()
+                },
                 endAction: {})
             
             
-            //MARK: Quiz Controls
-//            HStack(alignment: .center, spacing: 35) {
-//                Spacer()
-//                
-//                /// Stop Quiz
-//                Button {
-//                    quizPlayer.endQuiz()
-//                } label: {
-//                    Image(systemName: "arrow.circlepath")
-//                        .foregroundStyle(!recording ? .themePurple : .red)
-//                        .font(.largeTitle)
-//                        .padding(15)
-//                    
-//                }
-//                
-//                /// Play Quiz Audio
-//                Button {
-//                    isNowPlaying.toggle()
-//                    quizPlayer.startQuiz()
-//                } label: {
-//                    Image(systemName: isNowPlaying ? "pause.fill" : "play.fill")
-//                        .foregroundStyle(.themePurple)
-//                        .font(.largeTitle)
-//                        .padding(15)
-//                    
-//                }
-//                
-//                /// Next Question Button
-//                Button {
-//                    guard quizPlayer.currentIndex < quizPlayer.examQuestions.count - 1 else { return }
-//                    quizPlayer.playNextQuestion()
-//                    //questionIndex += 1
-//                } label: {
-//                    Image(systemName: "forward.end.fill")
-//                        .foregroundStyle(!recording ? .themePurple : .red)
-//                        .font(.largeTitle)
-//                        .padding(15)
-//                    
-//                }
-//                
-//                Spacer()
-//            }
             
-            //MARK: Quiz Player Controls
-//            HStack(alignment: .center, spacing: 15) {
-//                Spacer()
-//                
-//                /// Repeat Question Button
-////                Button {
-////                    
-////                } label: {
-////                    ZStack {
-////                        Text("?")
-////                            .font(.headline)
-////                            .fontWeight(.bold)
-////                            .foregroundStyle(.themePurple)
-////                            .frame(alignment: .center)
-////                            .padding(15)
-////                            .background {
-////                                Image(systemName: "arrow.circlepath")
-////                                    .foregroundStyle(.themePurple)
-////                                    .font(.title)
-////                                
-////                                
-////                            }
-////                    }
-////                }
-//                
-//                /// Mic Button
-//                Button {
-//                    
-//                } label: {
-//                    Image(systemName: "mic")
-//                        .foregroundStyle(!recording ? .themePurple : .red)
-//                        .font(.title)
-//                        .padding(15)
-//                    
-//                }
-//                
-//               
-////                Button {
-////                    
-////                } label: {
-////                    Image(systemName: "mic")
-////                        .foregroundStyle(!recording ? .themePurple : .red)
-////                        .font(.headline)
-////                        .padding(15)
-////                    
-////                }
-//                
-//                Spacer()
-//            }
             
         }
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(.clear))
         .padding(.horizontal, 15)
         .frame(maxWidth: .infinity)
-        .onAppear {
-            // speechManager.checkPermissions()
-        }
+//        .onAppear {
+//            //speechManager.checkPermissions()
+//        }
         
         
     }

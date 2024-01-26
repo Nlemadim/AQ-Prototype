@@ -46,8 +46,7 @@ struct FullScreenQuizPlayer: View {
                             showText.toggle()
                         }
                     }
-                    
-                    //.frame(maxWidth: .infinity, maxHeight: .infinity)
+    
                 } else {
                     VStack(spacing: 15) {
                         /// Grab Indicator
@@ -57,7 +56,6 @@ struct FullScreenQuizPlayer: View {
                             .opacity(animateContent ? 1 : 0)
                         /// Matching with Sliding Animation
                             .offset(y: animateContent ? 0 : size.height)
-                        
                         
                         //MARK: Player Content Image View (Hero View)
                         GeometryReader {
@@ -137,7 +135,7 @@ struct FullScreenQuizPlayer: View {
                     HStack {
                         Spacer()
                         Spacer()
-                        Text("Question 6/15")
+                        Text("Question \(quizPlayer.currentIndex + 1)/\(quizPlayer.examQuestions.count)")
                             .font(.caption)
                             .foregroundStyle(.themePurple)
                     }

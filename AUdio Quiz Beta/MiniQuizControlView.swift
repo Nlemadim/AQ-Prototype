@@ -18,7 +18,7 @@ struct MiniQuizControlView: View {
     let imageSize: CGFloat = 18
 
     var body: some View {
-        HStack(spacing: 45) {
+        HStack(spacing: 20) {
             // Repeat Button
             Button(action: repeatAction) {
                 Image(systemName: "memories")
@@ -87,5 +87,6 @@ struct MiniQuizControlView: View {
 }
 
 #Preview {
-    MiniQuizControlView()
+    MiniQuizControlView(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
+        .preferredColorScheme(.dark)
 }

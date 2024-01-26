@@ -116,5 +116,6 @@ struct MicButtonWithProgressRing: View {
 }
 
 #Preview {
-    FullScreenControlView()
+    FullScreenControlView(isNowPlaying: true, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})
+        .preferredColorScheme(.dark)
 }
