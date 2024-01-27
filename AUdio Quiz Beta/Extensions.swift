@@ -71,6 +71,10 @@ extension String {
     var isEmptyOrWhiteSpace: Bool {
         self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
+    
+    var isSingleCharacterABCD: Bool {
+        return self.count == 1 && ["A", "B", "C", "D"].contains(self.uppercased())
+    }
 }
 
 extension Image {

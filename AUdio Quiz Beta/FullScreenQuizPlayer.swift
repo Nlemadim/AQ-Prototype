@@ -17,6 +17,7 @@ struct FullScreenQuizPlayer: View {
     @State private var animateContent: Bool = false
     @State private var isNowPlaying: Bool = false
     
+    
     @StateObject private var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
     var body: some View {
@@ -33,7 +34,7 @@ struct FullScreenQuizPlayer: View {
                             .opacity(animateContent ? 1 : 0)
                     })
                     .overlay(alignment: .top) {
-                        PlayerContentInfo(expandSheet: $expandSheet, animation: animation)
+                        PlayerContentInfo(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
                             .allowsHitTesting(false)
                             .opacity(animateContent ? 0 : 1)
                     }
@@ -46,9 +47,9 @@ struct FullScreenQuizPlayer: View {
                             showText.toggle()
                         }
                     }
-    
+                    
                 } else {
-                    VStack(spacing: 15) {
+                    VStack(spacing: 5) {
                         /// Grab Indicator
                         Capsule()
                             .fill(.gray)
@@ -66,6 +67,7 @@ struct FullScreenQuizPlayer: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: size.width, height: size.height)
                                 .clipShape(RoundedRectangle(cornerRadius: animateContent ? 15 : 5, style: .continuous))
+                            
                         }
                         .matchedGeometryEffect(id: "MAINICON", in: animation)
                         /// For Square Content View
@@ -74,11 +76,15 @@ struct FullScreenQuizPlayer: View {
                         .padding(.vertical, size.height < 700 ? 10 : 30)
                         .opacity(!showText ? 1 : 0)
                         
-                        /// Player View
-                        PlayerView(size)
-                        /// Moving from the bottom of the screen
-                            .offset(y: animateContent ? 0 : size.height)
-                            .opacity(showText ? 0 : 1)
+                        /// Playback Controls
+                        FullScreenControlView(
+                            isNowPlaying: isNowPlaying, quizPlayer: quizPlayer,
+                            repeatAction: {},
+                            stopAction: { quizPlayer.endQuiz() },
+                            micAction: {},
+                            playAction: { quizPlayer.startQuiz() },
+                            nextAction: { quizPlayer.playNextQuestion()},
+                            endAction: { quizPlayer.resetForNextQuiz()})
                         
                     }
                     .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
@@ -117,87 +123,26 @@ struct FullScreenQuizPlayer: View {
     
     @ViewBuilder
     func PlayerView(_ mainSize: CGSize) -> some View {
-        GeometryReader {
-            let size = $0.size
-            /// Dynamic Spacing Using Available Height
-            let spacing = size.height * 0.04
+        VStack() {
             
-            VStack(spacing: spacing) {
-                VStack(spacing: spacing) {
-                    /// Quiz Progress Indicator
-                    Capsule()
-                        .fill(.ultraThinMaterial)
-                        .environment(\.colorScheme, .light)
-                        .frame(height: 5)
-                        .padding(.top, spacing)
+            Spacer()
+            HStack(alignment: .center, spacing: 15) {
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Practice Quiz")
+                        .foregroundStyle(.black)
+                        .opacity(0.6)
                     
-                    /// Question Number View
-                    HStack {
-                        Spacer()
-                        Spacer()
-                        Text("Question \(quizPlayer.currentIndex + 1)/\(quizPlayer.examQuestions.count)")
-                            .font(.caption)
-                            .foregroundStyle(.themePurple)
-                    }
-                    
-                    /// Quiz Details View
-                    HStack(alignment: .center, spacing: 15) {
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Practice Quiz")
-                                .foregroundStyle(.black)
-                                .opacity(0.6)
-                            
-                            Text("New York Bar Exam")
-                                .font(.title3)
-                                .foregroundStyle(.themePurple)
-                                .fontWeight(.semibold)
-                                .lineLimit(2, reservesSpace: true)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        //Quiz Content Text View Toggle Button
-                        Button {
-                            showText.toggle()
-                        } label: {
-                            Image(systemName: "rectangle.and.hand.point.up.left")
-                                .foregroundStyle(.themePurple)
-                                .padding(12)
-                                .background {
-                                    Circle()
-                                        .fill(.ultraThinMaterial)
-                                        .environment(\.colorScheme, .light)
-                                }
-                        }
-                        
-                        //Mute Button
-                        Button {
-                            isMuted.toggle()
-                        } label: {
-                            Image(systemName: !isMuted ? "speaker.slash.fill" : "speaker")
-                                .foregroundStyle(.themePurple)
-                                .padding(12)
-                                .background {
-                                    Circle()
-                                        .fill(.ultraThinMaterial)
-                                        .environment(\.colorScheme, .light)
-                                }
-                        }
-                    }
-                    
-                    /// Playback Controls
-                    FullScreenControlView(
-                        isNowPlaying: isNowPlaying,
-                        repeatAction: {},
-                        stopAction: {},
-                        micAction: {},
-                        playAction: {},
-                        nextAction: {},
-                        endAction: {})
-                    
-                    Spacer(minLength: 0)
+                    Text("New York Bar Exam")
+                        .font(.title3)
+                        .foregroundStyle(.themePurple)
+                        .fontWeight(.semibold)
+                        //.lineLimit(2, reservesSpace: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            
+            Spacer(minLength: 0)
         }
     }
 }
@@ -207,5 +152,3 @@ struct FullScreenQuizPlayer: View {
         .preferredColorScheme(.dark)
 }
 
-
-//CustomQuestionDisplayView(questions: questions, questionIndex: 0)

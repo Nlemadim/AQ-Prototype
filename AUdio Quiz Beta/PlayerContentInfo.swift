@@ -10,6 +10,7 @@ import SwiftUI
 
 struct PlayerContentInfo: View {
     @Binding var expandSheet: Bool
+    @StateObject var quizPlayer: QuizPlayer
     var animation: Namespace.ID
 
     var body: some View {
@@ -42,13 +43,20 @@ struct PlayerContentInfo: View {
 //                .frame(maxWidth: .infinity, alignment: .leading)
 
             MiniQuizControlView(
-                recordAction: { /* Implement record action */ },
+                recordAction: {quizPlayer.recordAnswer()},
+                
                 playPauseAction: { /* Implement play/pause action */ },
-                nextAction: { /* Implement next action */ },
-                repeatAction: { /* Implement repeat action */ }
+                
+                nextAction: { quizPlayer.playNextQuestion() },
+                
+                repeatAction: {
+                    if let question = quizPlayer.currentQuestion {
+                        quizPlayer.replayQuestion(question: question)
+                    }
+                }
             )
             .offset(x: 25)
-            //Spacer()
+             
         }
         .foregroundStyle(.teal)
         .padding(.horizontal)
@@ -64,12 +72,14 @@ struct PlayerContentInfo: View {
 }
 
 #Preview {
-    FullScreenControlView(isNowPlaying: true, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})
+    @StateObject var quizPlayer = QuizPlayer()
+    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})
         .preferredColorScheme(.dark)
 }
 
 #Preview {
-    MiniQuizControlView(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
+    @StateObject var quizPlayer = QuizPlayer()
+    return MiniQuizControlView(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
         .preferredColorScheme(.dark)
 }
 
