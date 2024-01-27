@@ -54,7 +54,7 @@ struct InteractionVisualizer: View {
                         Image(systemName: "bubble.right")
                             .resizable()
                             .foregroundStyle(!didRecieveSpeech ? .black.opacity(0.6) : .black)
-                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasSpoken)
+                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasResponded)
                             .frame(width: 23, height: 23)
                             .offset(y: -5)
                             .padding(.leading, 3)
@@ -149,7 +149,7 @@ struct NavBarInteractionVisualizer: View {
                         Image(systemName: "bubble.right")
                             .resizable()
                             .foregroundStyle(!didRecieveSpeech ? .black.opacity(0.6) : .black)
-                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasSpoken)
+                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasResponded)
                             .frame(width: 23, height: 23)
                             .offset(y: -5)
                             .padding(.leading, 3)
@@ -171,7 +171,7 @@ struct NavBarInteractionVisualizer: View {
                             
                     })
                 }
-                .opacity(interactionState == .isSpeaking ? 0 : 1)//UI TESTING! Please Switch before Run
+                .opacity(interactionState == .errorResponse ? 0 : 1)//UI TESTING! Please Switch before Run
             }
             .padding(.horizontal)
             .padding(.top)

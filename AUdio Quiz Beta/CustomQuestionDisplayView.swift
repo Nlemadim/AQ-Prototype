@@ -9,14 +9,17 @@ import SwiftUI
 
 struct CustomQuestionDisplayView: View {
     @State private var questionIndex: Int = 0
-    @State private var recording: Bool = false
+    
     @State private var isNowPlaying: Bool = false
     @State var tester: Bool = false
     @ObservedObject var quizPlayer = QuizPlayer()
     
     var speechManager = SpeechManager()
-    
     var hideText: () -> Void
+    
+    private var recording: Bool  {
+        quizPlayer.isRecordingAnswer
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -88,39 +91,36 @@ struct CustomQuestionDisplayView: View {
             .padding(.vertical, 10)
             
             FullScreenControlView(
-                isNowPlaying: isNowPlaying,
+                isNowPlaying: isNowPlaying, quizPlayer: quizPlayer,
                 
-                repeatAction: {},
+                repeatAction: {
+                    
+                    if let question = quizPlayer.currentQuestion {
+                        quizPlayer.replayQuestion(question: question)
+                    }
+                },
                 
                 stopAction: {quizPlayer.endQuiz()},
                 
                 micAction: {
-                    if !recording {
-                        quizPlayer.speechRecognizer.transcribe()
-                        questionModel.selectedOption = quizPlayer.speechRecognizer.transcript
-                        print(questionModel.selectedOption)
-                        
-                    } else {
-                        quizPlayer.speechRecognizer.stopTranscribing()
-                    }
                     
-                    recording.toggle()
+                    quizPlayer.recordAnswer()
                 },
                 
-                playAction: { isNowPlaying.toggle(); quizPlayer.endQuiz() },
+                playAction: { isNowPlaying.toggle();  },
                 
                 nextAction: {
                     guard quizPlayer.currentIndex < quizPlayer.examQuestions.count - 1 else { return }
                     
                     quizPlayer.playNextQuestion()
                 },
-                endAction: {})
+                endAction: { quizPlayer.endQuiz() })
             
             
             
             
         }
-        .background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(.clear))
+        //.background(RoundedRectangle(cornerRadius: 20, style: .continuous).fill(.clear))
         .padding(.horizontal, 15)
         .frame(maxWidth: .infinity)
 //        .onAppear {
@@ -136,7 +136,7 @@ struct CustomQuestionDisplayView: View {
         
         Button(action: {
             questionModel.selectedOption = option
-            quizPlayer.recordAnswer(for: questionModel.id, answer: questionModel.selectedOption)
+            quizPlayer.saveAnswer(for: questionModel.id, answer: questionModel.selectedOption)
             tester.toggle()
         }) {
             Text(option)

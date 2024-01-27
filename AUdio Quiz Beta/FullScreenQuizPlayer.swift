@@ -17,7 +17,6 @@ struct FullScreenQuizPlayer: View {
     @State private var animateContent: Bool = false
     @State private var isNowPlaying: Bool = false
     
-    
     @StateObject private var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
     var body: some View {

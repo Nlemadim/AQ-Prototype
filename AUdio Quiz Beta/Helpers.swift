@@ -45,22 +45,28 @@ enum WordProcessor: String {
 enum InteractionState {
     case isNowPlaying
     case isListening
-    case isSpeaking
-    case hasSpoken
+    case isProcessing
+    case errorResponse
+    case awaitingResponse
+    case hasResponded
     case idle
     
     var status: String {
         switch self {
         case .isNowPlaying:
-            return "Now Playing"
+            return "Now playing"
         case .isListening:
             return "Listening"
-        case .isSpeaking:
-            return ""
-        case .hasSpoken:
-            return "Recieved Answer"
+        case .errorResponse:
+            return "Sorry, didn't catch that"
+        case .hasResponded:
+            return "Recieved answer"
         case .idle:
             return "Start"
+        case .isProcessing:
+            return "Processing"
+        case .awaitingResponse:
+            return "Waiting for answer"
         }
     }
 }

@@ -70,6 +70,10 @@ class UserDefaultsManager {
         return UserDefaults.standard.bool(forKey: "isStudyMode")
     }
     
+    static func isOnContinuousFlow() -> Bool {
+        return UserDefaults.standard.bool(forKey: "isOnContinuousFlow")
+    }
+    
     static func isTimerEnabled() -> Bool {
         return UserDefaults.standard.bool(forKey: "isTimerEnabled")
     }

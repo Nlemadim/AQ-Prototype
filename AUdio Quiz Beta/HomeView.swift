@@ -11,7 +11,9 @@ import Foundation
 struct HomeView: View {
     @State private var expandSheet: Bool = false
     @State private var isSignedIn: Bool = false
+    @State private var isPlaying: Bool = false
     @State private var selectedTab = 0
+    @StateObject var quizPlayer: QuizPlayer
     
     
     @Namespace private var animation
@@ -122,7 +124,7 @@ struct HomeView: View {
                     .fill(.black)
                     .overlay {
                         ///Music Info
-                        PlayerContentInfo(expandSheet: $expandSheet, animation: animation)
+                        PlayerContentInfo(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
                     }
                     .matchedGeometryEffect(id: "MAINICON", in: animation)
             }
@@ -158,7 +160,8 @@ struct TabIcons: View {
 
 
 #Preview {
-    HomeView()
+    @StateObject var quizPlayer = QuizPlayer()
+    return HomeView(quizPlayer: quizPlayer)
 }
 
 struct View1: View {
