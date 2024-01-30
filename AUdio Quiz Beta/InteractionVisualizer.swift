@@ -11,6 +11,7 @@ struct InteractionVisualizer: View {
     @State var comment: String
     @State var correctOption: String
     @State var interactionState: InteractionState
+    
     var quizPlayer: QuizPlayer
 
     var body: some View {
@@ -59,7 +60,7 @@ struct InteractionVisualizer: View {
                             .offset(y: -5)
                             .padding(.leading, 3)
 
-                        Text(comment.isSingleCharacterABCD ? comment : "A")
+                        Text(comment.isSingleCharacterABCD ? comment : quizPlayer.selectedOption)
                             .font(.caption)
                             .fontWeight(.bold)
                             .offset(y: -8)

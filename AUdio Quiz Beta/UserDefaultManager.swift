@@ -62,6 +62,10 @@ class UserDefaultsManager {
         }
     }
     
+    static func enableContinousFlow() {
+        UserDefaults.standard.setValue(true, forKey: "isOnContinuousFlow")
+    }
+    
     static func userName() -> String {
         return UserDefaults.standard.string(forKey: "userName") ?? ""
     }

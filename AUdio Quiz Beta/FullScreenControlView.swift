@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct FullScreenControlView: View {
-    @State var isNowPlaying: Bool
-    @StateObject var quizPlayer: QuizPlayer
-    var repeatAction: () -> Void
-    var stopAction: () -> Void
-    var micAction: () -> Void
-    var playAction: () -> Void
-    var nextAction: () -> Void
-    var endAction: () -> Void
+    @State var isNowPlaying: Bool = false
+    @ObservedObject var quizPlayer: QuizPlayer
+    var showQuizControl: () -> Void
 
     var body: some View {
         VStack(spacing: 5) {
@@ -24,7 +19,7 @@ struct FullScreenControlView: View {
             
             HStack(spacing: 30) {
                 // Repeat Button
-                Button(action: repeatAction) {
+                Button(action: {}) {
                     Image(systemName: "memories")
                         .font(.title)
                         .foregroundColor(.themePurple)
@@ -32,7 +27,7 @@ struct FullScreenControlView: View {
                 }
 
                 // Stop Button
-                Button(action: stopAction) {
+                Button(action: {}) {
                     Image(systemName: "stop.fill")
                         .font(.title)
                         .foregroundColor(.themePurple)
@@ -40,8 +35,8 @@ struct FullScreenControlView: View {
                 }
 
                 // Mic Button with Progress Ring
-                MicButtonWithProgressRing(action: {
-                    quizPlayer.recordAnswer()
+                MicButtonWithProgressRing(quizPlayer: quizPlayer, action: {
+                   // quizPlayer.recordAnswer()
                 })
 
                 // Play/Pause Button
@@ -56,7 +51,8 @@ struct FullScreenControlView: View {
 
                 // Next/End Button
                 Button(action:  {
-                    quizPlayer.playNext()
+                   quizPlayer.skipToNext()
+                    quizPlayer.testRecording()
                 }) {
                     Image(systemName: "forward.end.fill")
                         .font(.title)
@@ -70,7 +66,7 @@ struct FullScreenControlView: View {
             HStack(spacing: 20){
                 //Quiz Content Text View Toggle Button
                 Button {
-                    //showText.toggle()
+                    showQuizControl()
                 } label: {
                     Image(systemName: "rectangle.and.hand.point.up.left")
                         .foregroundStyle(.white)
@@ -96,6 +92,7 @@ struct FullScreenControlView: View {
                                 .environment(\.colorScheme, .light)
                         }
                 }
+                
             }
         }
     }
@@ -104,6 +101,7 @@ struct FullScreenControlView: View {
 struct MicButtonWithProgressRing: View {
     @State private var fillAmount: CGFloat = 0.0
     @State private var showProgressRing: Bool = false
+    @ObservedObject var quizPlayer: QuizPlayer
     let action: () -> Void
 
     let imageSize: CGFloat = 25 // Adjusted size
@@ -116,7 +114,7 @@ struct MicButtonWithProgressRing: View {
                 .frame(width: imageSize * 3, height: imageSize * 3)
 
             // Conditional display of Progress Ring
-            if showProgressRing {
+            if quizPlayer.isRecordingAnswer {
                 Circle()
                     .stroke(Color.white.opacity(0.3), lineWidth: 5)
                     .frame(width: imageSize * 3, height: imageSize * 3)
@@ -138,10 +136,15 @@ struct MicButtonWithProgressRing: View {
                     .font(.largeTitle)
                     .foregroundColor(.white)
             }
+            .onChange(of: quizPlayer.isRecordingAnswer) {_, newValue in
+                if newValue {
+                    self.startFilling()
+                }
+            }
         }
     }
 
-    private func startFilling() {
+    private func startFilling() { // Modify this method to be called when quizPlayer.isRecordingAnswer
         fillAmount = 0.0 // Reset the fill amount
         showProgressRing = true // Show the progress ring
         withAnimation(.linear(duration: 5)) {
@@ -150,12 +153,13 @@ struct MicButtonWithProgressRing: View {
         // Hide the progress ring after 5 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.showProgressRing = false
+            fillAmount = 0.0
         }
     }
 }
 
 #Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})
+    @ObservedObject var quizPlayer = QuizPlayer()
+    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
         .preferredColorScheme(.dark)
 }

@@ -17,7 +17,7 @@ struct FullScreenQuizPlayer: View {
     @State private var animateContent: Bool = false
     @State private var isNowPlaying: Bool = false
     
-    @StateObject private var quizPlayer = QuizPlayer()
+    @ObservedObject private var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
     var body: some View {
         GeometryReader {
@@ -46,6 +46,9 @@ struct FullScreenQuizPlayer: View {
                             showText.toggle()
                         }
                     }
+                    .padding(.top, 35)
+                    .padding(.bottom, 25)
+                    .clipped()
                     
                 } else {
                     VStack(spacing: 5) {
@@ -76,15 +79,9 @@ struct FullScreenQuizPlayer: View {
                         .opacity(!showText ? 1 : 0)
                         
                         /// Playback Controls
-                        FullScreenControlView(
-                            isNowPlaying: isNowPlaying, quizPlayer: quizPlayer,
-                            repeatAction: {},
-                            stopAction: { quizPlayer.endQuiz() },
-                            micAction: {},
-                            playAction: { quizPlayer.startQuiz() },
-                            nextAction: { quizPlayer.playNextQuestion()},
-                            endAction: { quizPlayer.resetForNextQuiz()})
-                        
+                        FullScreenControlView(isNowPlaying: quizPlayer.isNowPlaying, quizPlayer: quizPlayer, showQuizControl: {
+                            showText.toggle()
+                        })
                     }
                     .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
                     .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
