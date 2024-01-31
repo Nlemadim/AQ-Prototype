@@ -63,37 +63,37 @@ struct FullScreenControlView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 100) // Adjust as needed
             
-            HStack(spacing: 20){
-                //Quiz Content Text View Toggle Button
-                Button {
-                    showQuizControl()
-                } label: {
-                    Image(systemName: "rectangle.and.hand.point.up.left")
-                        .foregroundStyle(.white)
-                        .padding(12)
-                        .background {
-                            Circle()
-                                .fill(.themePurple)
-                                .environment(\.colorScheme, .light)
-                        }
-                }
-                
-                
-                //Mute Button
-                Button {
-                   // isMuted.toggle()
-                } label: {
-                    Image(systemName: !isNowPlaying ? "speaker.slash.fill" : "speaker")
-                        .foregroundStyle(.white)
-                        .padding(12)
-                        .background {
-                            Circle()
-                                .fill(.themePurple)
-                                .environment(\.colorScheme, .light)
-                        }
-                }
-                
-            }
+//            HStack(spacing: 20){
+//                //Quiz Content Text View Toggle Button
+//                Button {
+//                    showQuizControl()
+//                } label: {
+//                    Image(systemName: "rectangle.and.hand.point.up.left")
+//                        .foregroundStyle(.white)
+//                        .padding(12)
+//                        .background {
+//                            Circle()
+//                                .fill(.themePurple)
+//                                .environment(\.colorScheme, .light)
+//                        }
+//                }
+//                
+//                
+//                //Mute Button
+//                Button {
+//                   // isMuted.toggle()
+//                } label: {
+//                    Image(systemName: !isNowPlaying ? "speaker.slash.fill" : "speaker")
+//                        .foregroundStyle(.white)
+//                        .padding(12)
+//                        .background {
+//                            Circle()
+//                                .fill(.themePurple)
+//                                .environment(\.colorScheme, .light)
+//                        }
+//                }
+//                
+//            }
         }
     }
 }

@@ -14,7 +14,7 @@ struct QuestionView: View {
     @State var currentIndex: Int = 0
     @State var questions: [TestQuestionModel]
 
-    @ObservedObject var quizplayer = QuizPlayer()
+    @StateObject var quizplayer = QuizPlayer()
     //@Query var questions: [Question] = []
     var onDismiss: () -> Void
     var examType: String = ""

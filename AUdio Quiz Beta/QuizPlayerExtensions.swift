@@ -11,20 +11,40 @@ import SwiftUI
 
 extension QuizPlayer {
     
+    var questionCounter: String {
+        return "Question \(currentIndex + 1)/\(examQuestions.count)"
+    }
+    
     func startQuiz() {
         isQuizStarted = true
+        print("Quiz has started")
         if let question = currentQuestion {
             playNow(audioFileName: question.questionAudio)
         }
     }
     
-    func playNextQuestion() {
-        if currentIndex < examQuestions.count - 1 {
-            playNext()
-            progress = CGFloat(currentIndex) / CGFloat(examQuestions.count)
-        } else {
+    func skipToNext() {
+        audioPlayer?.stop()
+        guard let currentQuestion = currentQuestion,
+              currentIndex < examQuestions.count - 1 else {
             endQuiz()
+            return
         }
+        currentIndex += 1
+        //playNow(audioFileName: currentQuestion.questionAudio)
+    }
+    
+    
+    func playNextQuestion() {
+        guard let currentQuestion = currentQuestion,
+              currentIndex < examQuestions.count - 1 else {
+            isNowPlaying = false
+            endQuiz()
+            return
+        }
+        
+        currentIndex += 1
+        playNow(audioFileName: currentQuestion.questionAudio)
     }
     
     func replayQuestion(question: TestQuestionModel) {
@@ -69,6 +89,7 @@ extension QuizPlayer {
         showScoreCard = true
         resetForNextQuiz()
     }
+    
 }
 
 
@@ -81,7 +102,9 @@ extension QuizPlayer {
         if interactionState == .idle || UserDefaultsManager.isOnContinuousFlow() {
             let nextAudio = currentPlaybackQueue.removeFirst()
             currentIndex += 1
+            print("Player has moved to the next question")
             playNow(audioFileName: nextAudio)
+            interactionState = .isNowPlaying
         } else {
             // Wait for user response or completion of recording/transcription
         }
@@ -101,11 +124,29 @@ extension QuizPlayer {
     private func setupPlaybackQueue() {
         currentPlaybackQueue = Array(playlist.keys)
         
+        //TODO: Modify to continue after questions are exhausted and there are topic notes
         if UserDefaultsManager.isOnContinuousFlow() {
             // If continuous flow, play questions first, then topics
             currentPlaybackQueue.append(contentsOf: playlist.values)
         }
     }
+}
+
+
+//TEST METHODS
+extension QuizPlayer {
+    func testRecording() {
+            // Turn on isRecordingAnswer after 3 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.isRecordingAnswer = true
+
+                // Then turn it off after an additional 5 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    self.isRecordingAnswer = false
+                }
+            }
+        }
+    
 }
 
 // Helper method to find a question based on its audio file

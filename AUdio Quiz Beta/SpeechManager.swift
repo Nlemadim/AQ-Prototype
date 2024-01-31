@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import Speech
 
 class SpeechManager: ObservableObject {
@@ -27,6 +28,10 @@ class SpeechManager: ObservableObject {
     }
     
     @Published var transcript: String = ""
+    
+    @State private var document: MessageDocument = MessageDocument(message: "")
+    @State private var presentExporter: Bool = false
+    @State private var showingAlert: Bool = false
     
     public var isRecording = false
     
@@ -101,6 +106,38 @@ class SpeechManager: ObservableObject {
         }
     }
     
+    func transcribe2() {
+        DispatchQueue(label: "Speech Recognizer Queue", qos: .background).async { [weak self] in
+            guard let self = self else { return }
+            guard let recognizer = self.recognizer, recognizer.isAvailable else {
+                self.listenForError(RecognizerError.recognizerIsUnavailable)
+                return
+            }
+            
+            do {
+                let (audioEngine, recognitionRequest) = try Self.prepareEngine()
+                self.audioEngine = audioEngine
+                self.recognitionRequest = recognitionRequest
+                
+                self.task = recognizer.recognitionTask(with: recognitionRequest) { result, error in
+                    if let error = error {
+                        self.listenForError(error)
+                        return
+                    }
+                    
+                    if let result = result, result.isFinal {
+                        self.listenForAnswer(result.bestTranscription.formattedString)
+                        audioEngine.stop()
+                        audioEngine.inputNode.removeTap(onBus: 0)
+                    }
+                }
+            } catch {
+                self.listenForError(error)
+            }
+        }
+    }
+
+    
     private static func prepareEngine() throws -> (AVAudioEngine, SFSpeechAudioBufferRecognitionRequest) {
         let audioEngine = AVAudioEngine()
         
@@ -130,9 +167,6 @@ class SpeechManager: ObservableObject {
     
     private func listenForAnswer(_ message: String) {
             transcript = message
-        print(message)
-        print(transcript)
-        
     }
     
     private func listenForError(_ error: Error) {

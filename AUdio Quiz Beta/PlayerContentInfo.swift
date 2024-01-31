@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PlayerContentInfo: View {
     @Binding var expandSheet: Bool
-    @StateObject var quizPlayer: QuizPlayer
+    @StateObject var quizPlayer = QuizPlayer()
     var animation: Namespace.ID
 
     var body: some View {
@@ -73,7 +73,7 @@ struct PlayerContentInfo: View {
 
 #Preview {
     @StateObject var quizPlayer = QuizPlayer()
-    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, repeatAction: {}, stopAction: {}, micAction: {}, playAction: {}, nextAction: {}, endAction: {})
+    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
         .preferredColorScheme(.dark)
 }
 

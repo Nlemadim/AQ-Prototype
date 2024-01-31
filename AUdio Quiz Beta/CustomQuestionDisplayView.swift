@@ -8,58 +8,109 @@
 import SwiftUI
 
 struct CustomQuestionDisplayView: View {
+    @Binding var expandSheet: Bool
+    @State private var offsetY: CGFloat = 0
+    @State private var animateContent: Bool = false
     @State var isAnswered: Bool = false
     @State private var viewUpdateID = UUID()
     @ObservedObject var quizPlayer = QuizPlayer()
+    var animation: Namespace.ID
     
-    var speechManager = SpeechManager()
-    var hideText: () -> Void
-
     var body: some View {
             
-            if let questionModel = quizPlayer.currentQuestion  {
+            GeometryReader {
+                let size = $0.size
+                let safeArea = $0.safeAreaInsets
                 
-                VStack(spacing: 10) {
-                    //MARK: Quiz Info Details View
-                    QuizInfoDetailsView()
-                        .frame(alignment: .topLeading)
+                ZStack {
                     
-                    //MARK: Quiz Visualizer
-                    HStack {
-                        Text(quizPlayer.questionCounter)
-                            .font(.callout)
-                            .foregroundStyle(.black)
-                        Spacer()
-                    }
+                    RoundedRectangle(cornerRadius: animateContent ? deviceCornerRadius : 0, style: .continuous)
+                        .fill(.black)
+                        .overlay(content: {
+                            RoundedRectangle(cornerRadius: animateContent ? deviceCornerRadius : 0, style: .continuous)
+                                .fill(.teal.gradient)
+                                .opacity(animateContent ? 1 : 0)
+                        })
                     
-                    //MARK: Question Content View
-                    Text("\(questionModel.questionContent)")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(!isAnswered ? .black : .gray)
-                        .lineLimit(6, reservesSpace: true)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                        .onChange(of: questionModel.questionContent, initial: isAnswered) { oldValue,_ in
-                            updateView()
+                    
+                    if let questionModel = quizPlayer.currentQuestion  {
+                        
+                        VStack(spacing: 10) {
+                            //MARK: Quiz Info Details View
+                            QuizInfoDetailsView()
+                                .frame(alignment: .topLeading)
+                                .overlay(alignment: .top) {
+                                    PlayerContentInfo(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
+                                        .allowsHitTesting(false)
+                                        .opacity(animateContent ? 0 : 1)
+                                }
+                                .matchedGeometryEffect(id: "ICONIMAGE", in: animation)
+                            
+                            //MARK: Quiz Visualizer
+                            HStack {
+                                Text(quizPlayer.questionCounter)
+                                    .font(.callout)
+                                    .foregroundStyle(.black)
+                                Spacer()
+                            }
+                            
+                            //MARK: Question Content View
+                            Text("\(questionModel.questionContent)")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(!isAnswered ? .black : .gray)
+                                .lineLimit(6, reservesSpace: true)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .onChange(of: questionModel.questionContent, initial: isAnswered) { oldValue,_ in
+                                    updateView()
+                                }
+                            
+                            ForEach(questionModel.options, id: \.self) { option in
+                                optionButton(questionModel: questionModel, option: option)
+                            }
+                            
+                            FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
                         }
+                        .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
+                        .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
+                        .padding(.horizontal, 25)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .clipped()
                     
-                    ForEach(questionModel.options, id: \.self) { option in
-                        optionButton(questionModel: questionModel, option: option)
+                    } else {
+                        
+                        ContentUnavailableView(
+                            "You Haven't built a Quiz yet",
+                            systemImage: "book.and.wrench.fill",
+                            description: Text("You need to buld a quiz to see the questions")
+                        )
                     }
-                    
-                    FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
-                    
                 }
-                .padding(.horizontal, 15)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            
-            } else {
-                
-                ContentUnavailableView(
-                    "You Haven't built a Quiz yet",
-                    systemImage: "book.and.wrench.fill",
-                    description: Text("You need to buld a quiz to see the questions")
+                .contentShape(Rectangle())
+                .offset(y: offsetY)
+                .gesture(
+                    DragGesture()
+                        .onChanged({ value in
+                            let translationY = value.translation.height
+                            offsetY = (translationY > 0 ? translationY : 0)
+                        }).onEnded({ value in
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                if offsetY > size.height * 0.3 {
+                                    expandSheet = false
+                                    animateContent = false
+                                } else {
+                                    offsetY = .zero
+                                }
+                            }
+                        })
                 )
+                .ignoresSafeArea(.container, edges: .all)
+            }
+            .navigationBarBackButtonHidden(true)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.35)) {
+                    animateContent = true
+                }
             }
     }
     
@@ -105,6 +156,6 @@ struct CustomQuestionDisplayView: View {
 }
 
 
-#Preview {
-    CustomQuestionDisplayView(hideText: {})
-}
+//#Preview {
+//    CustomQuestionDisplayView()
+//}

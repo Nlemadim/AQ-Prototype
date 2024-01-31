@@ -10,11 +10,12 @@ import SwiftData
 
 @main
 struct AUdio_Quiz_BetaApp: App {
-    
+    @StateObject var quizPlayer = QuizPlayer()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(quizPlayer)
         }
-       
     }
 }

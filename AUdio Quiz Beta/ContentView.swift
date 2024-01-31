@@ -9,17 +9,16 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    private var quizPlayer = QuizPlayer()
+   // @EnvironmentObject var quizPlayer: QuizPlayer
     var body: some View {
-        HomeView()
+        @ObservedObject var quizPlayer = QuizPlayer()
+        return HomeView(quizPlayer: quizPlayer)
         
         //MARK: UI VIEWS TEST VIEW
         //Test()
-
     }
 }
 
 #Preview {
     ContentView()
-       
 }

@@ -42,9 +42,9 @@ struct FullScreenQuizPlayer: View {
                 if showText {
                     VStack {
                         //MARK: Quiz View
-                        CustomQuestionDisplayView(quizPlayer: quizPlayer) {
-                            showText.toggle()
-                        }
+//                        CustomQuestionDisplayView(quizPlayer: quizPlayer) {
+//                            showText.toggle()
+//                        }
                     }
                     .padding(.top, 35)
                     .padding(.bottom, 25)
