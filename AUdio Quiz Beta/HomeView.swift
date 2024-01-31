@@ -105,7 +105,8 @@ struct HomeView: View {
         }
         .overlay {
             if expandSheet {
-                FullScreenQuizPlayer(expandSheet:  $expandSheet, animation: animation)
+                QuizView(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
+//                FullScreenQuizPlayer(expandSheet:  $expandSheet, animation: animation)
                 //Transition Animation
                     .transition(.asymmetric(insertion: .identity, removal: .offset(y: -5)))
             }
