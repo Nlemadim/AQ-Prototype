@@ -1,13 +1,13 @@
 //
-//  MiniQuizControlView.swift
+//  MiniPlayerControls.swift
 //  AUdio Quiz Beta
 //
-//  Created by Tony Nlemadim on 1/25/24.
+//  Created by Tony Nlemadim on 1/31/24.
 //
 
 import SwiftUI
 
-struct MiniQuizControlView: View {
+struct MiniPlayerControls: View {
     var recordAction: () -> Void
     var playPauseAction: () -> Void
     var nextAction: () -> Void
@@ -87,6 +87,5 @@ struct MiniQuizControlView: View {
 }
 
 #Preview {
-    MiniQuizControlView(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
-        .preferredColorScheme(.dark)
+    MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
 }

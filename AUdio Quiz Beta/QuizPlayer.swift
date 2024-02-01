@@ -121,13 +121,15 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     func playNow(audioFileName: String) {
         // Start playing the audio file
         playAudio(audioFileName: audioFileName)
+
         //TESTING
-        quizPlayerDidFinishPlaying(completion: { finished in
-            if finished {
-                self.isNowPlaying = false
-                self.playNextQuestion()
-            }
-        })
+//        quizPlayerDidFinishPlaying(completion: { finished in
+//            if finished {
+//                self.isNowPlaying = false
+//                self.playNextQuestion()
+//            }
+//        })
+        
         if let currentQuestion = currentQuestion {
             print("Player Started playing Question\(currentIndex + 1): \(isNowPlaying)")
             print("Player Finished playing: \(isFinishedPlaying)")
@@ -135,12 +137,12 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
             print("The correct Answer is \(currentQuestion.correctOption)")
             print("Player Started playing: \(isNowPlaying)")
         }
-        
-        
     }
     
     fileprivate func playAudio(audioFileName: String) {
+        guard isFinishedPlaying else { return }
         isNowPlaying = true
+        isFinishedPlaying = false
         
 //        let fileManager = FileManager.default
 //        let url = URL(fileURLWithPath: audioFileName)
@@ -163,17 +165,18 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("Player has Finished playing")
+        isFinishedPlaying = true
         startRecordingAndTranscribing()
                 
          // Run your additional code here
      }
     
     fileprivate func checkSelectedOptionAndUpdateState() {
-        if let question = currentQuestion {
-            if UserDefaultsManager.isOnContinuousFlow() || !question.selectedOption.isEmpty {
+        if isQuizStarted {
+            if UserDefaultsManager.isOnContinuousFlow() && !selectedOption.isEmpty {
                 // Proceed to the next audio file
                 print("Playing next Question")
-                playNext()
+                playNextQuestion()
             } else {
                 // Wait for user interaction to proceed
                 interactionState = .awaitingResponse
@@ -181,8 +184,10 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
                 print("Player paused while awaiting response")
             }
         } else {
+            return
             // No current question, proceed to next in the queue
-            playNext()
+            //PlayIntermission()
+            //playNext()
         }
     }
 
@@ -203,30 +208,35 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     }
     
     fileprivate func startRecordingAndTranscribing() {
-        print("Player is listening for Answer")
+        guard isFinishedPlaying else { return }
+
+        print("Starting transcription...")
         interactionState = .isListening
         self.isRecordingAnswer = true
 
-        // Start transcribing after 5 seconds
+        // Immediately start transcribing
+        self.speechRecognizer.transcribe()
+        print("Transcribing started")
+
+        // Schedule to stop transcribing after 5 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.speechRecognizer.transcribe()
-            print("Player is processing")
+            self.speechRecognizer.stopTranscribing()
+            self.isRecordingAnswer = false
+            print("Transcription stopped")
             
-            // Get the transcript and update the selectedOption of the current question
+            // Optionally, retrieve and process the transcript after stopping
             self.getTranscript { newTranscript in
                 self.interactionState = .isProcessing
                 self.currentQuestion?.selectedOption = newTranscript
+                self.selectedOption = newTranscript
+                print("Processing completed")
+
+                // Further processing or state update can be done here
+                self.checkSelectedOptionAndUpdateState()
             }
         }
-
-        // Stop transcribing and turn off recording after 7 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
-            self.speechRecognizer.stopTranscribing()
-            self.isRecordingAnswer = false
-            print("Player has finished transcribing")
-            self.checkSelectedOptionAndUpdateState()
-        }
     }
+
 
     fileprivate func getTranscript(completion: @escaping (String) -> Void) {
         cancellable = speechRecognizer.$transcript

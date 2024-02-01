@@ -134,6 +134,19 @@ class UserDefaultsManager {
         return UserDefaults.standard.integer(forKey: "pointsPerQuestion")
     }
     
+    static func saveArrayToUserDefaults(array: [String], key: String) {
+        let defaults = UserDefaults.standard
+        let arrayAsString = array.joined(separator: ",")
+        defaults.set(arrayAsString, forKey: key)
+    }
+    
+    static func getArrayFromUserDefaults(key: String) -> [String] {
+        let defaults = UserDefaults.standard
+        guard let arrayAsString = defaults.string(forKey: key) else { return [] }
+        return arrayAsString.components(separatedBy: ",")
+    }
+
+    
     static func resetAllValues() {
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)

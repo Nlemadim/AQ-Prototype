@@ -17,5 +17,6 @@ struct AUdio_Quiz_BetaApp: App {
             ContentView()
                 .environmentObject(quizPlayer)
         }
+        .modelContainer(for: [ExamType.self, Topic.self])
     }
 }

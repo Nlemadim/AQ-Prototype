@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
    // @EnvironmentObject var quizPlayer: QuizPlayer
     var body: some View {
         @ObservedObject var quizPlayer = QuizPlayer()
@@ -21,4 +22,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: [ExamType.self, Topic.self], inMemory: true)
 }

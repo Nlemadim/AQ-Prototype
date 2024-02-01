@@ -41,15 +41,13 @@ class Question: Hashable {
 }
 
 @Model
-class ExamType: ObservableObject {
-    var id: PersistentIdentifier
-    var name: String
+class ExamType {
+    @Attribute(.unique) var name: String
     var about: String
     var imageUrl: String
     var category: String
     
-    init(id: PersistentIdentifier, name: String, about: String, imageUrl: String, category: String) {
-        self.id = id
+    init(name: String, about: String, imageUrl: String, category: String) {
         self.name = name
         self.about = about
         self.imageUrl = imageUrl

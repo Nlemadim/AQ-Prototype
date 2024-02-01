@@ -39,10 +39,12 @@ extension QuizPlayer {
         guard let currentQuestion = currentQuestion,
               currentIndex < examQuestions.count - 1 else {
             isNowPlaying = false
+            
             endQuiz()
             return
         }
         
+        isFinishedPlaying = false
         currentIndex += 1
         playNow(audioFileName: currentQuestion.questionAudio)
     }
@@ -78,12 +80,18 @@ extension QuizPlayer {
     }
     
     func resetForNextQuiz() {
+        
         progress = 0
         currentIndex = 0
+        
         //databaseService.fetchMoreQuestions()
     }
     
     func endQuiz() {
+        isQuizStarted = false
+        //If !intermissionPlayList.isEmpty { playIntermission() } else { resetForNextQuiz() }
+        
+        
         // End the quiz and calculate the final score
         // Update the state to reflect the quiz has ended
         showScoreCard = true
@@ -186,3 +194,34 @@ extension QuizPlayer {
 //        // Insert the audio file at the beginning of the playlist
 //        playlist.insert(audioFileName, at: 0)
 //    }
+
+
+extension QuizPlayer {
+    class QuizIntermission: ObservableObject {
+        var quizPlayer: QuizPlayer = QuizPlayer()
+        @Published var intermissionPlaylist: [String] = []
+        
+        func fetchIntermissionQuizReview(question: String, topic: String) -> String {
+
+            let incorrectQuestions = quizPlayer.examQuestions.filter { $0.isAnswered && !$0.isAnsweredCorrectly && $0.topic == topic }
+            
+            for question in incorrectQuestions {
+               //let topicAudioNote = topicsService.fetchTopicAudioNote(topic name: question.topic)
+                let audioNote = question.questionNoteAudio
+                //questionService.fetchQuestionAudioNote(question: question.questionAudioNote)
+                
+                intermissionPlaylist.append(audioNote)
+                //intermissionPlaylist.append(topicNote)
+            }
+                
+            return ""
+        }
+        
+        func fetchIntermissionTopicReview(topic: String) -> String {
+            // let auidioNote = topicsService.fetchTopicAudioNote(topic name: )
+            // intermissionPlaylist.append(audioNote)
+            
+            return ""
+        }
+    }
+}

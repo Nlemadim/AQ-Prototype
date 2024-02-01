@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var expandSheet: Bool = false
     @State private var isSignedIn: Bool = false
     @State private var isPlaying: Bool = false
@@ -80,7 +81,7 @@ struct HomeView: View {
             }
             .tag(0)
             
-            TopicsListView()
+            ExamList()
             .tabItem {
                 TabIcons(title: "Exams", icon: "magnifyingglass")
             }
@@ -97,7 +98,6 @@ struct HomeView: View {
                 TabIcons(title: "History", icon: "scroll")
             }
             .tag(3)
-            
         }
         .tint(.teal)
         .safeAreaInset(edge: .bottom) {
@@ -106,7 +106,6 @@ struct HomeView: View {
         .overlay {
             if expandSheet {
                 QuizView(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
-//                FullScreenQuizPlayer(expandSheet:  $expandSheet, animation: animation)
                 //Transition Animation
                     .transition(.asymmetric(insertion: .identity, removal: .offset(y: -5)))
             }
@@ -161,85 +160,34 @@ struct TabIcons: View {
 
 
 #Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return HomeView(quizPlayer: quizPlayer)
+//    @StateObject var quizPlayer = QuizPlayer()
+//    return HomeView(quizPlayer: quizPlayer)
+    ContentView()
+        .modelContainer(for: [ExamType.self, Topic.self], inMemory: true)
 }
 
-struct View1: View {
-    var body: some View {
-        ZStack {
-            Text("This is View 1")
-        }
-        .preferredColorScheme(.dark)
-        .navigationBarBackButtonHidden(true)
-        .background(
-            Image("Logo")
-                .offset(x: 220, y: -100)
-            
-        )
-    }
-}
 
-struct View2: View {
-    var body: some View {
-        ZStack {
-            
-            VStack {
-                HStack {
-                   Text("Account")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Spacer()
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "gearshape.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 26.0, height: 26.0)
-                            .cornerRadius(10)
-                            .padding(9)
-                            .foregroundStyle(.teal)
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    }
-                }
-                
-                ScrollView {
-                    VStack {
-                       
-                        Text("This is View 2")
-                            .frame(alignment: .center)
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity).padding(.all, 20.0)
-            .frame(height: 600)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/, x: 0, y: 10)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 30)
-           
-        }
-        .preferredColorScheme(.dark)
-        .navigationBarBackButtonHidden(true)
-        .background(
-            Image("Logo")
-                .offset(x: -190, y: -220)
-            
-        )
-    }
-}
+
 
 struct View3: View {
     var body: some View {
         ZStack {
-            Text("This is View 3")
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea()
+            VStack {
+                Text("User History Page")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(alignment: .topLeading)
+            }
         }
         .preferredColorScheme(.dark)
         .navigationBarBackButtonHidden(true)
         .background(
             Image("Logo")
-                .offset(x:  220, y: -100)
+                .offset(x:  220, y: -130)
+                .blur(radius: 30)
             
         )
     

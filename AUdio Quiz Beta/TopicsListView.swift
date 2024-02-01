@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TopicsListView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var path = [Topic]()
+    @Query(sort: \Topic.name) var topics: [Topic]
     @State private var searchText = ""
     
     var body: some View {
@@ -20,21 +22,6 @@ struct TopicsListView: View {
                         .navigationTitle("Topics").navigationBarTitleDisplayMode(.automatic)
                         .navigationDestination(for: Topic.self) { topic in
                             TopicDetailsView()
-                        }
-                        .toolbar {
-                            Button {
-                                Task {
-                                    //MARK: Method to Add TopicNotes to QuizPlayer Playlist
-                                }
-                            }label: {
-                                HStack(spacing: 5) {
-                                    Text("Create Playlist")
-                                        
-                                    Image(systemName: "plus")
-                                }
-                                .foregroundStyle(.teal)
-                            }
-            
                         }
                         .searchable(text: $searchText)
                 }

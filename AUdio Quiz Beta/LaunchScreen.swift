@@ -24,7 +24,6 @@ struct LaunchScreen: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 .teal.gradient
-               // RadialGradient(colors: [.white, .teal], center: .center, startRadius: 1, endRadius: 150)
             )
         }
     }

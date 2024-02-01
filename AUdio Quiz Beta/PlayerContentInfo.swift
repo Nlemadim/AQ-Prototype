@@ -42,7 +42,7 @@ struct PlayerContentInfo: View {
 //                .lineLimit(2, reservesSpace: true)
 //                .frame(maxWidth: .infinity, alignment: .leading)
 
-            MiniQuizControlView(
+            MiniPlayerControls(
                 recordAction: {quizPlayer.recordAnswer()},
                 
                 playPauseAction: { /* Implement play/pause action */ },
@@ -79,7 +79,7 @@ struct PlayerContentInfo: View {
 
 #Preview {
     @StateObject var quizPlayer = QuizPlayer()
-    return MiniQuizControlView(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
+    return MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
         .preferredColorScheme(.dark)
 }
 

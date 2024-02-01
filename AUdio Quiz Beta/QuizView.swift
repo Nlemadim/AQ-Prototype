@@ -45,6 +45,7 @@ struct QuizView: View {
                                         .opacity(animateContent ? 0 : 1)
                                 }
                                 .matchedGeometryEffect(id: "ICONIMAGE", in: animation)
+                                .padding(.horizontal, 5)
                             
                             //MARK: Quiz Visualizer
                             HStack {
@@ -53,6 +54,7 @@ struct QuizView: View {
                                     .foregroundStyle(.black)
                                 Spacer()
                             }
+                            .padding(.horizontal, 5)
                             
                             //MARK: Question Content View
                             Text("\(questionModel.questionContent)")
@@ -61,21 +63,24 @@ struct QuizView: View {
                                 .foregroundStyle(!isAnswered ? .black : .gray)
                                 .lineLimit(6, reservesSpace: true)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .padding(.horizontal, 5)
                                 .onChange(of: questionModel.questionContent, initial: isAnswered) { oldValue,_ in
                                     updateView()
                                 }
                             
                             ForEach(questionModel.options, id: \.self) { option in
                                 optionButton(questionModel: questionModel, option: option)
+                                    .padding(.horizontal, 5)
                             }
                             
                             FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
+                               
                             
                             Spacer()
                         }
                         .padding(.top, safeArea.top + (safeArea.bottom == 0 ? 10 : 0))
                         .padding(.bottom, safeArea.bottom == 0 ? 10 : safeArea.bottom)
-                        .padding(.horizontal, 25)
+                        .padding(.horizontal, 5)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         .clipped()
                     
