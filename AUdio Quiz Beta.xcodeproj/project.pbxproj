@@ -38,7 +38,6 @@
 		0B890FB32B5990DD009C7FA6 /* DebugLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FB22B5990DD009C7FA6 /* DebugLogger.swift */; };
 		0B890FB52B5996C7009C7FA6 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FB42B5996C7009C7FA6 /* Config.swift */; };
 		0B890FB72B59979F009C7FA6 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FB62B59979F009C7FA6 /* UserDefaultManager.swift */; };
-		0B890FBA2B599B18009C7FA6 /* SelectTestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FB92B599B18009C7FA6 /* SelectTestList.swift */; };
 		0B890FBD2B599F1C009C7FA6 /* ScoreCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FBC2B599F1C009C7FA6 /* ScoreCardView.swift */; };
 		0B890FC02B599F7F009C7FA6 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890FBF2B599F7F009C7FA6 /* CustomButton.swift */; };
 		0BA1B09D2B6356E200603888 /* FullScreenControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA1B09C2B6356E200603888 /* FullScreenControlView.swift */; };
@@ -100,7 +99,6 @@
 		0B890FB22B5990DD009C7FA6 /* DebugLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLogger.swift; sourceTree = "<group>"; };
 		0B890FB42B5996C7009C7FA6 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		0B890FB62B59979F009C7FA6 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
-		0B890FB92B599B18009C7FA6 /* SelectTestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTestList.swift; sourceTree = "<group>"; };
 		0B890FBC2B599F1C009C7FA6 /* ScoreCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCardView.swift; sourceTree = "<group>"; };
 		0B890FBF2B599F7F009C7FA6 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		0BA1B09C2B6356E200603888 /* FullScreenControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenControlView.swift; sourceTree = "<group>"; };
@@ -306,7 +304,6 @@
 		0B890FB82B599AD4009C7FA6 /* Exams */ = {
 			isa = PBXGroup;
 			children = (
-				0B890FB92B599B18009C7FA6 /* SelectTestList.swift */,
 				0BE31FBC2B6AC5D8007494EE /* ExamList.swift */,
 				0BE31FBE2B6AC6B3007494EE /* Exam.swift */,
 			);
@@ -517,7 +514,6 @@
 				0B890F9A2B59739C009C7FA6 /* NetworkService.swift in Sources */,
 				0B1595172B5CC6850065B5E8 /* QuizPlayerModels.swift in Sources */,
 				0BE31FB92B6AC13D007494EE /* MiniPlayerControls.swift in Sources */,
-				0B890FBA2B599B18009C7FA6 /* SelectTestList.swift in Sources */,
 				0B6C60332B6C2D3700AF3E27 /* FeaturedItems.swift in Sources */,
 				0B890FA22B5975D1009C7FA6 /* DatabaseService.swift in Sources */,
 				0B890F952B596FB6009C7FA6 /* HomeView.swift in Sources */,
