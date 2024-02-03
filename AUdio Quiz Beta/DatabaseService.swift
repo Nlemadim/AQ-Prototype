@@ -12,10 +12,9 @@ import SwiftData
 class DatabaseService {
     @Environment(\.modelContext) private var modelContext
     private let serialQueue = DispatchQueue(label: "com.examGenius.DatabaseService")
-    @Query var questions: [Question]
+    //@Query var questions: [Question]
     @Query var topics: [Topic]
     @Query var exams: [ExamType]
-    @Query var audioQuiz: [AudioQuiz]
     @Query var audioPlayerItems: [AudioPlayerItem]
     
     let networkService = NetworkService.shared
@@ -66,15 +65,15 @@ class DatabaseService {
         try modelContext.save()
     }
     
-    func deleteQuestions() async throws {
-        let questions = try await fetchAllQuestions()
-        guard questions.count > 25 else { return }
-        
-        for question in questions.prefix(questions.count - 49) {
-            modelContext.delete(question)
-            try modelContext.save()
-        }
-    }
+//    func deleteQuestions() async throws {
+//        let questions = try await fetchAllQuestions()
+//        guard questions.count > 25 else { return }
+//        
+//        for question in questions.prefix(questions.count - 49) {
+//            modelContext.delete(question)
+//            try modelContext.save()
+//        }
+//    }
     
     func fetchPerformances() async throws -> [Performance] {
         return try await withCheckedThrowingContinuation { continuation in
@@ -90,18 +89,18 @@ class DatabaseService {
         }
     }
     
-    func fetchAllQuestions() async throws -> [Question] {
-        return try await withCheckedThrowingContinuation { continuation in
-            serialQueue.async {
-                let fetchDescriptor = FetchDescriptor<Question>()
-                do {
-                    let questions = try self.modelContext.fetch(fetchDescriptor)
-                    
-                    continuation.resume(returning: questions)
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
-    }
+//    func fetchAllQuestions() async throws -> [Question] {
+//        return try await withCheckedThrowingContinuation { continuation in
+//            serialQueue.async {
+//                let fetchDescriptor = FetchDescriptor<Question>()
+//                do {
+//                    let questions = try self.modelContext.fetch(fetchDescriptor)
+//                    
+//                    continuation.resume(returning: questions)
+//                } catch {
+//                    continuation.resume(throwing: error)
+//                }
+//            }
+//        }
+//    }
 }

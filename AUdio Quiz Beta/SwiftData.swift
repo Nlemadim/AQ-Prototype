@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-@Model
-class Question: Hashable {
+//@Model
+class Question: ObservableObject, Identifiable {
     var id: UUID
     @Attribute(.unique) var questionContent: String
     var questionNote: String
@@ -85,24 +85,24 @@ class AudioPlayerItem {
     }
 }
 
-@Model
-class AudioQuiz: ObservableObject {
-    @Attribute(.unique) var testName: String
-    var image: String
-    var topics: [String]
-    var questions: [Question]
-    
-    init(testName: String, image: String, topics: [String], questions: [Question], currentQuestions: [Question]) {
-        self.testName = testName
-        self.image = image
-        self.topics = topics
-        self.questions = questions
-        self.currentQuestions = currentQuestions
-    }
-    
-    @Relationship
-    var currentQuestions: [Question] = []
-}
+//@Model
+//class AudioQuiz: ObservableObject {
+//    @Attribute(.unique) var testName: String
+//    var image: String
+//    var topics: [String]
+//    var questions: [Question]
+//    
+//    init(testName: String, image: String, topics: [String], questions: [Question], currentQuestions: [Question]) {
+//        self.testName = testName
+//        self.image = image
+//        self.topics = topics
+//        self.questions = questions
+//        self.currentQuestions = currentQuestions
+//    }
+//    
+//    @Relationship
+//    var currentQuestions: [Question] = []
+//}
 
 @Model
 class Performance: Identifiable, Hashable {

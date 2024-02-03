@@ -10,10 +10,9 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-   // @EnvironmentObject var quizPlayer: QuizPlayer
+    @EnvironmentObject var quizPlayer: QuizPlayer
     var body: some View {
-        @ObservedObject var quizPlayer = QuizPlayer()
-        return HomeView(quizPlayer: quizPlayer)
+        HomeView(quizPlayer: quizPlayer)
         
         //MARK: UI VIEWS TEST VIEW
         //Test()

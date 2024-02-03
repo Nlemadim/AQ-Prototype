@@ -13,7 +13,7 @@ struct QuizView: View {
     @State private var animateContent: Bool = false
     @State var isAnswered: Bool = false
     @State private var viewUpdateID = UUID()
-    @ObservedObject var quizPlayer = QuizPlayer()
+    @ObservedObject var quizPlayer: QuizPlayer
     var animation: Namespace.ID
     
     var body: some View {
@@ -126,7 +126,7 @@ struct QuizView: View {
     }
     
     @ViewBuilder
-    private func optionButton(questionModel: TestQuestionModel, option: String) -> some View {
+    private func optionButton(questionModel: Question, option: String) -> some View {
         let optionColor = colorForOption(option: option, correctOption: questionModel.correctOption, userAnswer: "\(questionModel.selectedOption)")
         
         Button(action: {

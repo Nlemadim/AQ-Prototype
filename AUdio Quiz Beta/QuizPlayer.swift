@@ -12,51 +12,6 @@ import SwiftData
 import AVFoundation
 import Speech
 
-class TestQuestionModel: ObservableObject, Identifiable {
-    var id: UUID
-    var questionContent: String
-    var questionNote: String
-    var topic: String
-    var options: [String]
-    var correctOption: String
-    var selectedOption: String = ""
-    var isAnswered: Bool = false
-    var isAnsweredCorrectly: Bool
-    var numberOfPresentations: Int
-    var questionAudio: String
-    var questionNoteAudio: String
-    
-    init(id: UUID, questionContent: String, questionNote: String, topic: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, questionNoteAudio: String) {
-        self.id = id
-        self.questionContent = questionContent
-        self.questionNote = questionNote
-        self.topic = topic
-        self.options = options
-        self.correctOption = correctOption
-        self.selectedOption = selectedOption
-        self.isAnswered = isAnswered
-        self.isAnsweredCorrectly = isAnsweredCorrectly
-        self.numberOfPresentations = numberOfPresentations
-        self.questionAudio = questionAudio
-        self.questionNoteAudio = questionNoteAudio
-    }
-}
-
-class TestTopicModel: ObservableObject, Identifiable {
-    @Attribute(.unique) var name: String
-    var generalOverview: String
-    var audioNote: String
-    var isPresented: Bool = false
-    var inFocus: Bool = false
-    
-    init(name: String, generalOverview: String, audioNote: String, isPresented: Bool, inFocus: Bool) {
-        self.name = name
-        self.generalOverview = generalOverview
-        self.audioNote = audioNote
-        self.isPresented = isPresented
-        self.inFocus = inFocus
-    }
-}
 
 class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRecognizerDelegate {
     
@@ -69,40 +24,37 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     @Published var isRecordingAnswer: Bool = false
     @Published var isNowPlaying: Bool = false
     @Published var selectedOption: String = ""
-       
-    
-    private var speechSynthesizer = AVSpeechSynthesizer()
-    var audioPlayer: AVAudioPlayer?
-    private let speechRecognizer = SpeechManager()
     
     @State var interactionState: InteractionState = .idle
     @State var isQuizStarted: Bool = false
-    
     @State var isPaused: Bool = false
-    
-    @Published var examQuestions: [TestQuestionModel] = [
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 1: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 2: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 3: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 4: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
-        
-        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 5: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format")]
-    
-    
+       
+    private let speechRecognizer = SpeechManager()
+    private var user: User
+    private var speechSynthesizer = AVSpeechSynthesizer()
+    var audioPlayer: AVAudioPlayer?
+
     var currentPlaybackQueue: [String] = []
     var cancellable: AnyCancellable?
     var showScoreCard: Bool = false
     var announceScoreCard: Bool = false
     var completionHandler: (() -> Void)?
     
-    var currentQuestion: TestQuestionModel? {
+    var examQuestions: [Question] {
+        return user.selectedQuiz?.questions ?? []
+    }
+    
+    var currentQuestion: Question? {
         guard currentIndex < examQuestions.count else { return nil }
         
         return examQuestions[currentIndex]
     }
+    
+    init(user: User) {
+        self.user = user
+        super.init()
+    }
+    
     
     func quizPlayerDidFinishPlaying(completion: @escaping (Bool) -> Void) {
         self.cancellable = Future<Bool, Never> { promise in
@@ -122,14 +74,6 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
         // Start playing the audio file
         playAudio(audioFileName: audioFileName)
 
-        //TESTING
-//        quizPlayerDidFinishPlaying(completion: { finished in
-//            if finished {
-//                self.isNowPlaying = false
-//                self.playNextQuestion()
-//            }
-//        })
-        
         if let currentQuestion = currentQuestion {
             print("Player Started playing Question\(currentIndex + 1): \(isNowPlaying)")
             print("Player Finished playing: \(isFinishedPlaying)")
@@ -140,25 +84,25 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     }
     
     fileprivate func playAudio(audioFileName: String) {
-        guard isFinishedPlaying else { return }
+        //guard isFinishedPlaying else { return }
         isNowPlaying = true
         isFinishedPlaying = false
         
-//        let fileManager = FileManager.default
-//        let url = URL(fileURLWithPath: audioFileName)
-//        
-//        // Check if the file exists before trying to play it
-//        if fileManager.fileExists(atPath: url.path) {
-//            do {
-//                audioPlayer = try AVAudioPlayer(contentsOf: url)
-//                audioPlayer?.delegate = self
-//                audioPlayer?.play()
-//            } catch {
-//                print("Error playing audio file: \(error)")
-//            }
-//        } else {
-//            print("Audio file not found at path: \(audioFileName)")
-//        }
+        let fileManager = FileManager.default
+        let url = URL(fileURLWithPath: audioFileName)
+        
+        // Check if the file exists before trying to play it
+        if fileManager.fileExists(atPath: url.path) {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.delegate = self
+                audioPlayer?.play()
+            } catch {
+                print("Error playing audio file: \(error)")
+            }
+        } else {
+            print("Audio file not found at path: \(audioFileName)")
+        }
         
         //readQuestionContent(questionContent: audioFileName)
     }
@@ -166,20 +110,20 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("Player has Finished playing")
         isFinishedPlaying = true
-        startRecordingAndTranscribing()
+        //startRecordingAndTranscribing()
                 
          // Run your additional code here
      }
     
     fileprivate func checkSelectedOptionAndUpdateState() {
         if isQuizStarted {
-            if UserDefaultsManager.isOnContinuousFlow() && !selectedOption.isEmpty {
+            if UserDefaultsManager.isOnContinuousFlow() /* && !selectedOption.isEmpty */{
                 // Proceed to the next audio file
                 print("Playing next Question")
                 playNextQuestion()
             } else {
                 // Wait for user interaction to proceed
-                interactionState = .awaitingResponse
+                //interactionState = .awaitingResponse
                 audioPlayer?.stop()
                 print("Player paused while awaiting response")
             }
@@ -278,3 +222,71 @@ func getTranscript(completion: @escaping (String) -> Void) {
 
 
 
+
+//    @Published var examQuestions: [TestQuestionModel] = [
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 1", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 1: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 2", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 2: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 3", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 3: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 4: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format"),
+//
+//        TestQuestionModel(id: UUID(), questionContent: "Some random sample question 4", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Question 5: Sample audio question data", questionNoteAudio: "Sample data audio question answer in Mp3 format")]
+//
+
+
+//TESTING
+//        quizPlayerDidFinishPlaying(completion: { finished in
+//            if finished {
+//                self.isNowPlaying = false
+//                self.playNextQuestion()
+//            }
+//        })
+
+
+class TestQuestionModel: ObservableObject, Identifiable {
+    var id: UUID
+    var questionContent: String
+    var questionNote: String
+    var topic: String
+    var options: [String]
+    var correctOption: String
+    var selectedOption: String = ""
+    var isAnswered: Bool = false
+    var isAnsweredCorrectly: Bool
+    var numberOfPresentations: Int
+    var questionAudio: String
+    var questionNoteAudio: String
+    
+    init(id: UUID, questionContent: String, questionNote: String, topic: String, options: [String], correctOption: String, selectedOption: String, isAnswered: Bool, isAnsweredCorrectly: Bool, numberOfPresentations: Int, questionAudio: String, questionNoteAudio: String) {
+        self.id = id
+        self.questionContent = questionContent
+        self.questionNote = questionNote
+        self.topic = topic
+        self.options = options
+        self.correctOption = correctOption
+        self.selectedOption = selectedOption
+        self.isAnswered = isAnswered
+        self.isAnsweredCorrectly = isAnsweredCorrectly
+        self.numberOfPresentations = numberOfPresentations
+        self.questionAudio = questionAudio
+        self.questionNoteAudio = questionNoteAudio
+    }
+}
+
+class TestTopicModel: ObservableObject, Identifiable {
+    @Attribute(.unique) var name: String
+    var generalOverview: String
+    var audioNote: String
+    var isPresented: Bool = false
+    var inFocus: Bool = false
+    
+    init(name: String, generalOverview: String, audioNote: String, isPresented: Bool, inFocus: Bool) {
+        self.name = name
+        self.generalOverview = generalOverview
+        self.audioNote = audioNote
+        self.isPresented = isPresented
+        self.inFocus = inFocus
+    }
+}

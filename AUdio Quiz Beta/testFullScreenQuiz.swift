@@ -63,7 +63,9 @@ struct testFullScreenQuiz: View {
     }
 }
 
-#Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return testFullScreenQuiz(quizPlayer: quizPlayer)
-}
+//#Preview {
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.barExam
+//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return testFullScreenQuiz(quizPlayer: quizPlayer)
+//}

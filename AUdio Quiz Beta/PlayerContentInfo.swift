@@ -10,7 +10,8 @@ import SwiftUI
 
 struct PlayerContentInfo: View {
     @Binding var expandSheet: Bool
-    @StateObject var quizPlayer = QuizPlayer()
+   // @Bindable var questions: [Question]
+    @ObservedObject var quizPlayer: QuizPlayer
     var animation: Namespace.ID
 
     var body: some View {
@@ -45,9 +46,9 @@ struct PlayerContentInfo: View {
             MiniPlayerControls(
                 recordAction: {quizPlayer.recordAnswer()},
                 
-                playPauseAction: { /* Implement play/pause action */ },
+                playPauseAction: { quizPlayer.startQuiz() },
                 
-                nextAction: { quizPlayer.playNextQuestion() },
+                nextAction: { quizPlayer.skipToNext() },
                 
                 repeatAction: {
                     if let question = quizPlayer.currentQuestion {
@@ -71,15 +72,20 @@ struct PlayerContentInfo: View {
     }
 }
 
-#Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
-        .preferredColorScheme(.dark)
-}
-
-#Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
-        .preferredColorScheme(.dark)
-}
+//#Preview {
+//    
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.driversLicense
+//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
+//        .preferredColorScheme(.dark)
+//}
+//
+//#Preview {
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.mcat
+//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
+//        .preferredColorScheme(.dark)
+//}
 

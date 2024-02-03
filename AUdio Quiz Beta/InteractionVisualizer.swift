@@ -123,18 +123,18 @@ struct NavBarInteractionVisualizer: View {
         let didRecieveSpeech = !comment.isEmpty
         let isPlaying = interactionState == .isNowPlaying || interactionState == .isListening
 
-        VStack(spacing: 0) {
-            HStack(spacing: 35) {
+        VStack(spacing: 10) {
+            HStack(spacing: 100) {
                 HStack(spacing: 0) {
                        Image(systemName: "play.desktopcomputer")
                             .resizable()
                             .frame(width: 20, height: 20)
-                            .foregroundStyle(!isPlaying ? .black.opacity(0.6)  : .teal)
+                            .foregroundStyle(.white)
                     
 
                     Image(systemName: "waveform")
                         .resizable()
-                        .foregroundStyle(isPlaying ? .themeTeal : .black.opacity(0.6) )
+                        .foregroundStyle(.white)
                         .symbolEffect(.variableColor.iterative.dimInactiveLayers.reversing, options: .repeating, isActive: interactionState == .isNowPlaying)
                         .frame(width: 23, height: 23)
                         .offset(y: -5)
@@ -143,13 +143,15 @@ struct NavBarInteractionVisualizer: View {
                 }
                 .opacity(interactionState == .isNowPlaying ? 0 : 1)//UI TESTING! Please Switch before Run
                 
+                Spacer()
+                
 
 
                 HStack(spacing: 0) {
                     ZStack {
                         Image(systemName: "bubble.right")
                             .resizable()
-                            .foregroundStyle(!didRecieveSpeech ? .black.opacity(0.6) : .black)
+                            .foregroundStyle(.white)
                             .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasResponded)
                             .frame(width: 23, height: 23)
                             .offset(y: -5)
@@ -168,7 +170,7 @@ struct NavBarInteractionVisualizer: View {
                        Image(systemName: "person.fill")
                             .resizable()
                             .frame(width: 18, height: 18)
-                            .foregroundStyle(!didRecieveSpeech ? .black.opacity(0.6)  : .green)
+                            .foregroundStyle(.white)
                             
                     })
                 }
@@ -178,19 +180,24 @@ struct NavBarInteractionVisualizer: View {
             .padding(.top)
             .frame(width: 180)
         }
-        //.frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity)
+        .preferredColorScheme(.dark)
     }
 }
 
 
 
 
-#Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return InteractionVisualizer(comment: "", correctOption: "", interactionState: .idle, quizPlayer: quizPlayer)
-}
-
-#Preview {
-    @StateObject var quizPlayer = QuizPlayer()
-    return NavBarInteractionVisualizer(comment: "", correctOption: "", interactionState: .idle, quizPlayer: quizPlayer)
-}
+//#Preview {
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.barExam
+//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return InteractionVisualizer(comment: "", correctOption: "", interactionState: .idle, quizPlayer: quizPlayer)
+//}
+//
+//#Preview {
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.barExam
+//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return NavBarInteractionVisualizer(comment: "", correctOption: "", interactionState: .idle, quizPlayer: quizPlayer)
+//}

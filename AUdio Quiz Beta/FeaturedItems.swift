@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-enum FeaturedQuiz {
+enum FeaturedQuiz: Quiz {
     case barExam
     case mcat
     case usCitizenship
     case gmats
     case driversLicense
     
-    var quizImages: Image {
+    var quizImage: Image {
         switch self {
         case .barExam:
             return Image("featuredBarExam")
@@ -46,7 +46,7 @@ enum FeaturedQuiz {
         }
     }
     
-    var questions:  [any PersistentModel] {
+    var questions:  [Question] {
         switch self {
             
         case .barExam:
@@ -120,3 +120,10 @@ enum FeaturedQuiz {
         }
     }
 }
+
+extension FeaturedQuiz {
+    static var allCases: [FeaturedQuiz] {
+        return [.barExam, .mcat, .usCitizenship, .gmats, .driversLicense]
+    }
+}
+

@@ -31,7 +31,7 @@ extension QuizPlayer {
             return
         }
         currentIndex += 1
-        //playNow(audioFileName: currentQuestion.questionAudio)
+        playNow(audioFileName: currentQuestion.questionAudio)
     }
     
     
@@ -49,7 +49,7 @@ extension QuizPlayer {
         playNow(audioFileName: currentQuestion.questionAudio)
     }
     
-    func replayQuestion(question: TestQuestionModel) {
+    func replayQuestion(question: Question) {
         playNow(audioFileName: question.questionAudio)
     }
     
@@ -197,31 +197,31 @@ extension QuizPlayer {
 
 
 extension QuizPlayer {
-    class QuizIntermission: ObservableObject {
-        var quizPlayer: QuizPlayer = QuizPlayer()
-        @Published var intermissionPlaylist: [String] = []
-        
-        func fetchIntermissionQuizReview(question: String, topic: String) -> String {
-
-            let incorrectQuestions = quizPlayer.examQuestions.filter { $0.isAnswered && !$0.isAnsweredCorrectly && $0.topic == topic }
-            
-            for question in incorrectQuestions {
-               //let topicAudioNote = topicsService.fetchTopicAudioNote(topic name: question.topic)
-                let audioNote = question.questionNoteAudio
-                //questionService.fetchQuestionAudioNote(question: question.questionAudioNote)
-                
-                intermissionPlaylist.append(audioNote)
-                //intermissionPlaylist.append(topicNote)
-            }
-                
-            return ""
-        }
-        
-        func fetchIntermissionTopicReview(topic: String) -> String {
-            // let auidioNote = topicsService.fetchTopicAudioNote(topic name: )
-            // intermissionPlaylist.append(audioNote)
-            
-            return ""
-        }
-    }
+//    class QuizIntermission: ObservableObject {
+//        var quizPlayer: QuizPlayer = QuizPlayer.self
+//        @Published var intermissionPlaylist: [String] = []
+//        
+//        func fetchIntermissionQuizReview(question: String, topic: String) -> String {
+//
+//            let incorrectQuestions = quizPlayer.examQuestions.filter { $0.isAnswered && !$0.isAnsweredCorrectly && $0.topic == topic }
+//            
+//            for question in incorrectQuestions {
+//               //let topicAudioNote = topicsService.fetchTopicAudioNote(topic name: question.topic)
+//                let audioNote = question.questionNoteAudio
+//                //questionService.fetchQuestionAudioNote(question: question.questionAudioNote)
+//                
+//                intermissionPlaylist.append(audioNote)
+//                //intermissionPlaylist.append(topicNote)
+//            }
+//                
+//            return ""
+//        }
+//        
+//        func fetchIntermissionTopicReview(topic: String) -> String {
+//            // let auidioNote = topicsService.fetchTopicAudioNote(topic name: )
+//            // intermissionPlaylist.append(audioNote)
+//            
+//            return ""
+//        }
+//    }
 }

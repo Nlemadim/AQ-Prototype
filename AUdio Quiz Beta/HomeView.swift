@@ -10,19 +10,21 @@ import Foundation
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var user: User
     @State private var expandSheet: Bool = false
     @State private var isSignedIn: Bool = false
     @State private var isPlaying: Bool = false
     @State private var selectedTab = 0
     @StateObject var quizPlayer: QuizPlayer
-    
+    @State var userItems: [String] = ["Featured", "Recents", "Current" ]
     
     @Namespace private var animation
-
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
                 ZStack {
+                
                     ScrollView {
                         GeometryReader { proxy in
                             Text("Featured")
@@ -33,39 +35,30 @@ struct HomeView: View {
                         .frame(height: 0)
                         
                         TabView {
-                            ForEach(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
-                                FeaturedItem()
-                            }
+                                ForEach(FeaturedQuiz.allCases, id: \.self) { quiz in
+                                    SampleExam(featuredQuiz: quiz, questions: quiz.questions, playButtonAction: {
+                                        user.selectedQuiz = UserSelectedQuiz(from: quiz)
+                                        //print(user.selectedQuiz?.quizName)
+                                    })
+                                    // Add any additional styling or properties here
+                                }
                         }
-                        .tabViewStyle(.page)
-                        .frame(height: 500)
                         
-                        HStack(spacing: 15) {
-                            Button {
-                                
-                            } label: {
-                                Text("Sign Up")
-                                    .foregroundStyle(.themePurple)
-                                    .fontWeight(.semibold)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            
-                            Button {
-                                
-                            } label: {
-                                Text("Login")
-                                    .foregroundStyle(.themePurple)
-                                    .fontWeight(.semibold)
-                            }
-                            .buttonStyle(.borderedProminent)
-                            
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom)
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .frame(height: 560)
+                        
                     }
                 }
-                .navigationBarItems(trailing: Image(systemName: "magnifyingglass.circle"))
+                .navigationBarItems(trailing:
+                                        Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "slider.horizontal.3")
+                        .resizable()
+                        .frame(width: 18, height: 18)
+                        .foregroundStyle(.teal).activeGlow(.teal, radius: 0.01)
+      
+                }))
                 /// Hiding tabBar when Sheet is expended
                 .toolbar(expandSheet ? .hidden : .visible, for: .tabBar)
                 .background(
@@ -82,22 +75,22 @@ struct HomeView: View {
             .tag(0)
             
             ExamList()
-            .tabItem {
-                TabIcons(title: "Exams", icon: "magnifyingglass")
-            }
-            .tag(1)
+                .tabItem {
+                    TabIcons(title: "Exams", icon: "magnifyingglass")
+                }
+                .tag(1)
             
             TopicsListView()
-            .tabItem {
-                TabIcons(title: "Topics", icon: "list.bullet.rectangle")
-            }
-            .tag(2)
+                .tabItem {
+                    TabIcons(title: "Topics", icon: "list.bullet.rectangle")
+                }
+                .tag(2)
             
             View3()
-            .tabItem {
-                TabIcons(title: "History", icon: "scroll")
-            }
-            .tag(3)
+                .tabItem {
+                    TabIcons(title: "History", icon: "scroll")
+                }
+                .tag(3)
         }
         .tint(.teal)
         .safeAreaInset(edge: .bottom) {
@@ -145,8 +138,6 @@ struct HomeView: View {
 }
 
 
-
-
 struct TabIcons: View {
     var title: String
     var icon: String
@@ -160,9 +151,11 @@ struct TabIcons: View {
 
 
 #Preview {
-//    @StateObject var quizPlayer = QuizPlayer()
-//    return HomeView(quizPlayer: quizPlayer)
-    ContentView()
+    let user = User()
+    let quizPlayer = QuizPlayer(user: user)
+    return ContentView()
+        .environmentObject(user)
+        .environmentObject(quizPlayer)
         .modelContainer(for: [ExamType.self, Topic.self], inMemory: true)
 }
 
@@ -190,7 +183,7 @@ struct View3: View {
                 .blur(radius: 30)
             
         )
-    
+        
     }
 }
 

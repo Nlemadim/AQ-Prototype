@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 
 class TestTopicGenerator: ObservableObject {
@@ -30,7 +31,7 @@ class TestTopicGenerator: ObservableObject {
     
 }
 
-class TestQuestionGenerator: ObservableObject {
+class TestQuestionAudioGenerator: ObservableObject {
     @Environment(\.modelContext) private var modelContext
     @Published var color: Color = .green
     @Published var questioNumber: Int = 0
@@ -38,31 +39,22 @@ class TestQuestionGenerator: ObservableObject {
     
     private let networkService: NetworkService = NetworkService.shared
     
-    ///Mock Question models  reception based on any sorting criteria from sorting manager
-    let barExamSampleQuestions = [
-        Question(id: UUID() ,questionContent: "What is required for a lawyer to avoid conflicts of interest with current clients?", questionNote: "", topic: "Professional Responsibility", options: ["A) Obtain informed consent, confirmed in writing.", "B) Ensure a physical separation from clients.", "C) Charge reasonable fees.", "D) Refer the client to another lawyer."], correctOption: "A", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "Which amendment to the U.S. Constitution primarily deals with the rights of the accused in criminal cases?", questionNote: "", topic: "Constitutional Law", options: ["A) First Amendment", "B) Fourth Amendment", "C) Fifth Amendment", "D) Eighth Amendment"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What standard is used to determine the guilt of a defendant in a criminal trial?", questionNote: "", topic: "Criminal Law and Procedure", options: ["A) Preponderance of the evidence", "B) Clear and convincing evidence", "C) Beyond a reasonable doubt", "D) Probable cause"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What is the primary purpose of the hearsay rule?", questionNote: "", topic: "Evidence", options: ["A) To ensure all evidence is relevant", "B) To allow witnesses to testify about what others said", "C) To exclude statements made out of court that are offered to prove the truth of the matter asserted", "D) To ensure direct evidence is presented"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What legal doctrine prevents the assertion of a property right by a possessor against the true owner after a certain period of time?", questionNote: "", topic: "", options: ["A) Rule against perpetuities", "B) Adverse possession", "C) Eminent domain", "D) Joint tenancy"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "Which of the following is a defense to a claim of negligence?", questionNote: "", topic: "Real Property", options: ["A) Vicarious liability", "B) Comparative negligence", "C) Assault", "D) Battery"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What is required for a contract to be considered enforceable?", questionNote: "", topic: "Torts", options: ["A) An offer and an acceptance", "B) A written agreement", "C) Consideration", "D) Both A and C"], correctOption: "D", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "Which of the following is a characteristic of a corporation but not a partnership?", questionNote: "Contracts", topic: "Business Associations", options: ["A) Limited liability for owners", "B) Pass-through taxation", "C) No formalities for creation", "D) Unlimited life"], correctOption: "A", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What is required for a will to be valid?", questionNote: "", topic: "Wills and Trusts", options: ["A) Notarization", "B) Testator's signature and the signature of at least two witnesses", "C) A declaration of trust", "D) A beneficiary"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: ""),
-        Question(id: UUID() ,questionContent: "What principle requires a court to have the power to decide a case and make a binding decision on the parties involved?", questionNote: "", topic: "Civil Procedure", options: ["A) Subject matter jurisdiction", "B) Personal jurisdiction", "C) Venue", "D) Standing"], correctOption: "B", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "", questionNoteAudio: "")
-    ]
+    static let shared = TestQuestionAudioGenerator()
     
+    private init() {}
+ 
+
     //MARK: Group question content update. To be Called when this exam is selected.
     func updateQuestionGroup(questions: [Question]) async {
-        // Use TaskGroup to perform concurrent network requests
-        await withTaskGroup(of: Void.self) { group in
-            for question in questions {
-                group.addTask {
-                    await self.generateAudioQuestion(question: question)
-                }
-            }
+        for question in questions {
+            print(question)
+            
+            await self.generateAudioQuestion(question: question)
+            
+            //print("Error generating audio for question: \(question.questionContent)")
         }
     }
+
     
     private func formatQuestionForReadOut(questionContent: String, options: [String]) -> String {
         self.questioNumber += 1
@@ -99,7 +91,7 @@ class TestQuestionGenerator: ObservableObject {
     
     private func updateQuestionAudioContent(question: Question, audioFilePath: String) {
         question.questionAudio = audioFilePath
-        modelContext.insert(question)
+        //modelContext.insert(question)
     }
     
     private func generateAudioQuestion(question: Question) async {
@@ -119,6 +111,16 @@ class TestQuestionGenerator: ObservableObject {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 struct Test: View {
     @Binding var expandSheet: Bool

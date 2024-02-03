@@ -158,8 +158,11 @@ struct MicButtonWithProgressRing: View {
     }
 }
 
-#Preview {
-    @ObservedObject var quizPlayer = QuizPlayer()
-    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
-        .preferredColorScheme(.dark)
-}
+//#Preview {
+//    let sample = FeaturedQuiz
+//    let sampleQuiz = sample.barExam
+//    let User = User(selectedQuiz: sampleQuiz)
+//    @ObservedObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
+//    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
+//        .preferredColorScheme(.dark)
+//}

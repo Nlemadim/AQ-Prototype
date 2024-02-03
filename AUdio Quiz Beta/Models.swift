@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct OptionButton: View {
-    @ObservedObject var questionModel: TestQuestionModel
+    @ObservedObject var questionModel: Question
     @State var selectedOption: String = ""
     var option: String
     var quizPlayer: QuizPlayer

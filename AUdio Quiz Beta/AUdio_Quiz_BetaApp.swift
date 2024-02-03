@@ -9,14 +9,17 @@ import SwiftUI
 import SwiftData
 
 @main
-struct AUdio_Quiz_BetaApp: App {
-    @StateObject var quizPlayer = QuizPlayer()
+struct Audio_Quiz_BetaApp: App {
+    @StateObject var user = User()
+    @StateObject var quizPlayer = QuizPlayer(user: User())
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(user)
                 .environmentObject(quizPlayer)
         }
         .modelContainer(for: [ExamType.self, Topic.self])
     }
 }
+
