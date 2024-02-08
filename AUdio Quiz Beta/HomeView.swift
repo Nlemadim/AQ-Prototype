@@ -19,35 +19,16 @@ struct HomeView: View {
     @State var userItems: [String] = ["Featured", "Recents", "Current" ]
     
     @Namespace private var animation
-    
+
     var body: some View {
         TabView(selection: $selectedTab) {
             NavigationView {
                 ZStack {
-                
-                    ScrollView {
-                        GeometryReader { proxy in
-                            Text("Featured")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .padding()
-                        }
-                        .frame(height: 0)
-                        
-                        TabView {
-                                ForEach(FeaturedQuiz.allCases, id: \.self) { quiz in
-                                    SampleExam(featuredQuiz: quiz, questions: quiz.questions, playButtonAction: {
-                                        user.selectedQuiz = UserSelectedQuiz(from: quiz)
-                                        //print(user.selectedQuiz?.quizName)
-                                    })
-                                    // Add any additional styling or properties here
-                                }
-                        }
-                        
-                        .tabViewStyle(.page(indexDisplayMode: .never))
-                        .frame(height: 560)
-                        
-                    }
+                    VStack(alignment: .center, content: {
+                            QuizPlayerDashboard(user: user, quizPlayer: quizPlayer)
+                    })
+                    .offset(y: -33)
+               
                 }
                 .navigationBarItems(trailing:
                                         Button(action: {
@@ -57,14 +38,13 @@ struct HomeView: View {
                         .resizable()
                         .frame(width: 18, height: 18)
                         .foregroundStyle(.teal).activeGlow(.teal, radius: 0.01)
-      
+                    
                 }))
                 /// Hiding tabBar when Sheet is expended
                 .toolbar(expandSheet ? .hidden : .visible, for: .tabBar)
                 .background(
                     Image("Logo")
                         .offset(x: 230, y: -100)
-                    
                 )
                 .preferredColorScheme(.dark)
             }
@@ -74,34 +54,24 @@ struct HomeView: View {
             }
             .tag(0)
             
-            ExamList()
+            View4()
                 .tabItem {
                     TabIcons(title: "Exams", icon: "magnifyingglass")
                 }
                 .tag(1)
             
-            TopicsListView()
-                .tabItem {
-                    TabIcons(title: "Topics", icon: "list.bullet.rectangle")
-                }
-                .tag(2)
-            
             View3()
                 .tabItem {
-                    TabIcons(title: "History", icon: "scroll")
+                    TabIcons(title: "Profile", icon: "person.fill")
                 }
-                .tag(3)
+                .tag(2)
         }
         .tint(.teal)
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor.black
+        }
         .safeAreaInset(edge: .bottom) {
             BottomMiniPlayer()
-        }
-        .overlay {
-            if expandSheet {
-                QuizView(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
-                //Transition Animation
-                    .transition(.asymmetric(insertion: .identity, removal: .offset(y: -5)))
-            }
         }
     }
     
@@ -117,12 +87,11 @@ struct HomeView: View {
                     .fill(.black)
                     .overlay {
                         ///Music Info
-                        PlayerContentInfo(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
+                        PlayerContentInfo(quizPlayer: quizPlayer)
                     }
-                    .matchedGeometryEffect(id: "MAINICON", in: animation)
             }
         }
-        .frame(height: 70)
+        .frame(height: 60)
         
         ///Seperator LIne
         .overlay(alignment: .bottom, content: {
@@ -134,9 +103,7 @@ struct HomeView: View {
         ///Default Height set to 49
         .offset(y: -49)
     }
-    
 }
-
 
 struct TabIcons: View {
     var title: String
@@ -147,8 +114,6 @@ struct TabIcons: View {
         Label(title, systemImage: icon)
     }
 }
-
-
 
 #Preview {
     let user = User()
@@ -179,28 +144,39 @@ struct View3: View {
         .navigationBarBackButtonHidden(true)
         .background(
             Image("Logo")
-                .offset(x:  220, y: -130)
+                .offset(x:  220, y: +230)
                 .blur(radius: 30)
-            
         )
+    }
+}
+
+
+struct View4: View {
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                // Increase spacing here
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+                    ForEach(FeaturedQuiz.allCases, id: \.self) { quiz in
+                        ExamTypeView2(quiz: quiz)
+                            .navigationTitle("Practice Exams").navigationBarTitleDisplayMode(.automatic)
+                            
+                    }
+                }
+            }
+            .preferredColorScheme(.dark)
+            .background(
+                Image("Logo")
+                    .aspectRatio(contentMode: .fit)
+                    .offset(x:  120, y: 30)
+                    .blur(radius: 20)
+            )
+        }
         
     }
 }
 
-struct View4: View {
-    var body: some View {
-        ZStack {
-            Text("This is View 4")
-        }
-        .preferredColorScheme(.dark)
-        .navigationBarBackButtonHidden(true)
-        .background(
-            Image("Logo")
-                .offset(x:  220, y: -100)
-            
-        )
-    }
-}
+
 
 struct NavigationConfigurator: UIViewControllerRepresentable {
     var configure: (UINavigationController) -> Void = { _ in }
@@ -215,3 +191,25 @@ struct NavigationConfigurator: UIViewControllerRepresentable {
     }
 }
 
+
+
+/*AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/93D64F35-E2F9-4834-985A-6A27DD1B674D.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/63648781-94B7-4A3D-8B1D-E017BC4D5D74.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/F4FEDA73-589C-4531-83CA-38A7CBF99A77.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/F472347E-61EA-4AF6-8389-F05A3DD2D339.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/41209A0F-72DC-4BFA-A801-442569030813.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/277C30AA-2A29-4624-9918-7DFDF368A38B.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/97149C5E-1C2B-488D-9FBC-7C0D330332F2.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/A52996C3-20A7-4184-9622-2D9D1AC23255.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/DAA1DDE9-C2FC-4F23-969C-3DF1FF00A84A.mp3
+ AUdio_Quiz_Beta.Question
+ file:///Users/tonynlemadim/Library/Developer/Xcode/UserData/Previews/Simulator%20Devices/F02E2872-D721-4DA5-B776-BE82E5276093/data/Containers/Data/Application/E8822FF0-533F-403F-B0DF-EE5A09D7D60C/Documents/8EC57D75-4694-45F0-AC7C-608DC38F1E8D.mp3*/

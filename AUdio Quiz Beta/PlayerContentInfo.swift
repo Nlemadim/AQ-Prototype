@@ -9,83 +9,100 @@ import Foundation
 import SwiftUI
 
 struct PlayerContentInfo: View {
-    @Binding var expandSheet: Bool
-   // @Bindable var questions: [Question]
     @ObservedObject var quizPlayer: QuizPlayer
-    var animation: Namespace.ID
-
     var body: some View {
-        HStack(spacing: 10) {
-            ZStack {
-                if !expandSheet {
-                    GeometryReader { geometry in
-                        Image("IconImage")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipShape(RoundedRectangle(cornerRadius: expandSheet ? 15 : 5, style: .continuous))
-                    }
-                }
-            }
-            .frame(width: 45, height: 45)
-            
-            Text("New York Bar Exam")
-                .font(.callout)
-                //.fontWeight(.bold)
-                .lineLimit(2, reservesSpace: true)
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            
-//            Text("Sample Audio Quiz")
-//                .font(.footnote)
-//                .multilineTextAlignment(.leading)
-//                .lineLimit(2, reservesSpace: true)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-
-            MiniPlayerControls(
-                recordAction: {quizPlayer.recordAnswer()},
-                
-                playPauseAction: { quizPlayer.startQuiz() },
-                
-                nextAction: { quizPlayer.skipToNext() },
-                
-                repeatAction: {
-                    if let question = quizPlayer.currentQuestion {
-                        quizPlayer.replayQuestion(question: question)
-                    }
-                }
-            )
-            .offset(x: 25)
-             
+        HStack  {
+            MiniPlayerControls(controlConfiguration: quizPlayer.controlConfiguration)
         }
         .foregroundStyle(.teal)
         .padding(.horizontal)
         .padding(.bottom, 12)
         .frame(height: 70)
         .contentShape(Rectangle())
-        .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.3)) {
-                expandSheet = true
-            }
-        }
     }
 }
 
-//#Preview {
-//    
-//    let sample = FeaturedQuiz
-//    let sampleQuiz = sample.driversLicense
-//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
-//    return FullScreenControlView(isNowPlaying: true, quizPlayer: quizPlayer, showQuizControl: {})
-//        .preferredColorScheme(.dark)
-//}
-//
-//#Preview {
-//    let sample = FeaturedQuiz
-//    let sampleQuiz = sample.mcat
-//    @StateObject var quizPlayer = QuizPlayer(questions: sampleQuiz.questions)
-//    return MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
-//        .preferredColorScheme(.dark)
-//}
+struct MiniPlayerControls: View {
+    @State private var fillAmount: CGFloat = 0.0
+    @State private var showProgressRing: Bool = false
+    @State var controlConfiguration: QuizControlConfiguration
+    let imageSize: CGFloat = 18
+    
+    var body: some View {
+        HStack(spacing: 5) { // Adjust spacing as needed
+                    Button(action: {
+                        controlConfiguration.selectA()
+                    }, label: {
+                        Text("A")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, weight: .bold))
+                            .frame(width: 40, height: 25)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                            .padding(.horizontal)
+                    })
+                    
+                    Button(action: {
+                        controlConfiguration.selectB()
+                    }, label: {
+                        Text("B")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, weight: .bold))
+                            .frame(width: 40, height: 25)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                            .padding(.horizontal)
+                    })
+                   
+                    // Repeat Button
+                    Button(action: {
+                        controlConfiguration.selectReplay()
+                    }) {
+                        Image(systemName: "backward.end.fill")
+                            .font(.title3)
+                            .foregroundStyle(.white)
+                    }
+
+                    // Play/Pause Button
+                    Button(action: {
+                        controlConfiguration.selectPlay()
+                    }) {
+                        Image(systemName: "play.circle.fill")
+                            .font(.largeTitle)
+                            .foregroundStyle(.white)
+                    }
+
+                    // Next Button
+                    Button(action: {
+                        controlConfiguration.selectNext()
+                    }) {
+                        Image(systemName: "forward.end.fill")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                    }
+                    
+                    Button(action: {
+                        controlConfiguration.selectC()
+                    }, label: {
+                        Text("C")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, weight: .bold))
+                            .frame(width: 40, height: 25)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                            .padding(.horizontal)
+                    })
+                    
+                    Button(action: {
+                        controlConfiguration.selectB()
+                    }, label: {
+                        Text("D")
+                            .foregroundColor(.black)
+                            .font(.system(size: 16, weight: .bold))
+                            .frame(width: 40, height: 25)
+                            .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                            .padding(.horizontal)
+                    })
+                }
+        .frame(maxWidth: .infinity)
+        .foregroundStyle(.teal)
+    }
+}
 

@@ -11,6 +11,8 @@ import SwiftUI
 final class User: ObservableObject {
     @Published var userName: String = ""
     @Published var email: String = ""
+    @Published var userAnswer: String = ""
+    @Published var useMic: Bool = false
     @Published var selectedQuiz: UserSelectedQuiz? {
         didSet {
             Task {
@@ -18,6 +20,11 @@ final class User: ObservableObject {
             }
         }
     }
+    
+    var questionLimit: Int = 0
+    var questionsAnswered: Int = 0
+    var questionsFailed: Int = 0
+    var questionsPassed: Int = 0
 
     init(selectedQuiz: UserSelectedQuiz? = nil) {
         self.selectedQuiz = selectedQuiz
@@ -36,6 +43,7 @@ struct UserSelectedQuiz: Quiz {
         self.questions = featuredQuiz.questions
     }
 }
+
 
 
 
