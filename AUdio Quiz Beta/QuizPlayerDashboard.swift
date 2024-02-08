@@ -99,7 +99,7 @@ struct QuizDashboardView: View {
                 ContentUnavailableView(
                     "Empty!",
                     systemImage: "recordingtape",
-                    description: Text("Download and select Audio Quiz to start")
+                    description: Text("Download an Audio Quiz to start")
                 )
                 
                 DashboardSettingsView()
