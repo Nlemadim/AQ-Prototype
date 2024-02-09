@@ -11,6 +11,21 @@ import SwiftUI
 
 extension QuizPlayer {
     
+    var controlConfiguration: QuizControlConfiguration {
+        return QuizControlConfiguration(
+            selectA: { self.selectedOption = self.currentQuestion?.options[0] ?? ""},
+            selectB: { self.selectedOption = self.currentQuestion?.options[1] ?? ""},
+            selectC: { self.selectedOption = self.currentQuestion?.options[2] ?? "" },
+            selectD: { self.selectedOption = self.currentQuestion?.options[3] ?? ""},
+            selectPlay: { self.startQuiz() },
+            selectReplay: {
+                if let question = self.currentQuestion {
+                    self.replayQuestion(question: question)
+                }
+            },
+            selectNext: { self.skipToNext() })
+    }
+    
     var questionCounter: String {
         return "Question \(currentIndex + 1)/\(examQuestions.count)"
     }
@@ -33,7 +48,6 @@ extension QuizPlayer {
         currentIndex += 1
         playNow(audioFileName: currentQuestion.questionAudio)
     }
-    
     
     func playNextQuestion() {
         guard let currentQuestion = currentQuestion,
@@ -98,130 +112,4 @@ extension QuizPlayer {
         resetForNextQuiz()
     }
     
-}
-
-
-extension QuizPlayer {
-    
-    // Play the next audio in the queue
-    func playNext() {
-        guard !currentPlaybackQueue.isEmpty else { return }
-        
-        if interactionState == .idle || UserDefaultsManager.isOnContinuousFlow() {
-            let nextAudio = currentPlaybackQueue.removeFirst()
-            currentIndex += 1
-            print("Player has moved to the next question")
-            playNow(audioFileName: nextAudio)
-            interactionState = .isNowPlaying
-        } else {
-            // Wait for user response or completion of recording/transcription
-        }
-    }
-    
-    //MARK: Playlist Methods
-    // Populate playlist with questions and corresponding topic notes
-    func populatePlaylist(with questions: [TestQuestionModel], topics: [TestTopicModel]) {
-        playlist = questions.reduce(into: [String: String]()) { dict, question in
-            let topicAudio = topics.first { $0.name == question.topic }?.audioNote ?? ""
-            dict[question.questionAudio] = topicAudio
-        }
-        setupPlaybackQueue()
-    }
-    
-    // Set up the playback queue based on user settings
-    private func setupPlaybackQueue() {
-        currentPlaybackQueue = Array(playlist.keys)
-        
-        //TODO: Modify to continue after questions are exhausted and there are topic notes
-        if UserDefaultsManager.isOnContinuousFlow() {
-            // If continuous flow, play questions first, then topics
-            currentPlaybackQueue.append(contentsOf: playlist.values)
-        }
-    }
-}
-
-
-//TEST METHODS
-extension QuizPlayer {
-    func testRecording() {
-            // Turn on isRecordingAnswer after 3 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                self.isRecordingAnswer = true
-
-                // Then turn it off after an additional 5 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    self.isRecordingAnswer = false
-                }
-            }
-        }
-    
-}
-
-// Helper method to find a question based on its audio file
-//    private func findQuestion(fromAudio audio: String) -> TestQuestionModel? {
-//        currentIndex += 1
-//        if let currentQuestion = currentQuestion {
-//            return currentQuestion
-//        }
-//
-//        return nil
-//    }
-//
-
-// Method to add an audio file to the playlist
-//    func addToPlaylist(audioFileName: String) {
-//        if !playlist.contains(audioFileName) {
-//            playlist.append(audioFileName)
-//        }
-//    }
-
-// Method to remove an audio file from the playlist by its name
-//    func removeFromPlaylist(audioFileName: String) {
-//        playlist.removeAll { $0 == audioFileName }
-//    }
-//
-// Method to remove an audio file from the playlist by its index
-//    func removeFromPlaylist(at index: Int) {
-//        guard playlist.indices.contains(index) else { return }
-//        playlist.remove(at: index)
-//    }
-
-// Helper method to add an audio file to the top of the playlist
-//    private func addToPlaylistTop(audioFileName: String) {
-//        // Remove the audio file if it already exists in the playlist to avoid duplication
-//        removeFromPlaylist(audioFileName: audioFileName)
-//
-//        // Insert the audio file at the beginning of the playlist
-//        playlist.insert(audioFileName, at: 0)
-//    }
-
-
-extension QuizPlayer {
-//    class QuizIntermission: ObservableObject {
-//        var quizPlayer: QuizPlayer = QuizPlayer.self
-//        @Published var intermissionPlaylist: [String] = []
-//        
-//        func fetchIntermissionQuizReview(question: String, topic: String) -> String {
-//
-//            let incorrectQuestions = quizPlayer.examQuestions.filter { $0.isAnswered && !$0.isAnsweredCorrectly && $0.topic == topic }
-//            
-//            for question in incorrectQuestions {
-//               //let topicAudioNote = topicsService.fetchTopicAudioNote(topic name: question.topic)
-//                let audioNote = question.questionNoteAudio
-//                //questionService.fetchQuestionAudioNote(question: question.questionAudioNote)
-//                
-//                intermissionPlaylist.append(audioNote)
-//                //intermissionPlaylist.append(topicNote)
-//            }
-//                
-//            return ""
-//        }
-//        
-//        func fetchIntermissionTopicReview(topic: String) -> String {
-//            // let auidioNote = topicsService.fetchTopicAudioNote(topic name: )
-//            // intermissionPlaylist.append(audioNote)
-//            
-//            return ""
-//        }
-//    }
 }

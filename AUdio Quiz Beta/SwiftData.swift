@@ -10,6 +10,34 @@ import SwiftUI
 import SwiftData
 
 //@Model
+@Model
+final class ExamType {
+    @Attribute(.unique) var name: String
+    var about: String
+    var imageUrl: String
+    var category: String
+    
+    init(name: String, about: String, imageUrl: String, category: String) {
+        self.name = name
+        self.about = about
+        self.imageUrl = imageUrl
+        self.category = category
+    }
+}
+
+@Model
+class Topic {
+    @Attribute(.unique) var name: String
+    var isPresented: Bool
+    var numberOfPresentations: Int
+    
+    init(name: String) {
+        self.name = name
+        self.isPresented = false
+        self.numberOfPresentations = 0
+    }
+}
+
 class Question: ObservableObject, Identifiable {
     var id: UUID
     @Attribute(.unique) var questionContent: String
@@ -40,68 +68,34 @@ class Question: ObservableObject, Identifiable {
     }
 }
 
-@Model
-class ExamType {
-    @Attribute(.unique) var name: String
-    var about: String
-    var imageUrl: String
-    var category: String
-    
-    init(name: String, about: String, imageUrl: String, category: String) {
-        self.name = name
-        self.about = about
-        self.imageUrl = imageUrl
-        self.category = category
-    }
-}
-
-@Model
-class Topic {
-    @Attribute(.unique) var name: String
-    var generalOverview: String
-    var audioNote: String
-    var isPresented: Bool = false
-    var inFocus: Bool = false
-    
-    init(name: String, generalOverview: String, audioNote: String, isPresented: Bool, inFocus: Bool) {
-        self.name = name
-        self.generalOverview = generalOverview
-        self.audioNote = audioNote
-        self.isPresented = isPresented
-        self.inFocus = inFocus
-    }
-}
-
-@Model
-class AudioPlayerItem {
-    @Attribute(.unique) var name: String
-    var audioNote: String
-    var image: String
-    
-    init(name: String, audioNote: String, image: String) {
-        self.name = name
-        self.audioNote = audioNote
-        self.image = image
-    }
-}
-
 //@Model
-//class AudioQuiz: ObservableObject {
-//    @Attribute(.unique) var testName: String
-//    var image: String
-//    var topics: [String]
+//final class QuizPackage {
+//    @Attribute(.unique) var quiz: ExamType
+//    var topics: [Topic]
 //    var questions: [Question]
 //    
-//    init(testName: String, image: String, topics: [String], questions: [Question], currentQuestions: [Question]) {
-//        self.testName = testName
-//        self.image = image
+//    init(quiz: ExamType, topics: [Topic], questions: [Question]) {
+//        self.quiz = quiz
 //        self.topics = topics
 //        self.questions = questions
-//        self.currentQuestions = currentQuestions
 //    }
+//}
+
+//@Model
+//class AudioQuizDataModel {
+//    var id: PersistentIdentifier
+//    var quizName: ExamType
+//    var quizmage: String
+//    var topics: [Topic]
+//    var questions: [Question]
 //    
-//    @Relationship
-//    var currentQuestions: [Question] = []
+//    init(id: PersistentIdentifier, quizName: ExamType, quizmage: String) {
+//        self.id = id
+//        self.quizName = quizName
+//        self.quizmage = quizmage
+//        self.topics = []
+//        self.questions = []
+//    }
 //}
 
 @Model

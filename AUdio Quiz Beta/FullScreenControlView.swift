@@ -52,7 +52,7 @@ struct FullScreenControlView: View {
                 // Next/End Button
                 Button(action:  {
                    quizPlayer.skipToNext()
-                    quizPlayer.testRecording()
+                   
                 }) {
                     Image(systemName: "forward.end.fill")
                         .font(.title)

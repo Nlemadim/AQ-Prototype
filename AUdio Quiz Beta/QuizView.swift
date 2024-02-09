@@ -40,7 +40,7 @@ struct QuizView: View {
                             QuizInfoDetailsView()
                                 .frame(alignment: .topLeading)
                                 .overlay(alignment: .top) {
-                                    PlayerContentInfo(expandSheet: $expandSheet, quizPlayer: quizPlayer, animation: animation)
+                                    PlayerContentInfo(quizPlayer: quizPlayer)
                                         .allowsHitTesting(false)
                                         .opacity(animateContent ? 0 : 1)
                                 }

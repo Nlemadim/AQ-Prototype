@@ -150,6 +150,39 @@ struct SampleExam2: View {
     }
 }
 
+struct AudioQuizView: View {
+    var quiz: FeaturedQuiz
+
+    var body: some View {
+        VStack {
+            quiz.quizImage
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 180, height: 260) // Adjusted size
+                .cornerRadius(20)
+                .overlay(
+                    VStack {
+                        Spacer()
+                        // Encapsulate text within a background
+                        VStack {
+                            Text(quiz.quizName)
+                                .font(.headline)
+                                .bold()
+                                .foregroundColor(.white)
+                                .padding(5) // Adjust padding for text
+                        }
+                        .frame(width: 200, height: 60) // Fixed size background
+                        .background(Color.black.opacity(0.7))
+                        .cornerRadius(10)
+                    }
+                    //.padding(.bottom, 10) // Adjust to ensure it aligns well within the image
+                )
+        }
+        .cornerRadius(20)
+        .shadow(radius: 5)
+        .padding(.horizontal)
+    }
+}
 
 
 

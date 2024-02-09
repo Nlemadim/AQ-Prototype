@@ -1,6 +1,6 @@
 //
 //  LaunchScreen.swift
-//  Exam Genius Audio Quiz Player
+//  AUdio Quiz Beta
 //
 //  Created by Tony Nlemadim on 1/15/24.
 //(colors: [.themePurple, .purple.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)

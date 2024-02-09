@@ -12,14 +12,17 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var quizPlayer: QuizPlayer
     var body: some View {
-        HomeView(quizPlayer: quizPlayer)
-        
-        //MARK: UI VIEWS TEST VIEW
-        //Test()
+        HomeView()
+     
     }
 }
 
+
 #Preview {
-    ContentView()
-        .modelContainer(for: [ExamType.self, Topic.self], inMemory: true)
+    let user = User()
+    let quizPlayer = QuizPlayer(user: user)
+    return ContentView()
+        .environmentObject(user)
+        .environmentObject(quizPlayer)
+        .modelContainer(for: [ExamType.self], inMemory: true)
 }

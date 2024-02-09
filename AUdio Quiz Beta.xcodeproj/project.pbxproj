@@ -47,6 +47,7 @@
 		0BA96D212B696650009587AC /* testFullScreenQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA96D202B696650009587AC /* testFullScreenQuiz.swift */; };
 		0BB0F3602B64432400BA0997 /* InteractionVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB0F35F2B64432400BA0997 /* InteractionVisualizer.swift */; };
 		0BCC5CEF2B617B3E00F36534 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCC5CEE2B617B3E00F36534 /* Test.swift */; };
+		0BD9AE062B75B87F004FBADB /* QuizDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9AE052B75B87F004FBADB /* QuizDashboardView.swift */; };
 		0BE2D57E2B6038FE00FD8E49 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE2D57D2B6038FE00FD8E49 /* SpeechManager.swift */; };
 		0BE31FB92B6AC13D007494EE /* MiniPlayerControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE31FB82B6AC13D007494EE /* MiniPlayerControls.swift */; };
 		0BE31FBD2B6AC5D8007494EE /* ExamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE31FBC2B6AC5D8007494EE /* ExamList.swift */; };
@@ -110,6 +111,7 @@
 		0BA96D202B696650009587AC /* testFullScreenQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testFullScreenQuiz.swift; sourceTree = "<group>"; };
 		0BB0F35F2B64432400BA0997 /* InteractionVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionVisualizer.swift; sourceTree = "<group>"; };
 		0BCC5CEE2B617B3E00F36534 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		0BD9AE052B75B87F004FBADB /* QuizDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDashboardView.swift; sourceTree = "<group>"; };
 		0BE2D57D2B6038FE00FD8E49 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
 		0BE31FB82B6AC13D007494EE /* MiniPlayerControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerControls.swift; sourceTree = "<group>"; };
 		0BE31FBC2B6AC5D8007494EE /* ExamList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamList.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				0BB0F35F2B64432400BA0997 /* InteractionVisualizer.swift */,
 				0BE31FB82B6AC13D007494EE /* MiniPlayerControls.swift */,
 				0BA1B09C2B6356E200603888 /* FullScreenControlView.swift */,
+				0BD9AE052B75B87F004FBADB /* QuizDashboardView.swift */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				0B890F812B596F5A009C7FA6 /* PlayerContentInfo.swift in Sources */,
 				0BB0F3602B64432400BA0997 /* InteractionVisualizer.swift in Sources */,
 				0B890FBD2B599F1C009C7FA6 /* ScoreCardView.swift in Sources */,
+				0BD9AE062B75B87F004FBADB /* QuizDashboardView.swift in Sources */,
 				0BA1B09F2B635A6B00603888 /* Models.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

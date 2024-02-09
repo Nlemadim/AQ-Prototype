@@ -11,7 +11,7 @@ import SwiftUI
 final class User: ObservableObject {
     @Published var userName: String = ""
     @Published var email: String = ""
-    @Published var selectedQuiz: UserSelectedQuiz? {
+    @Published var selectedQuiz: AudioQuiz? {
         didSet {
             Task {
                 await TestQuestionAudioGenerator.shared.updateQuestionGroup(questions: selectedQuiz?.questions ?? [])
@@ -19,13 +19,13 @@ final class User: ObservableObject {
         }
     }
 
-    init(selectedQuiz: UserSelectedQuiz? = nil) {
+    init(selectedQuiz: AudioQuiz? = nil) {
         self.selectedQuiz = selectedQuiz
         
     }
 }
 
-struct UserSelectedQuiz: Quiz {
+struct AudioQuiz: Quiz {
     var quizName: String
     var quizImage: Image
     var questions: [Question]

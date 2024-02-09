@@ -15,7 +15,7 @@ class DatabaseService {
     //@Query var questions: [Question]
     @Query var topics: [Topic]
     @Query var exams: [ExamType]
-    @Query var audioPlayerItems: [AudioPlayerItem]
+    
     
     let networkService = NetworkService.shared
     

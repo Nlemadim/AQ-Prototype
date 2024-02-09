@@ -7,85 +7,132 @@
 
 import SwiftUI
 
-struct MiniPlayerControls: View {
-    var recordAction: () -> Void
-    var playPauseAction: () -> Void
-    var nextAction: () -> Void
-    var repeatAction: () -> Void
+struct QuizControlConfiguration {
+    let selectA: () -> Void
+    let selectB: () -> Void
+    let selectC: () -> Void
+    let selectD: () -> Void
+    let selectPlay: () -> Void
+    let selectReplay: () -> Void
+    let selectNext: () -> Void
+}
 
+
+struct MiniPlayerControls: View {
     @State private var fillAmount: CGFloat = 0.0
     @State private var showProgressRing: Bool = false
+    var controlConfiguration: QuizControlConfiguration
     let imageSize: CGFloat = 18
+    
+    var body: some View {
+        HStack(spacing: 5) { // Adjust spacing as needed
+            Button(action: {
+                controlConfiguration.selectA()
+            }, label: {
+                Text("A")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 40, height: 25)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .padding(.horizontal)
+            })
+            
+            Spacer(minLength: 0)
+            
+            Button(action: {
+                controlConfiguration.selectB()
+            }, label: {
+                Text("B")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 40, height: 25)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .padding(.horizontal)
+            })
+            
+            Spacer(minLength: 0)
+            
+            StartButton()
+            
+            Spacer(minLength: 0)
+
+            Button(action: {
+                controlConfiguration.selectC()
+            }, label: {
+                Text("C")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 40, height: 25)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .padding(.horizontal)
+            })
+            
+            Spacer(minLength: 0)
+            
+            Button(action: {
+                controlConfiguration.selectB()
+            }, label: {
+                Text("D")
+                    .foregroundColor(.black)
+                    .font(.system(size: 16, weight: .bold))
+                    .frame(width: 40, height: 25)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .padding(.horizontal)
+            })
+        }
+        .frame(maxWidth: .infinity)
+        .foregroundStyle(.teal)
+    }
+}
+#Preview {
+   StartButton()
+        .preferredColorScheme(.dark)
+}
+
+
+
+struct StartButton: View {
+    @State private var isFilling = false
+    @State private var progress: CGFloat = 0.0
+    let fillUpDuration = 5.0
 
     var body: some View {
-        HStack(spacing: 20) {
-            // Repeat Button
-            Button(action: repeatAction) {
-                Image(systemName: "memories")
-                    .font(.title2)
+        Button(action: {
+            // Toggle filling state
+            isFilling.toggle()
+            
+            if isFilling {
+                // Start the animation to fill the progress ring
+                withAnimation(.linear(duration: fillUpDuration)) {
+                    progress = 1.0
+                }
+                // Schedule the reset after the fillUpDuration
+                DispatchQueue.main.asyncAfter(deadline: .now() + fillUpDuration) {
+                    isFilling = false // Reset filling state
+                    progress = 0.0 // Reset progress
+                }
             }
-
-            // Record Button with Progress Ring
+        }) {
             ZStack {
-                // Background
                 Circle()
-                    .fill(Color.themePurple)
-                    .frame(width: imageSize * 3, height: imageSize * 3)
+                    .strokeBorder(Color.gray.opacity(0.5), lineWidth: 4)
+                    .frame(width: 46, height: 46)
+                
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(Color.orange, style: StrokeStyle(lineWidth: 4, lineCap: .round)).activeGlow(.orange, radius: 1)
+                    .rotationEffect(.degrees(-270))
+                    .frame(width: 45, height: 45)
+                    .shadow(color: .orange, radius: 20)
 
-                // Conditional display of Progress Ring
-                if showProgressRing {
-                    Circle()
-                        .stroke(Color.white.opacity(0.3), lineWidth: 5)
-                        .frame(width: imageSize * 3, height: imageSize * 3)
-
-                    Circle()
-                        .trim(from: 0, to: fillAmount)
-                        .stroke(Color.teal, lineWidth: 5)
-                        .frame(width: imageSize * 3, height: imageSize * 3)
-                        .rotationEffect(.degrees(-180))
-                        .animation(.linear(duration: 5), value: fillAmount)
-                }
-
-                // Mic Button
-                Button(action: {
-                    self.recordAction()
-                    self.startFilling()
-                }) {
-                    Image(systemName: "mic.fill")
-                        .font(.title2)
-                        .foregroundColor(.white)
-                }
+                Image(systemName: isFilling ? "pause.circle.fill" : "play.circle.fill")
+                    .resizable()
+                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .frame(width: 45, height: 45)
             }
-
-            // Play/Pause Button
-            Button(action: playPauseAction) {
-                Image(systemName: "play.fill")
-                    .font(.title2)
-            }
-
-            // Next Button
-            Button(action: nextAction) {
-                Image(systemName: "forward.fill")
-                    .font(.title2)
-            }
-        }
-        .foregroundStyle(.teal)
-        .padding(.horizontal)
-    }
-
-    private func startFilling() {
-        fillAmount = 0.0 // Reset the fill amount
-        showProgressRing = true // Show the progress ring
-        withAnimation(.linear(duration: 5)) {
-            fillAmount = 1.0 // Fill the ring over 5 seconds
-        }
-        // Hide the progress ring after 5 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.showProgressRing = false
+            
         }
     }
 }
 
-#Preview {
-    MiniPlayerControls(recordAction: {}, playPauseAction: {}, nextAction: {}, repeatAction: {})
-}
