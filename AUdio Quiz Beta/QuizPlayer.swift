@@ -29,8 +29,8 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     @State var isQuizStarted: Bool = false
     @State var isPaused: Bool = false
        
-    private let speechRecognizer = SpeechManager()
-    private var user: User
+    private var speechRecognizer = SpeechManager()
+    private let user: User
     private var speechSynthesizer = AVSpeechSynthesizer()
     var audioPlayer: AVAudioPlayer?
 

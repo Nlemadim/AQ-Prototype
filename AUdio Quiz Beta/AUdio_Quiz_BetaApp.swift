@@ -19,7 +19,7 @@ struct Audio_Quiz_BetaApp: App {
                 .environmentObject(user)
                 .environmentObject(quizPlayer)
         }
-        .modelContainer(for: [ExamType.self])
+        .modelContainer(for: [AudioQuizPackage.self, Topic.self, Question.self, Performance.self])
     }
 }
 

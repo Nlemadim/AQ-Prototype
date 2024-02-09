@@ -10,7 +10,7 @@ import SwiftData
 
 struct ExamList: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var path = [ExamType]()
+    @State private var path = [AudioQuizPackage]()
     @State private var searchText = ""
     //@Query(sort: \ExamType.name) var exams: [ExamType]
     
@@ -21,7 +21,7 @@ struct ExamList: View {
                 VStack {
                     Exam()
                         .navigationTitle("Exam").navigationBarTitleDisplayMode(.automatic)
-                        .navigationDestination(for: ExamType.self) { exam in
+                        .navigationDestination(for: AudioQuizPackage.self) { exam in
                             Text("Build Exam on this Screen\n\nAbout \(exam.name):\n\(exam.about)")
                         }
                         .searchable(text: $searchText)
@@ -48,7 +48,7 @@ struct ExamList: View {
         let defaultList: [String] = UserDefaultsManager.getArrayFromUserDefaults(key: "defaultExams")
         
         defaultList.forEach { examName in
-            let exam = ExamType(name: examName, about: "", imageUrl: "", category: "")
+            let exam = AudioQuizPackage(id: UUID(), name: examName, about: "", imageUrl: "", category: "")
             modelContext.insert(exam)
             try! modelContext.save()
         }
@@ -90,7 +90,7 @@ struct ExamList: View {
 
 #Preview {
     ExamList()
-        .modelContainer(for: [ExamType.self],
+        .modelContainer(for: [AudioQuizPackage.self],
                         inMemory: true
         )
 }

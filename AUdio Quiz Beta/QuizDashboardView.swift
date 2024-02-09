@@ -15,6 +15,7 @@ struct QuizPlayerDashboard: View {
                 QuizDashboardInfoDetailsView(user: user)
                 QuizDashboardView(question: quizPlayer.currentQuestion, options: quizPlayer.currentQuestion?.options ?? [])
             }
+            .scrollBounceBehavior(.basedOnSize)
             .padding(.top, 30)
             .padding(.bottom, 10)
         }

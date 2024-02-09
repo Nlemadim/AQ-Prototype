@@ -24,5 +24,5 @@ struct ContentView: View {
     return ContentView()
         .environmentObject(user)
         .environmentObject(quizPlayer)
-        .modelContainer(for: [ExamType.self], inMemory: true)
+        .modelContainer(for: [AudioQuizPackage.self], inMemory: true)
 }

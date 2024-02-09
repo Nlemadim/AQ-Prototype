@@ -77,6 +77,8 @@ extension QuizPlayer {
         UserDefaultsManager.incrementNumberOfQuizSessions() // Incrementing the number of quiz
     }
     
+    
+    /// Fix Save Method
     func saveAnswer(for questionId: UUID, answer: String) {
         if let index = examQuestions.firstIndex(where: { $0.id == questionId }) {
             examQuestions[index].selectedOption = answer

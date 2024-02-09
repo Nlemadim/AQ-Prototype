@@ -32,8 +32,7 @@ class NetworkService {
         
         // Fetch the response from your API
         let (data, response) = try await URLSession.shared.data(for: request)
-        
-        
+                
         // Check the HTTP response
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse, userInfo: ["Description": "Invalid HTTP response"])
@@ -42,7 +41,6 @@ class NetworkService {
         guard httpResponse.statusCode == 200 else {
             throw URLError(.badServerResponse, userInfo: ["Description": "Server returned status code \(httpResponse.statusCode)"])
         }
-        
         
         // Decode the base64 string to Data
         guard let decodedData = Data(base64Encoded: data) else {
@@ -92,8 +90,5 @@ class NetworkService {
     
     //MARK: ENTRY POINT
     func fetchSampleAudioQuiz()  async throws {}
-    
-    
-
-    
 }
+

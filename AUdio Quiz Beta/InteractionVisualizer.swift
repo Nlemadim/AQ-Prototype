@@ -113,80 +113,80 @@ struct InteractionVisualizer: View {
     }
 }
 
-struct NavBarInteractionVisualizer: View {
-    @State var comment: String
-    @State var correctOption: String
-    @State var interactionState: InteractionState
-    var quizPlayer: QuizPlayer
-
-    var body: some View {
-        let didRecieveSpeech = !comment.isEmpty
-        let isPlaying = interactionState == .isNowPlaying || interactionState == .isListening
-
-        VStack(spacing: 10) {
-            HStack(spacing: 100) {
-                HStack(spacing: 0) {
-                       Image(systemName: "play.desktopcomputer")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundStyle(.white)
-                    
-
-                    Image(systemName: "waveform")
-                        .resizable()
-                        .foregroundStyle(.white)
-                        .symbolEffect(.variableColor.iterative.dimInactiveLayers.reversing, options: .repeating, isActive: interactionState == .isNowPlaying)
-                        .frame(width: 23, height: 23)
-                        .offset(y: -5)
-                        .padding(.leading, 3)
-                        .activeGlow(isPlaying ? .themeTeal : .clear, radius: 2)
-                }
-                .opacity(interactionState == .isNowPlaying ? 0 : 1)//UI TESTING! Please Switch before Run
-                
-                Spacer()
-                
-
-
-                HStack(spacing: 0) {
-                    ZStack {
-                        Image(systemName: "bubble.right")
-                            .resizable()
-                            .foregroundStyle(.white)
-                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasResponded)
-                            .frame(width: 23, height: 23)
-                            .offset(y: -5)
-                            .padding(.leading, 3)
-
-                        Text(comment.isSingleCharacterABCD ? comment : "")
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .offset(y: -8)
-                            .foregroundStyle(.themePurple)
-                    }
-
-                    Button(action: {
-                        
-                    }, label: {
-                       Image(systemName: "person.fill")
-                            .resizable()
-                            .frame(width: 18, height: 18)
-                            .foregroundStyle(.white)
-                            
-                    })
-                }
-                .opacity(interactionState == .errorResponse ? 0 : 1)//UI TESTING! Please Switch before Run
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            .frame(width: 180)
-        }
-        .frame(maxWidth: .infinity)
-        .preferredColorScheme(.dark)
-    }
-}
-
-
-
+//struct NavBarInteractionVisualizer: View {
+//    @State var comment: String
+//    @State var correctOption: String
+//    @State var interactionState: InteractionState
+//    var quizPlayer: QuizPlayer
+//
+//    var body: some View {
+//        let didRecieveSpeech = !comment.isEmpty
+//        let isPlaying = interactionState == .isNowPlaying || interactionState == .isListening
+//
+//        VStack(spacing: 10) {
+//            HStack(spacing: 100) {
+//                HStack(spacing: 0) {
+//                       Image(systemName: "play.desktopcomputer")
+//                            .resizable()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundStyle(.white)
+//                    
+//
+//                    Image(systemName: "waveform")
+//                        .resizable()
+//                        .foregroundStyle(.white)
+//                        .symbolEffect(.variableColor.iterative.dimInactiveLayers.reversing, options: .repeating, isActive: interactionState == .isNowPlaying)
+//                        .frame(width: 23, height: 23)
+//                        .offset(y: -5)
+//                        .padding(.leading, 3)
+//                        .activeGlow(isPlaying ? .themeTeal : .clear, radius: 2)
+//                }
+//                .opacity(interactionState == .isNowPlaying ? 0 : 1)//UI TESTING! Please Switch before Run
+//                
+//                Spacer()
+//                
+//
+//
+//                HStack(spacing: 0) {
+//                    ZStack {
+//                        Image(systemName: "bubble.right")
+//                            .resizable()
+//                            .foregroundStyle(.white)
+//                            .symbolEffect(.scale.wholeSymbol, options: .nonRepeating, isActive: interactionState == .hasResponded)
+//                            .frame(width: 23, height: 23)
+//                            .offset(y: -5)
+//                            .padding(.leading, 3)
+//
+//                        Text(comment.isSingleCharacterABCD ? comment : "")
+//                            .font(.caption)
+//                            .fontWeight(.bold)
+//                            .offset(y: -8)
+//                            .foregroundStyle(.themePurple)
+//                    }
+//
+//                    Button(action: {
+//                        
+//                    }, label: {
+//                       Image(systemName: "person.fill")
+//                            .resizable()
+//                            .frame(width: 18, height: 18)
+//                            .foregroundStyle(.white)
+//                            
+//                    })
+//                }
+//                .opacity(interactionState == .errorResponse ? 0 : 1)//UI TESTING! Please Switch before Run
+//            }
+//            .padding(.horizontal)
+//            .padding(.top)
+//            .frame(width: 180)
+//        }
+//        .frame(maxWidth: .infinity)
+//        .preferredColorScheme(.dark)
+//    }
+//}
+//
+//
+//
 
 //#Preview {
 //    let sample = FeaturedQuiz

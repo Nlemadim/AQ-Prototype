@@ -100,14 +100,14 @@ struct TabIcons: View {
 }
 
 
-#Preview {
-    let user = User()
-    let quizPlayer = QuizPlayer(user: user)
-    return ContentView()
-        .environmentObject(user)
-        .environmentObject(quizPlayer)
-        .modelContainer(for: [ExamType.self, Topic.self], inMemory: true)
-}
+//#Preview {
+//    let user = User()
+//    let quizPlayer = QuizPlayer(user: user)
+//    return ContentView()
+//        .environmentObject(user)
+//        .environmentObject(quizPlayer)
+//        .modelContainer(for: [AudioQuizPackage.self, Topic.self], inMemory: true)
+//}
 
 
 struct View3: View {

@@ -14,7 +14,7 @@ class DatabaseService {
     private let serialQueue = DispatchQueue(label: "com.examGenius.DatabaseService")
     //@Query var questions: [Question]
     @Query var topics: [Topic]
-    @Query var exams: [ExamType]
+    @Query var exams: [AudioQuizPackage]
     
     
     let networkService = NetworkService.shared

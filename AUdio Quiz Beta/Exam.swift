@@ -10,7 +10,7 @@ import SwiftData
 
 struct Exam: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \ExamType.name) var exams: [ExamType]
+    @Query(sort: \AudioQuizPackage.name) var exams: [AudioQuizPackage]
     
     var body: some View {
         if exams.isEmpty {
@@ -65,7 +65,7 @@ struct Exam: View {
             let defaultList: [String] = UserDefaultsManager.getArrayFromUserDefaults(key: "defaultExams")
             
             defaultList.forEach { examName in
-                let exam = ExamType(name: examName, about: "", imageUrl: "", category: "")
+                let exam = AudioQuizPackage(id: UUID(), name: examName, about: "", imageUrl: "", category: "")
                 modelContext.insert(exam)
                 try! modelContext.save()
             }

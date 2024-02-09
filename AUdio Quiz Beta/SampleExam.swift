@@ -75,10 +75,10 @@ struct SampleExam: View {
     }
 }
 
-#Preview {
-    let featured = FeaturedQuiz.driversLicense
-    return SampleExam2(featuredQuiz: featured, questions: featured.questions, playButtonAction: {})
-}
+//#Preview {
+//    let featured = FeaturedQuiz.driversLicense
+//    return SampleExam2(featuredQuiz: featured, questions: featured.questions, playButtonAction: {})
+//}
 
 
 
@@ -175,7 +175,6 @@ struct AudioQuizView: View {
                         .background(Color.black.opacity(0.7))
                         .cornerRadius(10)
                     }
-                    //.padding(.bottom, 10) // Adjust to ensure it aligns well within the image
                 )
         }
         .cornerRadius(20)
