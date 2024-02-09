@@ -312,8 +312,8 @@
 		0B890FAF2B597C89009C7FA6 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				0BB1D9762B76E02A006BB5D0 /* extensions */,
 				0B890F992B59739C009C7FA6 /* NetworkService.swift */,
+				0BB1D9762B76E02A006BB5D0 /* extensions */,
 			);
 			name = Network;
 			sourceTree = "<group>";

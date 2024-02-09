@@ -24,4 +24,23 @@ struct AudioQuizCollectionVM {
             try! modelContext.save()
         }
     }
+    
+    func fetchAndUpdateImagesForQuizzes() async {
+        // Assuming you have a way to obtain the quiz names from `audioQuizCollection`
+        let quizNames = audioQuizCollection.map { $0.name }
+        
+        // Fetch images for these quizzes
+        let imageMappings = await networkService.fetchImages(for: quizNames)
+        
+        // Update the quizzes with their corresponding images
+        for quiz in audioQuizCollection {
+            if let imageUrl = imageMappings[quiz.name] {
+                // Perform the update on the main thread
+                DispatchQueue.main.async {
+                    quiz.imageUrl = imageUrl ?? ""
+                    // Save the updated quiz object to your model context as necessary
+                }
+            }
+        }
+    }
 }

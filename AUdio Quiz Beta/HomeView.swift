@@ -51,9 +51,9 @@ struct HomeView: View {
             }
             .tag(0)
             
-            View4()
+            AudioQuizCollectionView()
                 .tabItem {
-                    TabIcons(title: "Exams", icon: "magnifyingglass")
+                    TabIcons(title: "Audio Quiz", icon: "magnifyingglass")
                 }
                 .tag(1)
             

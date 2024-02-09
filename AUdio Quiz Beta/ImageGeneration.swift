@@ -9,61 +9,72 @@ import Foundation
 
 extension NetworkService {
     
-    func fetchImage(for quizNames: [String], completion: @escaping (String?, Error?) -> Void) {
-        let group = DispatchGroup()
+    // Fetch images for a list of quiz names asynchronously, using retries
+    func fetchImages(for quizNames: [String]) async -> [String: String?] {
+        var images: [String: String?] = [:]
         
-        quizNames.forEach { quizName in
-            group.enter()
-            attemptFetchImage(for: quizName, retries: 3) { imageUrl, error in
-                DispatchQueue.main.async {
-                    completion(imageUrl, error)
+        await withTaskGroup(of: (String, String?).self) { group in
+            for quizName in quizNames {
+                group.addTask {
+                    let imageUrl = await self.attemptFetchImage(for: quizName, retries: 3)
+                    return (quizName, imageUrl)
                 }
-                group.leave()
+            }
+            
+            for await (quizName, imageUrl) in group {
+                images[quizName] = imageUrl
             }
         }
         
-        group.notify(queue: .main) {
-            print("Completed all image fetches.")
-        }
+        return images
     }
     
-    private func attemptFetchImage(for quizName: String, retries: Int, completion: @escaping (String?, Error?) -> Void) {
-        let requestBody = [
-            "apiKey": "YOUR_API_KEY",
-            "model": "text-davinci-003",
-            "input": quizName,
-            "size": "1024x1024"
-        ]
-        
-        guard let url = URL(string: Config.imageRequestURL),
-              let jsonData = try? JSONSerialization.data(withJSONObject: requestBody) else {
-            completion(nil, NSError(domain: "NetworkService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or JSON"]))
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error fetching image for \(quizName): \(error)")
-                if retries > 0 {
-                    print("Retrying... attempts left: \(retries - 1)")
-                    self.attemptFetchImage(for: quizName, retries: retries - 1, completion: completion)
-                } else {
-                    completion(nil, error)
+    // Attempt to fetch an image for a given quiz name, with retries
+    private func attemptFetchImage(for quizName: String, retries: Int) async -> String? {
+        for attempt in 0..<retries {
+            do {
+                let imageUrl = try await fetchImage(for: quizName)
+                return imageUrl
+            } catch {
+                print("Attempt \(attempt + 1) failed for quiz \(quizName): \(error)")
+                if attempt == retries - 1 {
+                    return nil // Return nil if all retries fail
                 }
-            } else if let data = data, let jsonResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any], let imageB64 = jsonResponse["b64_json"] as? String {
-                print("Successfully fetched image for \(quizName)")
-                // Assuming the API returns a direct URL or base64 encoded string
-                completion(imageB64, nil)
-            } else {
-                print("Failed to decode response for \(quizName)")
-                completion(nil, NSError(domain: "NetworkService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Failed to decode response"]))
+                // Optionally, add a delay before retrying
             }
         }
-        task.resume()
+        return nil // This line is redundant but makes the control flow clear
     }
+    
+    // Fetch image for a single quiz name
+    private func fetchImage(for quizName: String) async throws -> String {
+        var components = URLComponents(string: Config.imageRequestURL)
+        components?.queryItems = [URLQueryItem(name: "quizName", value: quizName)]
+        
+        guard let apiURL = components?.url else {
+            throw NSError(domain: "NetworkService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+        
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "GET"
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: "Invalid HTTP response"])
+        }
+        
+        guard httpResponse.statusCode == 200 else {
+            // Use httpResponse directly within the guard condition
+            throw NSError(domain: "NetworkService", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch image with status code \(httpResponse.statusCode)"])
+        }
+        
+        // Assuming the response is a base64-encoded image string
+        guard let imageB64 = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "NetworkService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode response"])
+        }
+        
+        return imageB64
+    }
+
+    
 }
