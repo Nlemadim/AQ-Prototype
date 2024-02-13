@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-struct AudioQuizCollectionVM {
+class AudioQuizCollectionVM: ObservableObject {
     @Environment(\.modelContext) private var modelContext
     @State private var path = [AudioQuizPackage]()
     @Query(sort: \AudioQuizPackage.name) var audioQuizCollection: [AudioQuizPackage]
@@ -36,10 +36,9 @@ struct AudioQuizCollectionVM {
         for quiz in audioQuizCollection {
             if let imageUrl = imageMappings[quiz.name] {
                 // Perform the update on the main thread
-                DispatchQueue.main.async {
                     quiz.imageUrl = imageUrl ?? ""
+                    //self.modelContext.insert(quiz)
                     // Save the updated quiz object to your model context as necessary
-                }
             }
         }
     }

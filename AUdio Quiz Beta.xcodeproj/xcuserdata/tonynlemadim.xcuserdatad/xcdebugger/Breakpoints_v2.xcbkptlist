@@ -3,4 +3,210 @@
    uuid = "81807573-46CB-45F7-9794-30F134D88DE2"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "415F1600-1B33-4154-BD0A-97CB329D8D35"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AUdio Quiz Beta/ImageGeneration.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "13"
+            endingLineNumber = "13"
+            landmarkName = "fetchImage(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "415F1600-1B33-4154-BD0A-97CB329D8D35 - 26951d4aa9646070"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AUdio_Quiz_Beta.NetworkService.fetchImage(for: Swift.String) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "415F1600-1B33-4154-BD0A-97CB329D8D35 - ccfedf7e018e287d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.fetchImage(for: Swift.String) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "457C4691-25C2-4EB0-A4DA-E04410491D4D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AUdio Quiz Beta/ImageGeneration.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "attemptFetchSingleImage(for:retries:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "457C4691-25C2-4EB0-A4DA-E04410491D4D - 5a441dac1a9a8767"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "192">
+               </Location>
+               <Location
+                  uuid = "457C4691-25C2-4EB0-A4DA-E04410491D4D - 5a441dac1a9a8767"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "584">
+               </Location>
+               <Location
+                  uuid = "457C4691-25C2-4EB0-A4DA-E04410491D4D - e18b385d72a04960"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "356">
+               </Location>
+               <Location
+                  uuid = "457C4691-25C2-4EB0-A4DA-E04410491D4D - e18b385d72a04960"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "508">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DDC8C32F-A182-4A6C-9D35-238ED71D0C68"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AUdio Quiz Beta/ImageGeneration.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "attemptFetchSingleImage(for:retries:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "DDC8C32F-A182-4A6C-9D35-238ED71D0C68 - 5a441dac1a9a86c2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "604">
+               </Location>
+               <Location
+                  uuid = "DDC8C32F-A182-4A6C-9D35-238ED71D0C68 - 80e4c72f2c38993f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "DDC8C32F-A182-4A6C-9D35-238ED71D0C68 - 299e04db8aa3d2c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "DDC8C32F-A182-4A6C-9D35-238ED71D0C68 - e18b385d72a048c5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for AUdio_Quiz_Beta.NetworkService.attemptFetchSingleImage(for: Swift.String, retries: Swift.Int) async -&gt; Swift.Optional&lt;Swift.String&gt;"
+                  moduleName = "AUdio Quiz Beta"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/tonynlemadim/Documents/AQ-Prototype/AUdio%20Quiz%20Beta/AUdio%20Quiz%20Beta/ImageGeneration.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "136">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

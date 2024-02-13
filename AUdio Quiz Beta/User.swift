@@ -11,6 +11,8 @@ import SwiftUI
 final class User: ObservableObject {
     @Published var userName: String = ""
     @Published var email: String = ""
+    @Published var isUsingMic: Bool = false
+    @Published var audioQuizPackage: AudioQuizPackage?
     @Published var selectedQuiz: AudioQuiz? {
         didSet {
             Task {
@@ -19,8 +21,9 @@ final class User: ObservableObject {
         }
     }
 
-    init(selectedQuiz: AudioQuiz? = nil) {
+    init(selectedQuiz: AudioQuiz? = nil, audioQuizPackage: AudioQuizPackage? = nil) {
         self.selectedQuiz = selectedQuiz
+        self.audioQuizPackage = audioQuizPackage
         
     }
 }

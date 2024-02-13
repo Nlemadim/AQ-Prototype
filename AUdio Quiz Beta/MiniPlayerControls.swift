@@ -15,8 +15,21 @@ struct QuizControlConfiguration {
     let selectPlay: () -> Void
     let selectReplay: () -> Void
     let selectNext: () -> Void
+    var playerState: PlayerState = .idle
+    var isUsingMic: Bool = false
 }
 
+enum PlayerState {
+    case idle
+    case quizStarted
+    case isPlayingQuestion
+    case isAwaitingAnswer
+    case hasRecievedAnswer
+    case successTranscribingAnswer
+    case failureTranscribingAnswer
+    case isPaused
+    case quizEnded
+}
 
 struct MiniPlayerControls: View {
     @State private var fillAmount: CGFloat = 0.0
@@ -33,9 +46,10 @@ struct MiniPlayerControls: View {
                     .foregroundColor(.black)
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .background(RoundedRectangle(cornerRadius: 10)
+                    .fill(buttonDisabled ? .teal : .gray))
                     .padding(.horizontal)
-            })
+            }).disabled(buttonDisabled)
             
             Spacer(minLength: 0)
             
@@ -46,13 +60,16 @@ struct MiniPlayerControls: View {
                     .foregroundColor(.black)
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .background(RoundedRectangle(cornerRadius: 10)
+                    .fill(buttonDisabled ? .teal : .gray))
                     .padding(.horizontal)
-            })
+            }).disabled(buttonDisabled)
             
             Spacer(minLength: 0)
             
-            StartButton()
+            StartButton(configuration: controlConfiguration.playerState, isUsingMic: controlConfiguration.isUsingMic, action: {
+                controlConfiguration.selectPlay()
+            })
             
             Spacer(minLength: 0)
 
@@ -63,9 +80,10 @@ struct MiniPlayerControls: View {
                     .foregroundColor(.black)
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .background(RoundedRectangle(cornerRadius: 10)
+                    .fill(buttonDisabled ? .teal : .gray))
                     .padding(.horizontal)
-            })
+            }).disabled(buttonDisabled)
             
             Spacer(minLength: 0)
             
@@ -76,39 +94,44 @@ struct MiniPlayerControls: View {
                     .foregroundColor(.black)
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
-                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.teal))
+                    .background(RoundedRectangle(cornerRadius: 10)
+                    .fill(buttonDisabled ? .teal : .gray))
                     .padding(.horizontal)
-            })
+            }).disabled(buttonDisabled)
         }
         .frame(maxWidth: .infinity)
         .foregroundStyle(.teal)
     }
+    
+    var buttonDisabled: Bool { controlConfiguration.playerState == .isAwaitingAnswer }
 }
 #Preview {
-   StartButton()
+   @State var configuration: PlayerState = .idle
+    return StartButton(configuration: configuration, isUsingMic: false, action: {})
         .preferredColorScheme(.dark)
 }
 
-
-
 struct StartButton: View {
-    @State private var isFilling = false
+    @State var configuration: PlayerState
+    @State var isUsingMic: Bool
+    var action: () -> Void
+    var isAwaitingAnswer: Bool {
+        configuration == .isAwaitingAnswer
+    }
     @State private var progress: CGFloat = 0.0
     let fillUpDuration = 5.0
 
     var body: some View {
         Button(action: {
-            // Toggle filling state
-            isFilling.toggle()
-            
-            if isFilling {
+            action()
+            if isAwaitingAnswer {
                 // Start the animation to fill the progress ring
                 withAnimation(.linear(duration: fillUpDuration)) {
                     progress = 1.0
                 }
                 // Schedule the reset after the fillUpDuration
                 DispatchQueue.main.asyncAfter(deadline: .now() + fillUpDuration) {
-                    isFilling = false // Reset filling state
+                    //isFilling = false // Reset filling state
                     progress = 0.0 // Reset progress
                 }
             }
@@ -116,7 +139,7 @@ struct StartButton: View {
             ZStack {
                 Circle()
                     .strokeBorder(Color.gray.opacity(0.5), lineWidth: 4)
-                    .frame(width: 46, height: 46)
+                    .frame(width: 50, height: 50)
                 
                 Circle()
                     .trim(from: 0, to: progress)
@@ -125,13 +148,12 @@ struct StartButton: View {
                     .frame(width: 45, height: 45)
                     .shadow(color: .orange, radius: 20)
 
-                Image(systemName: isFilling ? "pause.circle.fill" : "play.circle.fill")
+                Image(systemName: isAwaitingAnswer ? isUsingMic ? "mic.fill" : "pause.circle.fill" : "play.fill")
                     .resizable()
-                    .font(.largeTitle)
+                    .frame(width: 18, height: 20)
                     .foregroundColor(.white)
-                    .frame(width: 45, height: 45)
+                    //.frame(width: 45, height: 45)
             }
-            
         }
     }
 }

@@ -26,8 +26,9 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     @Published var selectedOption: String = ""
     
     @State var interactionState: InteractionState = .idle
+    @State var playerState: PlayerState = .idle
     @State var isQuizStarted: Bool = false
-    @State var isPaused: Bool = false
+    @State var isUingMic: Bool = false
        
     private var speechRecognizer = SpeechManager()
     private let user: User
@@ -52,9 +53,9 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     
     init(user: User) {
         self.user = user
+        self.isUingMic = user.isUsingMic
         super.init()
     }
-    
     
     func quizPlayerDidFinishPlaying(completion: @escaping (Bool) -> Void) {
         self.cancellable = Future<Bool, Never> { promise in
@@ -71,6 +72,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     
     // Method to play a specific audio file immediately
     func playNow(audioFileName: String) {
+        playerState = .isPlayingQuestion
         // Start playing the audio file
         playAudio(audioFileName: audioFileName)
 
@@ -103,16 +105,14 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
         } else {
             print("Audio file not found at path: \(audioFileName)")
         }
-        
         //readQuestionContent(questionContent: audioFileName)
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         print("Player has Finished playing")
         isFinishedPlaying = true
+        playerState = .isAwaitingAnswer
         //startRecordingAndTranscribing()
-                
-         // Run your additional code here
      }
     
     fileprivate func checkSelectedOptionAndUpdateState() {
@@ -125,6 +125,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
                 // Wait for user interaction to proceed
                 //interactionState = .awaitingResponse
                 audioPlayer?.stop()
+                playerState = .isPaused
                 print("Player paused while awaiting response")
             }
         } else {
@@ -152,7 +153,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     }
     
     fileprivate func startRecordingAndTranscribing() {
-        guard isFinishedPlaying else { return }
+        guard playerState == .isAwaitingAnswer else { return }
 
         print("Starting transcription...")
         interactionState = .isListening
@@ -171,8 +172,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
             // Optionally, retrieve and process the transcript after stopping
             self.getTranscript { newTranscript in
                 self.interactionState = .isProcessing
-                self.currentQuestion?.selectedOption = newTranscript
-                self.selectedOption = newTranscript
+                self.currentQuestion?.selectedOption = self.processTranscript(transcript: newTranscript)
                 print("Processing completed")
 
                 // Further processing or state update can be done here
@@ -180,7 +180,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
             }
         }
     }
-
+    
 
     fileprivate func getTranscript(completion: @escaping (String) -> Void) {
         cancellable = speechRecognizer.$transcript
@@ -188,12 +188,25 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
                 completion(newTranscript)
             }
     }
-
     
+    func processTranscript(transcript: String) -> String {
+        var processedTranscript = WordProcessor.processWords(from: transcript)
+        self.selectedOption = processedTranscript
+        if processedTranscript.isEmptyOrWhiteSpace {
+            playerState = .failureTranscribingAnswer
+            //MARK: TODO
+            //playErrorTranscriptionSound()
+        } else {
+            playerState = .successTranscribingAnswer
+            //MARK: TODO
+            //playSuccessFulTranscriptionSound()
+        }
+        return processedTranscript
+    }
+
     deinit {
         cancellable?.cancel()
     }
-    
 }
 
 

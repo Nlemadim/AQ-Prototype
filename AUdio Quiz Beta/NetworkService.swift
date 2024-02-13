@@ -52,8 +52,7 @@ class NetworkService {
     
     func fetchTopics(context: String) async throws -> [String] {
          //Base URL
-        let baseUrl = "https://ljnsun.buildship.run/"
-
+        let baseUrl = Config.topicRequestURL
         // Append query parameter
         guard var urlComponents = URLComponents(string: baseUrl) else {
             throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
@@ -87,6 +86,43 @@ class NetworkService {
 
         return topics
     }
+    
+    func fetchImage(for quizName: String, retryCount: Int = 0) async throws -> String {
+        print("Calling Network")
+        var components = URLComponents(string: Config.imageRequestURL)
+        components?.queryItems = [URLQueryItem(name: "examName", value: quizName)]
+        
+        guard let apiURL = components?.url else {
+            throw NSError(domain: "NetworkService", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+        
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "GET"
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+                throw NSError(domain: "NetworkService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch image with status code \(statusCode)"])
+            }
+            
+            guard let imageB64 = String(data: data, encoding: .utf8) else {
+                throw NSError(domain: "NetworkService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode response"])
+            }
+            
+            return imageB64
+        } catch let error as NSError {
+            if error.code == 429, retryCount < 3 { // Example retry logic for HTTP 429 errors
+                let retryDelay = pow(2.0, Double(retryCount)) // Exponential backoff
+                print("Retrying in \(retryDelay) seconds...")
+                try await Task.sleep(nanoseconds: UInt64(retryDelay * 1_000_000_000))
+                return try await fetchImage(for: quizName, retryCount: retryCount + 1)
+            } else {
+                throw error
+            }
+        }
+    }
+    
     
     //MARK: ENTRY POINT
     func fetchSampleAudioQuiz()  async throws {}

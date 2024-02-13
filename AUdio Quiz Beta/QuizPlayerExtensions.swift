@@ -33,7 +33,8 @@ extension QuizPlayer {
     func startQuiz() {
         isQuizStarted = true
         print("Quiz has started")
-        if let question = currentQuestion {
+        //playAudioQuizIntro()
+        if let question = currentQuestion/* && instructionIsFinishedPlaying */{
             playNow(audioFileName: question.questionAudio)
         }
     }

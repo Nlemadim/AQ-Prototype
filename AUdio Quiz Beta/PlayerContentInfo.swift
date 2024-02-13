@@ -16,7 +16,6 @@ struct PlayerContentInfo: View {
         }
         .foregroundStyle(.teal)
         .padding(.horizontal)
-        //.padding(.bottom, 12)
         .frame(height: 70)
         .contentShape(Rectangle())
     }

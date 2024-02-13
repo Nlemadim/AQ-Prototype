@@ -29,6 +29,21 @@ class Topic {
 }
 
 @Model
+class DownloadedAudioQuiz: Identifiable, Hashable {
+    @Attribute(.unique) var quizname: String
+    var quizImage: String
+    var dateCreated: Date
+    var contents: [Question]
+    
+    init(quizname: String, quizImage: String) {
+        self.quizname = quizname
+        self.quizImage = quizImage
+        self.dateCreated = .now
+        self.contents = []
+    }
+}
+
+@Model
 class Performance: Identifiable, Hashable {
     let id: UUID
     var date: Date
