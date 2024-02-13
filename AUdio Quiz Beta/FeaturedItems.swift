@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import SwiftData
 
-enum FeaturedQuiz: Quiz {
+enum FeaturedQuiz  {
     case barExam
     case mcat
     case usCitizenship

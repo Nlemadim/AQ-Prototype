@@ -38,7 +38,7 @@ struct MiniPlayerControls: View {
     let imageSize: CGFloat = 18
     
     var body: some View {
-        HStack(spacing: 5) { // Adjust spacing as needed
+        HStack(spacing: 3) { // Adjust spacing as needed
             Button(action: {
                 controlConfiguration.selectA()
             }, label: {
@@ -47,7 +47,7 @@ struct MiniPlayerControls: View {
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
                     .background(RoundedRectangle(cornerRadius: 10)
-                    .fill(buttonDisabled ? .teal : .gray))
+                    .fill(buttonDisabled ? .gray : .teal))
                     .padding(.horizontal)
             }).disabled(buttonDisabled)
             
@@ -61,15 +61,25 @@ struct MiniPlayerControls: View {
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
                     .background(RoundedRectangle(cornerRadius: 10)
-                    .fill(buttonDisabled ? .teal : .gray))
+                    .fill(buttonDisabled ? .gray : .teal))
                     .padding(.horizontal)
             }).disabled(buttonDisabled)
             
             Spacer(minLength: 0)
             
-            StartButton(configuration: controlConfiguration.playerState, isUsingMic: controlConfiguration.isUsingMic, action: {
-                controlConfiguration.selectPlay()
-            })
+            Circle()
+                .fill(.ultraThinMaterial)
+                .frame(width: 70, height: 70)
+                .offset(y: -10)
+                .overlay {
+                    StartButton(configuration: controlConfiguration.playerState, isUsingMic: controlConfiguration.isUsingMic, action: {
+                        controlConfiguration.selectPlay()
+                    })
+                    .offset(y: -10)
+
+                }
+            
+
             
             Spacer(minLength: 0)
 
@@ -81,7 +91,7 @@ struct MiniPlayerControls: View {
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
                     .background(RoundedRectangle(cornerRadius: 10)
-                    .fill(buttonDisabled ? .teal : .gray))
+                        .fill(buttonDisabled ? .gray : .teal))
                     .padding(.horizontal)
             }).disabled(buttonDisabled)
             
@@ -95,7 +105,7 @@ struct MiniPlayerControls: View {
                     .font(.system(size: 16, weight: .bold))
                     .frame(width: 40, height: 25)
                     .background(RoundedRectangle(cornerRadius: 10)
-                    .fill(buttonDisabled ? .teal : .gray))
+                        .fill(buttonDisabled ? .gray : .teal))
                     .padding(.horizontal)
             }).disabled(buttonDisabled)
         }
@@ -103,12 +113,18 @@ struct MiniPlayerControls: View {
         .foregroundStyle(.teal)
     }
     
-    var buttonDisabled: Bool { controlConfiguration.playerState == .isAwaitingAnswer }
+    var buttonDisabled: Bool { controlConfiguration.playerState != .isAwaitingAnswer }
 }
 #Preview {
    @State var configuration: PlayerState = .idle
     return StartButton(configuration: configuration, isUsingMic: false, action: {})
-        .preferredColorScheme(.dark)
+       // .preferredColorScheme(.dark)
+}
+
+#Preview {
+    @StateObject var user = User()
+    @StateObject var player = QuizPlayer(user: User())
+    return MiniPlayerControls(controlConfiguration: player.controlConfiguration)
 }
 
 struct StartButton: View {
@@ -139,22 +155,41 @@ struct StartButton: View {
             ZStack {
                 Circle()
                     .strokeBorder(Color.gray.opacity(0.5), lineWidth: 4)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 67, height: 67)
                 
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(Color.orange, style: StrokeStyle(lineWidth: 4, lineCap: .round)).activeGlow(.orange, radius: 1)
                     .rotationEffect(.degrees(-270))
-                    .frame(width: 45, height: 45)
+                    .frame(width: 65, height: 65)
                     .shadow(color: .orange, radius: 20)
-
-                Image(systemName: isAwaitingAnswer ? isUsingMic ? "mic.fill" : "pause.circle.fill" : "play.fill")
-                    .resizable()
-                    .frame(width: 18, height: 20)
-                    .foregroundColor(.white)
-                    //.frame(width: 45, height: 45)
+                
+                Circle()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(.teal).activeGlow(.white, radius: 2)
+                    .overlay {
+                        Text("START")
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.themePurple)
+                            //.padding(.horizontal)
+                    }
+                    .opacity(configuration == .idle ? 1 : 0)
+                
+                Circle()
+                    .frame(width: 65, height: 65)
+                    .foregroundColor(.white).activeGlow(.white, radius: 2)
+                    .overlay {
+                        Image(systemName: isAwaitingAnswer ? isUsingMic ? "mic.fill" : "pause.fill" : "play.fill")
+                            .font(.title)
+                            .foregroundColor(.black)
+                            
+                    }
+                    .opacity(configuration != .idle ? 1 : 0)
             }
         }
+       // .disabled(true)
+        
     }
 }
 

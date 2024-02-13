@@ -27,7 +27,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     
     @State var interactionState: InteractionState = .idle
     @State var playerState: PlayerState = .idle
-    @State var isQuizStarted: Bool = false
+   // @State var isQuizStarted: Bool = false
     @State var isUingMic: Bool = false
        
     private var speechRecognizer = SpeechManager()
@@ -42,7 +42,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     var completionHandler: (() -> Void)?
     
     var examQuestions: [Question] {
-        return user.selectedQuiz?.questions ?? []
+        return user.audioQuiz?.contents ?? []
     }
     
     var currentQuestion: Question? {
@@ -116,7 +116,6 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
      }
     
     fileprivate func checkSelectedOptionAndUpdateState() {
-        if isQuizStarted {
             if UserDefaultsManager.isOnContinuousFlow() /* && !selectedOption.isEmpty */{
                 // Proceed to the next audio file
                 print("Playing next Question")
@@ -128,12 +127,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
                 playerState = .isPaused
                 print("Player paused while awaiting response")
             }
-        } else {
-            return
-            // No current question, proceed to next in the queue
-            //PlayIntermission()
-            //playNext()
-        }
+        
     }
 
     //UI TESTING
@@ -190,7 +184,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     }
     
     func processTranscript(transcript: String) -> String {
-        var processedTranscript = WordProcessor.processWords(from: transcript)
+        let processedTranscript = WordProcessor.processWords(from: transcript)
         self.selectedOption = processedTranscript
         if processedTranscript.isEmptyOrWhiteSpace {
             playerState = .failureTranscribingAnswer

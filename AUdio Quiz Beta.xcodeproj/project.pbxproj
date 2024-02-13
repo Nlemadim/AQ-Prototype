@@ -14,6 +14,7 @@
 		0B61C7092B5E9A5A00F3E088 /* QuizPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B61C7082B5E9A5A00F3E088 /* QuizPlayer.swift */; };
 		0B6C60332B6C2D3700AF3E27 /* FeaturedItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C60322B6C2D3700AF3E27 /* FeaturedItems.swift */; };
 		0B6C60362B6C3BF600AF3E27 /* SampleExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6C60352B6C3BF600AF3E27 /* SampleExam.swift */; };
+		0B746E1C2B7BF7660049FAB3 /* DownloadedAudioQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B746E1B2B7BF7660049FAB3 /* DownloadedAudioQuiz.swift */; };
 		0B890F552B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F542B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift */; };
 		0B890F572B596D61009C7FA6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B890F562B596D61009C7FA6 /* ContentView.swift */; };
 		0B890F5B2B596D63009C7FA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B890F5A2B596D63009C7FA6 /* Assets.xcassets */; };
@@ -95,6 +96,7 @@
 		0B61C7082B5E9A5A00F3E088 /* QuizPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizPlayer.swift; sourceTree = "<group>"; };
 		0B6C60322B6C2D3700AF3E27 /* FeaturedItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedItems.swift; sourceTree = "<group>"; };
 		0B6C60352B6C3BF600AF3E27 /* SampleExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleExam.swift; sourceTree = "<group>"; };
+		0B746E1B2B7BF7660049FAB3 /* DownloadedAudioQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedAudioQuiz.swift; sourceTree = "<group>"; };
 		0B890F512B596D61009C7FA6 /* AUdio Quiz Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AUdio Quiz Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B890F542B596D61009C7FA6 /* AUdio_Quiz_BetaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUdio_Quiz_BetaApp.swift; sourceTree = "<group>"; };
 		0B890F562B596D61009C7FA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				0B890F9F2B597520009C7FA6 /* SwiftData.swift */,
 				0BB1D9672B769E04006BB5D0 /* QuestionModel.swift */,
 				0BB1D9692B76A5CF006BB5D0 /* AudioQuizPackage.swift */,
+				0B746E1B2B7BF7660049FAB3 /* DownloadedAudioQuiz.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -595,6 +598,7 @@
 				0B890FB72B59979F009C7FA6 /* UserDefaultManager.swift in Sources */,
 				0B890FB52B5996C7009C7FA6 /* Config.swift in Sources */,
 				0B890F912B596F94009C7FA6 /* LaunchScreen.swift in Sources */,
+				0B746E1C2B7BF7660049FAB3 /* DownloadedAudioQuiz.swift in Sources */,
 				0BA1B09D2B6356E200603888 /* FullScreenControlView.swift in Sources */,
 				0BB1D97A2B76E090006BB5D0 /* ImageGeneration.swift in Sources */,
 				0B890F892B596F7F009C7FA6 /* Extensions.swift in Sources */,

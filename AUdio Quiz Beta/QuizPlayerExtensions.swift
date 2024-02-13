@@ -31,7 +31,7 @@ extension QuizPlayer {
     }
     
     func startQuiz() {
-        isQuizStarted = true
+        
         print("Quiz has started")
         //playAudioQuizIntro()
         if let question = currentQuestion/* && instructionIsFinishedPlaying */{
@@ -104,8 +104,8 @@ extension QuizPlayer {
         //databaseService.fetchMoreQuestions()
     }
     
+    //MARK: TODO :- Call QuizBuilder to create a performanceReport on current AudioQuiz and Update AudioQuiz Status
     func endQuiz() {
-        isQuizStarted = false
         //If !intermissionPlayList.isEmpty { playIntermission() } else { resetForNextQuiz() }
         
         

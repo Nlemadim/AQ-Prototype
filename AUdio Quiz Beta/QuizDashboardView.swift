@@ -13,13 +13,23 @@ struct QuizPlayerDashboard: View {
         ScrollView {
             VStack(alignment: .center, spacing: 10) {
                 QuizDashboardInfoDetailsView(user: user)
-                QuizDashboardView(question: quizPlayer.currentQuestion, options: quizPlayer.currentQuestion?.options ?? [])
+                //QuizDashboardView(question: quizPlayer.currentQuestion, options: quizPlayer.currentQuestion?.options ?? [])
             }
             .scrollBounceBehavior(.basedOnSize)
             .padding(.top, 30)
             .padding(.bottom, 10)
         }
     }
+}
+
+#Preview {
+    @StateObject var user = User()
+    @StateObject var player = QuizPlayer(user: User())
+    return QuizPlayerDashboard(user: user, quizPlayer: player)
+}
+
+#Preview {
+    StandardTestInfoView()
 }
 
 struct QuizDashboardInfoDetailsView: View {
@@ -38,7 +48,7 @@ struct QuizDashboardInfoDetailsView: View {
                     .frame(width: 100, height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 
-                if let selectedQuiz = user.selectedQuiz {
+                if let selectedQuiz = user.audioQuiz {
                     VStack(alignment: .leading, spacing: 4) {
                         /// Short Name
                         Text("Audio Quiz")
@@ -46,18 +56,18 @@ struct QuizDashboardInfoDetailsView: View {
                             .fontWeight(.semibold)
                             .foregroundStyle(.secondary)
                         /// Long Name
-                        Text(selectedQuiz.quizName)
+                        Text(selectedQuiz.quizname)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .lineLimit(2, reservesSpace: false)
                             .foregroundStyle(.linearGradient(colors: [.primary, .primary.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
                         
-                        Text("\(selectedQuiz.questions.count) Questions".uppercased())
+                        Text("\(selectedQuiz.contents.count) Questions".uppercased())
                             .font(.footnote)
                             .fontWeight(.semibold)
                             .foregroundStyle(.secondary)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    //de.frame(maxWidth: .infinity, alignment: .leading)
 
                 } else {
                     VStack(alignment: .leading, spacing: 20) {
@@ -73,10 +83,11 @@ struct QuizDashboardInfoDetailsView: View {
 
                 }
             }
-            .padding(.all, 20.0)
-            .padding(.vertical, 20)
-            .frame(height: 140.0)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous)) // Apply material effect on top of the image
+            .padding(.all, 15.0)
+//            .padding(.vertical, 20)
+    //        .frame(height: 140.0)
+           // .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             .shadow(radius: 10, x: 0, y: 10)
             .padding(.horizontal, 5)
             
@@ -253,3 +264,39 @@ struct DashboardSettingsView: View {
         }
     }
 }
+
+struct StandardTestInfoView: View {
+    var name: String = "Audio Quiz Player"
+    var body: some View {
+        ScrollView {
+            ZStack(alignment: .bottomTrailing) {
+                Image("featuredBarExam")
+                    .resizable()
+                    .scaledToFit()
+                Text("Select an Audio".uppercased())
+                    .fontWeight(.black)
+                    .padding(8)
+                    .foregroundStyle(.white)
+                    .background(.black.opacity(0.75))
+                    .clipShape(.capsule)
+                    .offset(x: -5, y: -5)
+            }
+            
+            Text("The New York Bar Exam is a state-specific test for law practice eligibility in New York. Administered twice a year, it comprises the Uniform Bar Examination (UBE) and the New York Law Exam (NYLE). Applicants apply through their BOLE Account and results are posted there. Admission requires filing an application with the Supreme Court, Appellate Division within three years of the UBE, and performing 50 hours of pro bono services.")
+                .padding()
+            
+            Button("Start Practice") {
+                
+            }
+            .padding()
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .foregroundStyle(.orange)
+        }
+        .navigationTitle(name)
+        .navigationBarTitleDisplayMode(.inline)
+        .scrollBounceBehavior(.basedOnSize)
+        .preferredColorScheme(.dark)
+    }
+}
+

@@ -26,17 +26,17 @@ struct HomeView: View {
                     .offset(y: -33)
                     
                 }
-                .navigationBarItems(trailing:
-                    Button(action: {
-                    
-                    
-                }, label: {
-                    Image(systemName: "slider.horizontal.3")
-                        .resizable()
-                        .frame(width: 18, height: 18)
-                        .foregroundStyle(.teal).activeGlow(.teal, radius: 0.01)
-                    
-                }))
+//                .navigationBarItems(trailing:
+//                    Button(action: {
+//                    
+//                    
+//                }, label: {
+//                    Image(systemName: "slider.horizontal.3")
+//                        .resizable()
+//                        .frame(width: 18, height: 18)
+//                        .foregroundStyle(.teal).activeGlow(.teal, radius: 0.01)
+//                    
+//                }))
                 /// Hiding tabBar when Sheet is expended
                 .toolbar(.visible, for: .tabBar)
                 .background(
@@ -71,7 +71,7 @@ struct HomeView: View {
             BottomMiniPlayer()
         }
     }
-    
+        //.background(Color(image.dominantColor() ?? .gray))
     @ViewBuilder
     func BottomMiniPlayer() -> some View {
         ///Animating Sheet bnackground
@@ -81,7 +81,7 @@ struct HomeView: View {
                 .overlay {
                     ///Music Info
                     PlayerContentInfo(quizPlayer: quizPlayer)
-                }
+                }//.background(Color(user.selectedQuiz?.quizImage.dominantColor() ?? .gray))
         }
         .frame(height: 60)
         ///Default Height set to 49

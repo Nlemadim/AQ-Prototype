@@ -13,31 +13,25 @@ final class User: ObservableObject {
     @Published var email: String = ""
     @Published var isUsingMic: Bool = false
     @Published var audioQuizPackage: AudioQuizPackage?
-    @Published var selectedQuiz: AudioQuiz? {
-        didSet {
-            Task {
-                await TestQuestionAudioGenerator.shared.updateQuestionGroup(questions: selectedQuiz?.questions ?? [])
-            }
-        }
-    }
+    @Published var audioQuiz: DownloadedAudioQuiz? { didSet { Task {}}}
 
-    init(selectedQuiz: AudioQuiz? = nil, audioQuizPackage: AudioQuizPackage? = nil) {
-        self.selectedQuiz = selectedQuiz
+
+    init(selectedQuiz: DownloadedAudioQuiz? = nil, audioQuizPackage: AudioQuizPackage? = nil) {
+        self.audioQuiz = selectedQuiz
         self.audioQuizPackage = audioQuizPackage
-        
     }
 }
 
-struct AudioQuiz: Quiz {
+struct AudioQuiz {
     var quizName: String
-    var quizImage: Image
+    var quizImage: String
     var questions: [Question]
     
-    init(from featuredQuiz: FeaturedQuiz) {
-        self.quizName = featuredQuiz.quizName
-        self.quizImage = featuredQuiz.quizImage
-        self.questions = featuredQuiz.questions
-    }
+//    init(from featuredQuiz: FeaturedQuiz) {
+//        self.quizName = featuredQuiz.quizName
+//        self.quizImage = featuredQuiz.quizImage
+//        self.questions = featuredQuiz.questions
+//    }
 }
 
 
