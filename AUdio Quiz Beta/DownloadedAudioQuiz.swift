@@ -18,6 +18,7 @@ class DownloadedAudioQuiz: Identifiable, Hashable {
     var quizStatus: AudioQuizStatus
     var userStatus: UserStatus
     var contents: [Question]
+    var topics: [Topic]
     var rating: Int
     
     init(quizname: String, quizImage: String) {
@@ -28,6 +29,7 @@ class DownloadedAudioQuiz: Identifiable, Hashable {
         self.quizStatus = .downloaded
         self.userStatus = .onShelf
         self.contents = []
+        self.topics = []
         self.rating = 0
     }
 }

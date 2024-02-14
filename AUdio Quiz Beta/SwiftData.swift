@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-class Topic {
+class Topic: ObservableObject, Identifiable {
     @Attribute(.unique) var name: String
     var isPresented: Bool
     var numberOfPresentations: Int

@@ -13,12 +13,17 @@ final class User: ObservableObject {
     @Published var email: String = ""
     @Published var isUsingMic: Bool = false
     @Published var audioQuizPackage: AudioQuizPackage?
-    @Published var audioQuiz: DownloadedAudioQuiz? { didSet { Task {}}}
-
-
-    init(selectedQuiz: DownloadedAudioQuiz? = nil, audioQuizPackage: AudioQuizPackage? = nil) {
-        self.audioQuiz = selectedQuiz
+    @Published var audioQuizPlaylist: [DownloadedAudioQuiz]
+    
+    var currentPlayPosition: Int = 0
+    
+    init(audioQuizPackage: AudioQuizPackage? = nil) {
         self.audioQuizPackage = audioQuizPackage
+        self.audioQuizPlaylist = []
+    }
+    
+    var currentQuiz: DownloadedAudioQuiz? {
+        !audioQuizPlaylist.isEmpty ? audioQuizPlaylist[currentPlayPosition] : nil
     }
 }
 

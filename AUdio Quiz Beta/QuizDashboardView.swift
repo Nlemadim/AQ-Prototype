@@ -48,7 +48,7 @@ struct QuizDashboardInfoDetailsView: View {
                     .frame(width: 100, height: 100)
                     .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
                 
-                if let selectedQuiz = user.audioQuiz {
+                if let selectedQuiz = user.currentQuiz {
                     VStack(alignment: .leading, spacing: 4) {
                         /// Short Name
                         Text("Audio Quiz")

@@ -20,11 +20,26 @@ struct HomeView: View {
         TabView(selection: $selectedTab) {
             NavigationView {
                 ZStack {
-                    VStack(alignment: .center, content: {
-                        QuizPlayerDashboard(user: user, quizPlayer: quizPlayer)
-                    })
-                    .offset(y: -33)
-                    
+                    if user.currentQuiz == nil {
+                        VStack {
+                        
+                            ContentUnavailableView("Download an audio quiz to get started", systemImage: "play.slash")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.linearGradient(colors: [.primary, .primary.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 320.0) // Match the height of the container
+                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous)) // Apply material effect on top of the image
+                        .shadow(radius: 10, x: 0, y: 10)
+                        .padding(.horizontal, 20)
+                        
+                    } else {
+                        VStack(alignment: .center, content: {
+                            MainView(user: user, quizPlayer: quizPlayer, imageName: user.currentQuiz?.quizImage ?? "IconImage")
+                        })
+                    }
+  
                 }
 //                .navigationBarItems(trailing:
 //                    Button(action: {
@@ -41,7 +56,10 @@ struct HomeView: View {
                 .toolbar(.visible, for: .tabBar)
                 .background(
                     Image("Logo")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
                         .offset(x: 230, y: -100)
+                        .opacity(user.currentQuiz != nil ? 0 : 1)
                 )
                 .preferredColorScheme(.dark)
             }
@@ -76,14 +94,27 @@ struct HomeView: View {
     func BottomMiniPlayer() -> some View {
         ///Animating Sheet bnackground
         ZStack {
-            RoundedRectangle(cornerRadius: 10.0)
-                .fill(.ultraThinMaterial)
-                .overlay {
-                    ///Music Info
-                    PlayerContentInfo(quizPlayer: quizPlayer)
-                }//.background(Color(user.selectedQuiz?.quizImage.dominantColor() ?? .gray))
+            
+            PlayerContentInfo(quizPlayer: quizPlayer)
+//            RoundedRectangle(cornerRadius: 10.0)
+//                //.fill(.ultraThinMaterial)
+//                .overlay {
+//                    ///Music Info
+//
+//                }//.background(Color(user.selectedQuiz?.quizImage.dominantColor() ?? .gray))
         }
         .frame(height: 60)
+        .background {
+            if let currentQuiz = user.currentQuiz {
+                Image(currentQuiz.quizImage)
+                    .cornerRadius(100)
+                    .blur(radius: 70)
+                    .offset(y: 30)
+            } else {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .fill(.ultraThinMaterial)
+            }
+        }
         ///Default Height set to 49
         .offset(y: -49)
     }

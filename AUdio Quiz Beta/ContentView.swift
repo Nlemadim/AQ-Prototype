@@ -17,7 +17,6 @@ struct ContentView: View {
     }
 }
 
-
 #Preview {
     let user = User()
     let quizPlayer = QuizPlayer(user: user)

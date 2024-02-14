@@ -27,7 +27,6 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     
     @State var interactionState: InteractionState = .idle
     @State var playerState: PlayerState = .idle
-   // @State var isQuizStarted: Bool = false
     @State var isUingMic: Bool = false
        
     private var speechRecognizer = SpeechManager()
@@ -42,7 +41,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
     var completionHandler: (() -> Void)?
     
     var examQuestions: [Question] {
-        return user.audioQuiz?.contents ?? []
+        return user.currentQuiz?.contents ?? []
     }
     
     var currentQuestion: Question? {
@@ -76,7 +75,7 @@ class QuizPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate, SFSpeechRec
         // Start playing the audio file
         playAudio(audioFileName: audioFileName)
 
-        if let currentQuestion = currentQuestion {
+        if let currentQuestion {
             print("Player Started playing Question\(currentIndex + 1): \(isNowPlaying)")
             print("Player Finished playing: \(isFinishedPlaying)")
             print("User chose Option \(currentQuestion.selectedOption)")
