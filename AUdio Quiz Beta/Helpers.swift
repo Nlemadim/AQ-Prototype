@@ -71,38 +71,3 @@ enum InteractionState {
     }
 }
 
-
-struct MessageDocument: FileDocument {
-    static var readableContentTypes: [UTType] { [.plainText] }
-    var message: String
-    init(message: String) {
-        self.message = message
-    }
-    
-    init(configuration: ReadConfiguration) throws {
-        guard let data = configuration.file.regularFileContents,
-              let string = String(data: data, encoding: .utf8)
-        else {
-            throw CocoaError(.fileReadCorruptFile)
-        }
-        message = string
-    }
-    
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        return FileWrapper(regularFileWithContents: message.data(using: .utf8)!)
-    }
-}
-
-
-//    do {
-//        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-//        let container = try ModelContainer(for: Question.self, configurations: config)
-//        let example = Question(id: UUID(), questionContent: "Some random sample question", questionNote: "Sample data audio question answer in Mp3 format", topic: "Science", options: ["A", "B", "C", "D"], correctOption: "C", selectedOption: "", isAnswered: false, isAnsweredCorrectly: false, numberOfPresentations: 0, questionAudio: "Sample data audio question in Mp3", questionNoteAudio: "Sample data audio question answer in Mp3 format")
-//        let playList = Array(repeating: example, count: 5)
-//        let player = QuizPlayer(playlist: playList)
-//        return QuizPlayerControls(quizPlayer: player, question: example)
-//
-//    } catch {
-//
-//        return Text("Failed to create Preview: \(error.localizedDescription)")
-//    }
